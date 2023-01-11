@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "clouds/contracts/interfaces/IERC173.sol";
-import "clouds/contracts/LDiamond.sol";
+import "clouds/interfaces/IERC173.sol";
+import "clouds/diamond/LDiamond.sol";
 
 /// @title OwnershipFacet
 /// @author mektigboy

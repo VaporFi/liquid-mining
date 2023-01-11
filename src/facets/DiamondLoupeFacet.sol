@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "clouds/contracts/interfaces/IDiamondLoupe.sol";
-import "clouds/contracts/interfaces/IERC165.sol";
-import "clouds/contracts/LDiamond.sol";
+import "clouds/interfaces/IDiamondLoupe.sol";
+import "clouds/interfaces/IERC165.sol";
+import "clouds/diamond/LDiamond.sol";
 
 /// @title DiamondLoupeFacet
 /// @author mektigboy
@@ -27,30 +27,20 @@ contract DiamondLoupeFacet is IDiamondLoupe, IERC165 {
             address facetAddress_ = ds.facetAddresses[i];
 
             facets_[i].facetAddress = facetAddress_;
-            facets_[i].functionSelectors = ds
-                .facetFunctionSelectors[facetAddress_]
-                .functionSelectors;
+            facets_[i].functionSelectors = ds.facetFunctionSelectors[facetAddress_].functionSelectors;
         }
     }
 
     /// @notice Get facet function selectors
     /// @param _facet Address of the facet
-    function facetFunctionSelectors(
-        address _facet
-    ) external view returns (bytes4[] memory facetFunctionSelectors_) {
+    function facetFunctionSelectors(address _facet) external view returns (bytes4[] memory facetFunctionSelectors_) {
         LDiamond.DiamondStorage storage ds = LDiamond.diamondStorage();
 
-        facetFunctionSelectors_ = ds
-            .facetFunctionSelectors[_facet]
-            .functionSelectors;
+        facetFunctionSelectors_ = ds.facetFunctionSelectors[_facet].functionSelectors;
     }
 
     /// @notice Get addresses of facets
-    function facetAddresses()
-        external
-        view
-        returns (address[] memory facetAddresses_)
-    {
+    function facetAddresses() external view returns (address[] memory facetAddresses_) {
         LDiamond.DiamondStorage storage ds = LDiamond.diamondStorage();
 
         facetAddresses_ = ds.facetAddresses;
@@ -58,14 +48,10 @@ contract DiamondLoupeFacet is IDiamondLoupe, IERC165 {
 
     /// @notice Get facet address of function selector
     /// @param _functionSelector Function selector
-    function facetAddress(
-        bytes4 _functionSelector
-    ) external view returns (address facetAddress_) {
+    function facetAddress(bytes4 _functionSelector) external view returns (address facetAddress_) {
         LDiamond.DiamondStorage storage ds = LDiamond.diamondStorage();
 
-        facetAddress_ = ds
-            .selectorToFacetAndPosition[_functionSelector]
-            .facetAddress;
+        facetAddress_ = ds.selectorToFacetAndPosition[_functionSelector].facetAddress;
     }
 
     /// @notice Get if contract supports interface

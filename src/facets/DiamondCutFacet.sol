@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "clouds/contracts/interfaces/IDiamondCut.sol";
-import "clouds/contracts/LDiamond.sol";
+import "clouds/interfaces/IDiamondCut.sol";
+import "clouds/diamond/LDiamond.sol";
 
 /// @title DiamondCutFacet
 /// @author mektigboy
@@ -18,11 +18,7 @@ contract DiamondCutFacet is IDiamondCut {
     /// @param _cut Facet cut
     /// @param _init Address of the initialization contract
     /// @param _data Data
-    function diamondCut(
-        FacetCut[] calldata _cut,
-        address _init,
-        bytes calldata _data
-    ) external {
+    function diamondCut(FacetCut[] calldata _cut, address _init, bytes calldata _data) external {
         LDiamond.enforceIsOwner();
         LDiamond.diamondCut(_cut, _init, _data);
     }
