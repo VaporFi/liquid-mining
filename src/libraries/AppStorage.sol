@@ -2,12 +2,12 @@
 pragma solidity 0.8.17;
 
 struct AppStorage {
-    ////////////////////
-    /// AUTHORIZABLE ///
-    ////////////////////
+    /////////////////////
+    /// AUTHORIZATION ///
+    /////////////////////
     mapping(address => bool) authorized;
-    ////////////////
-    /// PAUSABLE ///
-    ////////////////
+    /////////////////
+    /// PAUSATION ///
+    /////////////////
     bool paused;
 }
