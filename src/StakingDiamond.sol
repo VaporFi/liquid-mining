@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "clouds/src/interfaces/IDiamondCut.sol";
-import "clouds/src/diamond/LDiamond.sol";
+import "clouds/interfaces/IDiamondCut.sol";
+import "clouds/diamond/LDiamond.sol";
 import "./libraries/AppStorage.sol";
 
 error StakingDiamond__InvalidFunction();
