@@ -12,7 +12,7 @@ error StakingDiamond__InvalidFunction();
 /// @author Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat
 /// @notice Main contract of the diamond
 /// @dev Utilizes 'IDiamondCut', 'LDiamond' and 'AppStorage'
-contract StakingDiamond {
+contract LiquidStakingDiamond {
     /////////////
     /// LOGIC ///
     /////////////

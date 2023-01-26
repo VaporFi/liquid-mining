@@ -12,3 +12,6 @@ out/
 
 # Yarn
 node_modules/
+
+# IDE
+.idea

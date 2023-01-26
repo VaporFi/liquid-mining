@@ -34,9 +34,9 @@ contract AuthorizationFacet {
         s.authorized[_address] = true;
     }
 
-    /// @notice Unauthorize address
-    /// @param _address Address to unauthorize
-    function unauthorize(address _address) external {
+    /// @notice Un-authorize address
+    /// @param _address Address to un-authorize
+    function unAuthorize(address _address) external {
         LDiamond.enforceIsOwner();
 
         s.authorized[_address] = false;
