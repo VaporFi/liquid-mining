@@ -6,21 +6,13 @@ import "../libraries/AppStorage.sol";
 import "../libraries/LPausable.sol";
 
 /// @title PausationFacet
-/// @author mektigboy
 /// @notice Facet in charge of the pausation of certain features
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPausable'
 contract PausationFacet {
-    ///////////////////
-    /// APP STORAGE ///
-    ///////////////////
-
     AppStorage s;
 
-    /////////////
-    /// LOGIC ///
-    /////////////
-
     /// @notice Get if features are currently paused
+    /// @return bool if features are paused
     function paused() external view returns (bool) {
         return s.paused;
     }

@@ -1,36 +1,51 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+struct Season {
+    uint256 id;
+    uint256 startTimestamp;
+    uint256 endTimestamp;
+    uint256 rewardTokenBalance;
+    uint256 totalDepositAmount;
+    uint256 totalClaimAmount;
+    uint256 totalPoints;
+}
+
+struct UserData {
+    uint256 depositAmount;
+    uint256 claimAmount;
+    uint256 depositPoints;
+    uint256 boostPoints;
+    uint256 lastBoostClaimTimestamp;
+}
+
 struct AppStorage {
     /////////////////////
     /// AUTHORIZATION ///
     /////////////////////
     mapping(address => bool) authorized;
-
     /////////////////
     /// PAUSATION ///
     /////////////////
     bool paused;
-
     //////////////
     /// SEASON ///
     //////////////
     uint256 currentSeasonId;
-    // season's reward token balance to distribute
-    mapping(uint256 => uint256) seasonRewardTokenBalances;
-
+    uint256 seasonsCount;
+    mapping(uint256 => Season) seasons;
+    mapping(uint256 => mapping(address => UserData)) usersData;
     ///////////////
     /// DEPOSIT ///
     ///////////////
     uint256 depositFee;
     address depositToken;
     address[] depositFeeReceivers;
-    address[] depositFeeReceiversShares;
+    uint256[] depositFeeReceiversShares;
     // nested mapping: seasonId => userAddress => amount
     mapping(uint256 => mapping(address => uint256)) depositAmounts;
     // total amount deposited for each season: seasonId => amount
     mapping(uint256 => uint256) totalDepositAmounts;
-
     ////////////////
     /// WITHDRAW ///
     ////////////////

@@ -6,15 +6,10 @@ import "clouds/interfaces/IERC165.sol";
 import "clouds/diamond/LDiamond.sol";
 
 /// @title DiamondLoupeFacet
-/// @author mektigboy
 /// @author Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat
 /// @notice Facet in charge of the diamond loupe
 /// @dev Utilizes 'IDiamondLoupe', 'IERC165' and 'LDiamond'
 contract DiamondLoupeFacet is IDiamondLoupe, IERC165 {
-    /////////////
-    /// LOGIC ///
-    /////////////
-
     /// @notice Get all the facets within the diamond
     function facets() external view returns (Facet[] memory facets_) {
         LDiamond.DiamondStorage storage ds = LDiamond.diamondStorage();

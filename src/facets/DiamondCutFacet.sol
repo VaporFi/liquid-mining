@@ -5,15 +5,10 @@ import "clouds/interfaces/IDiamondCut.sol";
 import "clouds/diamond/LDiamond.sol";
 
 /// @title DiamondCutFacet
-/// @author mektigboy
 /// @author Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat
 /// @notice Facet in charge of the diamond cut
 /// @dev Utilizes 'IDiamondCut' and 'LDiamond'
 contract DiamondCutFacet is IDiamondCut {
-    /////////////
-    /// LOGIC ///
-    /////////////
-
     /// @notice Diamond cut
     /// @param _cut Facet cut
     /// @param _init Address of the initialization contract

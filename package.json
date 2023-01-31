@@ -11,5 +11,10 @@
   },
   "dependencies": {
     "solhint": "3.3.7"
+  },
+  "scripts": {
+    "build": "make build",
+    "lint": "solhint src/**/*.sol",
+    "format": "prettier --write src/**/*.sol"
   }
 }

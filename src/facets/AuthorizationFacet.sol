@@ -2,23 +2,15 @@
 pragma solidity ^0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
+
 import "../libraries/AppStorage.sol";
 import "../libraries/LAuthorizable.sol";
 
 /// @title AuthorizationFacet
-/// @author mektigboy
 /// @notice Facet in charge of displaying and setting the authorization variables
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LAuthorizable'
 contract AuthorizationFacet {
-    ///////////////////
-    /// APP STORAGE ///
-    ///////////////////
-
     AppStorage s;
-
-    /////////////
-    /// LOGIC ///
-    /////////////
 
     /// @notice Get if address is authorized
     /// @param _address Address
