@@ -25,7 +25,6 @@ contract DepositFacet {
         }
         uint256 _fee = LPercentages.percentage(_amount, s.depositFee);
         uint256 _amountMinusFee = _amount - _fee;
-        s.totalDepositAmounts[s.currentSeasonId] += (_amountMinusFee);
         _applyPoints(_amountMinusFee);
         _applyDepositFee(_fee);
     }
@@ -33,11 +32,13 @@ contract DepositFacet {
     /// @notice Apply points
     /// @param _amount Amount of token to apply points
     function _applyPoints(uint256 _amount) internal {
-        uint256 _daysUntilSeasonEnd = (s.seasons[s.currentSeasonId].endTimestamp - block.timestamp) / 1 days;
-        UserData storage _userData = s.usersData[s.currentSeasonId][msg.sender];
+        uint256 _seasonId = s.currentSeasonId;
+        uint256 _daysUntilSeasonEnd = (s.seasons[_seasonId].endTimestamp - block.timestamp) / 1 days;
+        UserData storage _userData = s.usersData[_seasonId][msg.sender];
         _userData.depositAmount += _amount;
         _userData.depositPoints += _amount * _daysUntilSeasonEnd;
-        s.seasons[s.currentSeasonId].totalPoints += _amount * _daysUntilSeasonEnd;
+        s.seasons[_seasonId].totalDepositAmount += _amount;
+        s.seasons[_seasonId].totalPoints += _amount * _daysUntilSeasonEnd;
     }
 
     /// @notice Apply deposit fee
