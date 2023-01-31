@@ -34,6 +34,7 @@ struct AppStorage {
     uint256 currentSeasonId;
     uint256 seasonsCount;
     mapping(uint256 => Season) seasons;
+    // nested mapping: seasonId => userAddress => UserData
     mapping(uint256 => mapping(address => UserData)) usersData;
     ///////////////
     /// DEPOSIT ///
@@ -42,10 +43,6 @@ struct AppStorage {
     address depositToken;
     address[] depositFeeReceivers;
     uint256[] depositFeeReceiversShares;
-    // nested mapping: seasonId => userAddress => amount
-    mapping(uint256 => mapping(address => uint256)) depositAmounts;
-    // total amount deposited for each season: seasonId => amount
-    mapping(uint256 => uint256) totalDepositAmounts;
     ////////////////
     /// WITHDRAW ///
     ////////////////
