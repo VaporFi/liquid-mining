@@ -38,6 +38,7 @@ contract WithdrawFacet {
         revert WithdrawFacet__UserNotParticipated();
        }
        uint256 amount = s.usersData[_seasonId][msg.sender].depositAmount;
+       s.usersData[_seasonId][msg.sender].depositAmount = 0;
        IERC20(s.depositToken).transferFrom(address(this), msg.sender, amount);
        emit Withdraw(amount, msg.sender);
     }
