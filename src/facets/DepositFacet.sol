@@ -16,6 +16,7 @@ import "../interfaces/IRewardsController.sol";
 contract DepositFacet is ReentrancyGuard {
     error DepositFacet__NotEnoughTokenBalance();
     error DepositFacet__InvalidFeeReceivers();
+    event Deposit(address indexed depositor, uint256 amount);
 
     AppStorage s;
 
@@ -38,6 +39,7 @@ contract DepositFacet is ReentrancyGuard {
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyDepositFee(_fee);
+        emit Deposit(msg.sender, _amount);
 
         //interactions
         _token.transferFrom(msg.sender, address(this), _amount);
