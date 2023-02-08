@@ -3,14 +3,17 @@ pragma solidity ^0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
+import "../interfaces/IStratosphere.sol";
+import "../interfaces/IRewardsController.sol";
 
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
-contract DepositFacet {
+contract DepositFacet is ReentrancyGuard {
     error DepositFacet__NotEnoughTokenBalance();
     error DepositFacet__InvalidFeeReceivers();
 
@@ -18,15 +21,43 @@ contract DepositFacet {
 
     /// @notice Deposit token to the contract
     /// @param _amount Amount of token to deposit
-    function deposit(uint256 _amount) external {
-        // check if user has enough token balance
-        if (_amount > IERC20(s.depositToken).balanceOf(msg.sender)) {
+    function deposit(uint256 _amount) external nonReentrant {
+        IERC20 _token = IERC20(s.depositToken);
+        // checks
+        if (_amount > IERC20(_token).balanceOf(msg.sender)) {
             revert DepositFacet__NotEnoughTokenBalance();
         }
-        uint256 _fee = LPercentages.percentage(_amount, s.depositFee);
+
+        //effects
+        uint256 _discount = 0;
+        (bool isStratosphereMember, uint256 tier) = getStratosphereMembershipDetails(msg.sender);
+        if (isStratosphereMember) {
+            _discount = s.depositDiscountForStratosphereMembers[tier];
+        }
+        uint256 _fee = LPercentages.percentage(_amount, s.depositFee - (_discount * s.depositFee) / 100);
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyDepositFee(_fee);
+
+        //interactions
+        _token.transferFrom(msg.sender, address(this), _amount);
+    }
+
+    /// @notice get details of stratosphere for member
+    /// @param _account Account of member to check
+    /// @return bool if account is stratosphere member
+    /// @return uint256 tier of membership
+    function getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
+        IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
+        uint256 tokenId = stratosphere.tokenIdOf(_account);
+
+        if (tokenId == 0) {
+            return (false, 0);
+        } else {
+            IRewardsController rewardController = IRewardsController(s.rewardsControllerAddress);
+            uint256 tier = rewardController.tierOf(keccak256("STRATOSPHERE_PROGRAM"), tokenId);
+            return (true, tier);
+        }
     }
 
     /// @notice Apply points
@@ -48,11 +79,9 @@ contract DepositFacet {
             revert DepositFacet__InvalidFeeReceivers();
         }
         uint256 _length = s.depositFeeReceivers.length;
-        IERC20 _token = IERC20(s.depositToken);
         for (uint256 i; i < _length; ) {
-            // TODO: add Stratosphere fee discounts
             uint256 _share = LPercentages.percentage(_fee, s.depositFeeReceiversShares[i]);
-            _token.transferFrom(msg.sender, s.depositFeeReceivers[i], _share);
+            s.pendingWithdrawals[s.depositFeeReceivers[i]] += _share;
             unchecked {
                 i++;
             }
