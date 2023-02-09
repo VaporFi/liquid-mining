@@ -6,11 +6,9 @@ import "../libraries/AppStorage.sol";
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 error WithdrawFacet__InProgressSeason();
-error WithdrawFacet__UnlockNotParked();
 error WithdrawFacet__InsufficientBalance();
 error WithdrawFacet__UnlockNotMatured();
 error WithdrawFacet__UserNotParticipated();
-error WithdrawFacet__InvalidSeason();
 error WithdrawFacet__AlreadyWithdrawn();
 
 /// @title WithdrawFacet
@@ -24,18 +22,6 @@ contract WithdrawFacet {
     event Withdraw(uint256 amount, address indexed to);
     
     AppStorage s;
-
-    /////////////////
-    /// MODIFIERS ///
-    /////////////////
-
-    /// @dev Mark function is called first time after unlock
-    /// @param _seasonId The ID to check
-    modifier hasWithdrawnOrStaked(uint56 _seasonId) {
-        if(s.usersData[_seasonId][msg.sender].hasWithdrawnOrRestaked == true) revert WithdrawFacet__AlreadyWithdrawn();
-        _;
-    }
-
     
     //////////////////////
     /// EXTERNAL LOGIC ///
@@ -61,12 +47,19 @@ contract WithdrawFacet {
     /// @notice Withdraw unlocked VPND 
     function withdraw(address _user) external {
         uint256 seasonId = s.addressToLastSeasonId[_user];
+
        if(s.usersData[seasonId][_user].depositAmount == 0) {
         revert WithdrawFacet__UserNotParticipated();
        }
+
+       if(s.seasons[seasonId].endTimestamp >= block.timestamp) {
+        revert WithdrawFacet__InProgressSeason();
+       }
+
        if(s.usersData[seasonId][_user].hasWithdrawnOrRestaked == true) {
         revert WithdrawFacet__AlreadyWithdrawn();
        } 
+
        uint256 amount = s.usersData[seasonId][_user].depositAmount;
     //    s.usersData[seasonId][_user].depositAmount = 0; // @audit Do we want do this?
         s.usersData[seasonId][_user].hasWithdrawnOrRestaked = true; // @audit Or this is better?
