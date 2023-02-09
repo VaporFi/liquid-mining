@@ -19,6 +19,7 @@ struct UserData {
     uint256 lastBoostClaimTimestamp;
     uint256 isUnlockAmount;
     uint256 isUnlockTimestamp;
+    bool hasWithdrawnOrRestaked;
 }
 
 struct AppStorage {
@@ -38,6 +39,8 @@ struct AppStorage {
     mapping(uint256 => Season) seasons;
     // nested mapping: seasonId => userAddress => UserData
     mapping(uint256 => mapping(address => UserData)) usersData;
+    // mapping: address => lastSeasonParticiparedId
+    mapping (address => uint256) addressToLastSeasonId;
     ///////////////
     /// DEPOSIT ///
     ///////////////
