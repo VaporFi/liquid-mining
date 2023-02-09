@@ -51,6 +51,8 @@ struct AppStorage {
     uint256 unlockFee;
     address[] unlockFeeReceivers;
     uint256[] unlockFeeReceiversShares;
+    // mapping: tier => discount percentage
+    mapping(uint256 => uint256) unlockDiscountForStratosphereMembers;
     ////////////////
     /// WITHDRAW ///
     ////////////////
