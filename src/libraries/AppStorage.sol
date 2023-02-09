@@ -39,8 +39,6 @@ struct AppStorage {
     mapping(uint256 => Season) seasons;
     // nested mapping: seasonId => userAddress => UserData
     mapping(uint256 => mapping(address => UserData)) usersData;
-    // mapping: address => lastSeasonParticiparedId
-    mapping (address => uint256) addressToLastSeasonId;
     ///////////////
     /// DEPOSIT ///
     ///////////////
