@@ -29,14 +29,6 @@ contract WithdrawFacet {
     /// MODIFIERS ///
     /////////////////
 
-
-    /// @dev Mark function is given a valid seasonId
-    /// @param _seasonId The ID to check
-    modifier checkSeason(uint256 _seasonId) {
-        if(s.seasons[_seasonId].endTimestamp >= block.timestamp) revert WithdrawFacet__InProgressSeason();
-        if(_seasonId > s.currentSeasonId) revert WithdrawFacet__InvalidSeason();
-        _;
-    }
     /// @dev Mark function is called first time after unlock
     /// @param _seasonId The ID to check
     modifier hasWithdrawnOrStaked(uint56 _seasonId) {
@@ -67,15 +59,18 @@ contract WithdrawFacet {
 
 
     /// @notice Withdraw unlocked VPND 
-    /// @param _seasonId The ID of the season
-    function withdraw(uint256 _seasonId) checkSeason(_seasonId) external {
-       if(s.usersData[_seasonId][msg.sender].depositAmount == 0) {
+    function withdraw(address _user) external {
+        uint256 seasonId = s.addressToLastSeasonId[_user];
+       if(s.usersData[seasonId][_user].depositAmount == 0) {
         revert WithdrawFacet__UserNotParticipated();
        }
-       uint256 amount = s.usersData[_seasonId][msg.sender].depositAmount;
-    //    s.usersData[_seasonId][msg.sender].depositAmount = 0; // @audit Do we want do this?
-        s.usersData[_seasonId][msg.sender].hasWithdrawnOrRestaked = true; // @audit Or this is better?
-       IERC20(s.depositToken).transferFrom(address(this), msg.sender, amount);
-       emit Withdraw(amount, msg.sender);
+       if(s.usersData[seasonId][_user].hasWithdrawnOrRestaked == true) {
+        revert WithdrawFacet__AlreadyWithdrawn();
+       } 
+       uint256 amount = s.usersData[seasonId][_user].depositAmount;
+    //    s.usersData[seasonId][_user].depositAmount = 0; // @audit Do we want do this?
+        s.usersData[seasonId][_user].hasWithdrawnOrRestaked = true; // @audit Or this is better?
+       IERC20(s.depositToken).transferFrom(address(this), _user, amount);
+       emit Withdraw(amount, _user);
     }
 }
