@@ -15,16 +15,32 @@ error ClaimFacet__InvalidSeason();
 /// @notice Facet in charge of claiming VAPE rewards
 /// @dev Utilizes 'LDiamond' and 'AppStorage'
 contract ClaimFacet {
+
+    //////////////
+    /// EVENTS ///
+    //////////////
     event Claim(uint256 amount, address indexed claimer);
 
     AppStorage s;
 
+    /////////////////
+    /// MODIFIERS ///
+    /////////////////
+
+    /// @dev Mark function is given a valid seasonId
+    /// @param _seasonId The ID to check
     modifier checkSeason(uint256 _seasonId) {
         if(s.seasons[_seasonId].endTimestamp >= block.timestamp) revert ClaimFacet__InProgressSeason();
         if(_seasonId > s.currentSeasonId) revert ClaimFacet__InvalidSeason();
         _;
     }
 
+    //////////////////////
+    /// EXTERNAL LOGIC ///
+    //////////////////////
+
+    /// @notice Claim accrued VAPE reward token
+    /// @param _seasonId The ID of the season
     function claim(uint256 _seasonId) checkSeason(_seasonId) external {
         if(s.usersData[_seasonId][msg.sender].depositPoints == 0) {
             revert ClaimFacet__NotEnoughPoints();
@@ -40,12 +56,17 @@ contract ClaimFacet {
 
     }
 
+    //////////////////////
+    /// INTERNAL LOGIC ///
+    //////////////////////
+
+    /// @notice Calculate the share of the User based on totalPoints of season
     function calculateShare(uint256 _totalPoints, uint256 _seasonId) internal view returns(uint256) {
         uint256 seasonTotalPoints = s.seasons[_seasonId].totalPoints;
         uint256 userShare = (_totalPoints * 1e18) / seasonTotalPoints;
         return userShare;
     }
-
+    /// @notice Calculate VAPE earned by User through share of the totalPoints
     function vapeToDistribute(uint256 _userShare, uint256 _seasonId) internal view returns(uint256) {
         return (s.seasons[_seasonId].rewardTokenBalance * _userShare) / 1e18;
     }
