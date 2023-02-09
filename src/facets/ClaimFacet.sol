@@ -8,7 +8,7 @@ import "../libraries/AppStorage.sol";
 
 error ClaimFacet__NotEnoughPoints();
 error ClaimFacet__InProgressSeason();
-error ClaimFacet__InvalidSeason():
+error ClaimFacet__InvalidSeason();
 
 
 /// @title ClaimFacet
@@ -21,7 +21,7 @@ contract ClaimFacet {
 
     modifier checkSeason(uint256 _seasonId) {
         if(s.seasons[_seasonId].endTimestamp >= block.timestamp) revert ClaimFacet__InProgressSeason();
-        if(_seasonId > s.currentSeasonId) revert ClaimFacet__InvalidSeason():
+        if(_seasonId > s.currentSeasonId) revert ClaimFacet__InvalidSeason();
         _;
     }
 
