@@ -17,6 +17,8 @@ struct UserData {
     uint256 depositPoints;
     uint256 boostPoints;
     uint256 lastBoostClaimTimestamp;
+    uint256 unlockAmount;
+    uint256 unlockTimestamp;
 }
 
 struct AppStorage {
@@ -43,6 +45,12 @@ struct AppStorage {
     address depositToken;
     address[] depositFeeReceivers;
     uint256[] depositFeeReceiversShares;
+    ///////////////
+    /// UNLOCK ///
+    ///////////////
+    uint256 unlockFee;
+    address[] unlockFeeReceivers;
+    uint256[] unlockFeeReceiversShares;
     ////////////////
     /// WITHDRAW ///
     ////////////////
