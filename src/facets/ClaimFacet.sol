@@ -36,7 +36,7 @@ contract ClaimFacet {
         _userData.depositPoints = 0;
         _userData.boostPoints = 0;
         IERC20(s.rewardToken).transferFrom(address(this), msg.sender, rewardTokenShare);
-        emit Claim(rewardTokenShare, msg.sender)
+        emit Claim(rewardTokenShare, msg.sender);
 
     }
 
