@@ -31,14 +31,14 @@ contract WithdrawFacet {
     /// @param _seasonId The ID of the season
     /// @param _amount The amount of VPND to deposit
     function withdrawUnlocked(uint256 _seasonId, uint256 _amount) external {
-        if(_amount == 0 && s.usersData[_seasonId][msg.sender].isUnlockAmount < _amount) {
+        if(_amount > s.usersData[_seasonId][msg.sender].unlockAmount) {
             revert WithdrawFacet__InsufficientBalance();
         } 
-        if(s.usersData[_seasonId][msg.sender].isUnlockTimestamp < block.timestamp) {
+        if(s.usersData[_seasonId][msg.sender].unlockTimestamp < block.timestamp) {
             revert WithdrawFacet__UnlockNotMatured();
         }
-        s.usersData[_seasonId][msg.sender].isUnlockAmount = 0;
-        s.usersData[_seasonId][msg.sender].isUnlockTimestamp = 0;
+        s.usersData[_seasonId][msg.sender].unlockAmount = 0;
+        s.usersData[_seasonId][msg.sender].unlockTimestamp = 0;
         IERC20(s.depositToken).transferFrom(address(this), msg.sender, _amount);
         emit WithdrawUnlocked(_amount, msg.sender);
     }
