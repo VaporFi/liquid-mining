@@ -9,6 +9,7 @@ import "../libraries/AppStorage.sol";
 error ClaimFacet__NotEnoughPoints();
 error ClaimFacet__InProgressSeason();
 error ClaimFacet__InvalidSeason();
+error ClaimFacet__AlreadyClaimed();
 
 
 /// @title ClaimFacet
@@ -45,12 +46,14 @@ contract ClaimFacet {
         if(s.usersData[_seasonId][msg.sender].depositPoints == 0) {
             revert ClaimFacet__NotEnoughPoints();
         }
+        if(s.usersData[_seasonId][msg.sender].hasClaimed == true) {
+            revert ClaimFacet__AlreadyClaimed();
+        }
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
         uint256 totalPoints = _userData.depositPoints + _userData.boostPoints;
         uint256 userShare = calculateShare(totalPoints, _seasonId);
         uint256 rewardTokenShare = vapeToDistribute(userShare, _seasonId);
-        _userData.depositPoints = 0;
-        _userData.boostPoints = 0;
+        s.usersData[_seasonId][msg.sender].hasClaimed == true;
         IERC20(s.rewardToken).transferFrom(address(this), msg.sender, rewardTokenShare);
         emit Claim(rewardTokenShare, msg.sender);
 
