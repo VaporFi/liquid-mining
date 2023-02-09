@@ -8,5 +8,5 @@ error WithdrawFacet__InvalidAmount();
 contract UnlockFacet {
     AppStorage s;
 
-    function unlock(uint256 amount) external {}
+    function unlock(uint256 seasonId, uint256 amount) external {}
 }
