@@ -43,6 +43,10 @@ struct AppStorage {
     address depositToken;
     address[] depositFeeReceivers;
     uint256[] depositFeeReceiversShares;
+    mapping(address => uint256) pendingWithdrawals;
+    mapping(uint256 => uint256) depositDiscountForStratosphereMembers;
+    // mapping: user => lastSeasonParticipated
+    mapping(address => uint256) addressToLastSeasonId;
     ////////////////
     /// WITHDRAW ///
     ////////////////
@@ -57,4 +61,9 @@ struct AppStorage {
     mapping(uint256 => mapping(address => uint256)) claimAmounts;
     // total amount claimed for each season: seasonId => amount
     mapping(uint256 => uint256) totalClaimAmounts;
+    ///////////////
+    /// GENERAL ///
+    ///////////////
+    address stratoshpereAddress;
+    address rewardsControllerAddress;
 }
