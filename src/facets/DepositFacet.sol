@@ -10,12 +10,13 @@ import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
 import "../interfaces/IRewardsController.sol";
 
+error DepositFacet__NotEnoughTokenBalance();
+error DepositFacet__InvalidFeeReceivers();
+
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
 contract DepositFacet is ReentrancyGuard {
-    error DepositFacet__NotEnoughTokenBalance();
-    error DepositFacet__InvalidFeeReceivers();
     event Deposit(address indexed depositor, uint256 amount);
 
     AppStorage s;
