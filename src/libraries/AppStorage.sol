@@ -45,6 +45,8 @@ struct AppStorage {
     uint256[] depositFeeReceiversShares;
     mapping(address => uint256) pendingWithdrawals;
     mapping(uint256 => uint256) depositDiscountForStratosphereMembers;
+    // mapping: user => lastSeasonParticipated
+    mapping(address => uint256) addressToLastSeasonId;
     ////////////////
     /// WITHDRAW ///
     ////////////////

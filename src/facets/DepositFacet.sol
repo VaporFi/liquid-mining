@@ -32,6 +32,7 @@ contract DepositFacet is ReentrancyGuard {
 
         //effects
         uint256 _discount = 0;
+        s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
         (bool isStratosphereMember, uint256 tier) = getStratosphereMembershipDetails(msg.sender);
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
