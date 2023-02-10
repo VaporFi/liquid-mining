@@ -34,7 +34,7 @@ contract WithdrawFacet {
         if(_amount > s.usersData[_seasonId][msg.sender].unlockAmount) {
             revert WithdrawFacet__InsufficientBalance();
         } 
-        if(s.usersData[_seasonId][msg.sender].unlockTimestamp < block.timestamp) {
+        if(s.usersData[_seasonId][msg.sender].unlockTimestamp > block.timestamp) {
             revert WithdrawFacet__UnlockNotMatured();
         }
         s.usersData[_seasonId][msg.sender].unlockAmount = 0;
