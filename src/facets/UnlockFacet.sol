@@ -86,9 +86,8 @@ contract UnlockFacet {
         if (s.unlockFeeReceivers.length != s.unlockFeeReceiversShares.length) {
             revert UnlockFacet__InvalidFeeReceivers();
         }
-        uint256 _length = s.depositFeeReceivers.length;
+        uint256 _length = s.unlockFeeReceivers.length;
         for (uint256 i; i < _length; ) {
-            // TODO: add Stratosphere fee discounts
             uint256 _share = LPercentages.percentage(_fee, s.unlockFeeReceiversShares[i]);
             s.pendingWithdrawals[s.unlockFeeReceivers[i]] += _share;
             unchecked {
