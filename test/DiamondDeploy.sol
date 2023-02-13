@@ -53,7 +53,6 @@ function setUp() public virtual {
     diamondInit = new DiamondInit();
 
 
-
     {       bytes memory initData = abi.encodeWithSelector(_getSelectors("DiamondInit")[0]);
             IDiamondCut.FacetCut[] memory cuts = new IDiamondCut.FacetCut[](5);
             cuts[0] = IDiamondCut.FacetCut({facetAddress: address(diamondLoupeFacet), action: IDiamondCut.FacetCutAction.Add, functionSelectors: _getSelectors("DiamondLoupeFacet")});
@@ -65,6 +64,11 @@ function setUp() public virtual {
             console.log(">>> Diamond initialized");
     }
 }
+
+
+
+
+
 
 function _getSelectors(string memory _facetName) private returns (bytes4[] memory selectors) {
         string[] memory cmd = new string[](5);

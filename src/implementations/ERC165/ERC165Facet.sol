@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IERC165} from "../../../interfaces/IERC165.sol";
+import {IERC165} from "../../interfaces/IERC165.sol";
 
 import {ERC165Lib} from "./ERC165Lib.sol";
 
