@@ -4,7 +4,7 @@
     "artifacts": "out",
     "build_infos": "out/build-info",
     "sources": "src",
-    "tests": "test/foundry",
+    "tests": "test",
     "scripts": "script",
     "libraries": [
       "lib",
@@ -13,8 +13,8 @@
   },
   "files": {
     "lib/clouds/src/diamond/LDiamond.sol": {
-      "lastModificationDate": 1675744524391,
-      "contentHash": "c10223b073f4f281547f1e5d9583921f",
+      "lastModificationDate": 1676981725313,
+      "contentHash": "390376926e8a29804ea2a0fbcec6252e",
       "sourceName": "lib/clouds/src/diamond/LDiamond.sol",
       "solcConfig": {
         "settings": {
@@ -714,6 +714,63 @@
         }
       }
     },
+    "lib/forge-std/src/Test.sol": {
+      "lastModificationDate": 1675744527530,
+      "contentHash": "23c73ad6c59f5d629042303f8ffc1359",
+      "sourceName": "lib/forge-std/src/Test.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Common.sol",
+        "lib/forge-std/src/Components.sol",
+        "lib/forge-std/src/StdAssertions.sol",
+        "lib/forge-std/src/StdCheats.sol",
+        "lib/forge-std/src/StdError.sol",
+        "lib/forge-std/src/StdJson.sol",
+        "lib/forge-std/src/StdMath.sol",
+        "lib/forge-std/src/StdStorage.sol",
+        "lib/forge-std/src/StdUtils.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol"
+      ],
+      "versionRequirement": ">=0.6.2, <0.9.0",
+      "artifacts": {
+        "Test": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "Test.sol/Test.json"
+        },
+        "TestBase": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "Test.sol/TestBase.json"
+        }
+      }
+    },
     "lib/forge-std/src/Vm.sol": {
       "lastModificationDate": 1675744527530,
       "contentHash": "af4e1189b1763fe0d73a21d17cc2ea9c",
@@ -973,7 +1030,7 @@
       }
     },
     "src/LiquidStakingDiamond.sol": {
-      "lastModificationDate": 1675692880712,
+      "lastModificationDate": 1676352420318,
       "contentHash": "8c5cd659edd71fd9bc205342113a3592",
       "sourceName": "src/LiquidStakingDiamond.sol",
       "solcConfig": {
@@ -1151,8 +1208,8 @@
       }
     },
     "src/facets/DepositFacet.sol": {
-      "lastModificationDate": 1676262930949,
-      "contentHash": "f83b8b89bb83526193e799b09aeba81e",
+      "lastModificationDate": 1676981974624,
+      "contentHash": "bd1ac96b653ea881607d0687b202b454",
       "sourceName": "src/facets/DepositFacet.sol",
       "solcConfig": {
         "settings": {
@@ -1185,6 +1242,20 @@
       "imports": [
         "lib/clouds/src/diamond/LDiamond.sol",
         "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Common.sol",
+        "lib/forge-std/src/Components.sol",
+        "lib/forge-std/src/StdAssertions.sol",
+        "lib/forge-std/src/StdCheats.sol",
+        "lib/forge-std/src/StdError.sol",
+        "lib/forge-std/src/StdJson.sol",
+        "lib/forge-std/src/StdMath.sol",
+        "lib/forge-std/src/StdStorage.sol",
+        "lib/forge-std/src/StdUtils.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
         "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
         "src/interfaces/IRewardsController.sol",
@@ -1283,7 +1354,65 @@
       "versionRequirement": "^0.8.17",
       "artifacts": {
         "DiamondLoupeFacet": {
-          "0.8.17+commit.8df45f5f.Darwin.appleclang": "DiamondLoupeFacet.sol/DiamondLoupeFacet.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "src/facets/DiamondLoupeFacet.sol/DiamondLoupeFacet.json"
+        }
+      }
+    },
+    "src/facets/DiamondManagerFacet.sol": {
+      "lastModificationDate": 1676982103503,
+      "contentHash": "c4898e3ead39c4e0e103f1575d8b8645",
+      "sourceName": "src/facets/DiamondManagerFacet.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/clouds/src/diamond/LDiamond.sol",
+        "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Common.sol",
+        "lib/forge-std/src/Components.sol",
+        "lib/forge-std/src/StdAssertions.sol",
+        "lib/forge-std/src/StdCheats.sol",
+        "lib/forge-std/src/StdError.sol",
+        "lib/forge-std/src/StdJson.sol",
+        "lib/forge-std/src/StdMath.sol",
+        "lib/forge-std/src/StdStorage.sol",
+        "lib/forge-std/src/StdUtils.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "src/libraries/AppStorage.sol"
+      ],
+      "versionRequirement": "=0.8.17",
+      "artifacts": {
+        "DiamondManagerFacet": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "DiamondManagerFacet.sol/DiamondManagerFacet.json"
         }
       }
     },
@@ -1327,7 +1456,7 @@
       "versionRequirement": "^0.8.17",
       "artifacts": {
         "OwnershipFacet": {
-          "0.8.17+commit.8df45f5f.Darwin.appleclang": "OwnershipFacet.sol/OwnershipFacet.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "src/facets/OwnershipFacet.sol/OwnershipFacet.json"
         }
       }
     },
@@ -1707,6 +1836,130 @@
       "artifacts": {
         "DiamondInit": {
           "0.8.17+commit.8df45f5f.Darwin.appleclang": "DiamondInit.sol/DiamondInit.json"
+        }
+      }
+    },
+    "test/Facets/DepositFacet.t.sol": {
+      "lastModificationDate": 1677000489067,
+      "contentHash": "36938b596525a61846d2e5baeb7390d5",
+      "sourceName": "test/Facets/DepositFacet.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/clouds/src/diamond/LDiamond.sol",
+        "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "lib/clouds/src/interfaces/IDiamondLoupe.sol",
+        "lib/clouds/src/interfaces/IERC165.sol",
+        "lib/clouds/src/interfaces/IERC173.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Common.sol",
+        "lib/forge-std/src/Components.sol",
+        "lib/forge-std/src/StdAssertions.sol",
+        "lib/forge-std/src/StdCheats.sol",
+        "lib/forge-std/src/StdError.sol",
+        "lib/forge-std/src/StdJson.sol",
+        "lib/forge-std/src/StdMath.sol",
+        "lib/forge-std/src/StdStorage.sol",
+        "lib/forge-std/src/StdUtils.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "src/LiquidStakingDiamond.sol",
+        "src/facets/DepositFacet.sol",
+        "src/facets/DiamondCutFacet.sol",
+        "src/facets/DiamondLoupeFacet.sol",
+        "src/facets/DiamondManagerFacet.sol",
+        "src/facets/OwnershipFacet.sol",
+        "src/interfaces/IRewardsController.sol",
+        "src/interfaces/IStratosphere.sol",
+        "src/libraries/AppStorage.sol",
+        "src/libraries/LPercentages.sol",
+        "test/utils/DiamondTest.sol"
+      ],
+      "versionRequirement": "=0.8.17",
+      "artifacts": {
+        "DepositFacetTest": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "DepositFacet.t.sol/DepositFacetTest.json"
+        }
+      }
+    },
+    "test/utils/DiamondTest.sol": {
+      "lastModificationDate": 1676981828811,
+      "contentHash": "6cfde37adfd9dd6be5807025c4fb10e5",
+      "sourceName": "test/utils/DiamondTest.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/clouds/src/diamond/LDiamond.sol",
+        "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "lib/clouds/src/interfaces/IDiamondLoupe.sol",
+        "lib/clouds/src/interfaces/IERC165.sol",
+        "lib/clouds/src/interfaces/IERC173.sol",
+        "src/LiquidStakingDiamond.sol",
+        "src/facets/DiamondCutFacet.sol",
+        "src/facets/DiamondLoupeFacet.sol",
+        "src/facets/OwnershipFacet.sol",
+        "src/libraries/AppStorage.sol"
+      ],
+      "versionRequirement": "=0.8.17",
+      "artifacts": {
+        "DiamondTest": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "DiamondTest.sol/DiamondTest.json"
         }
       }
     }
