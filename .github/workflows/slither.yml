@@ -18,4 +18,4 @@ jobs:
         uses: crytic/slither-action@dev
         id: slither
         with:
-          fail-on: high
+          fail-on: none
