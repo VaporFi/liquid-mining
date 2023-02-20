@@ -1107,8 +1107,8 @@
       }
     },
     "src/facets/ClaimFacet.sol": {
-      "lastModificationDate": 1674937691258,
-      "contentHash": "f6a44d0d54c65baa32504e2f5333d1c8",
+      "lastModificationDate": 1676907255132,
+      "contentHash": "a4a15e65e265e7835d468dca5f332347",
       "sourceName": "src/facets/ClaimFacet.sol",
       "solcConfig": {
         "settings": {
@@ -1141,6 +1141,7 @@
       "imports": [
         "lib/clouds/src/diamond/LDiamond.sol",
         "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
         "src/libraries/AppStorage.sol"
       ],
       "versionRequirement": "^0.8.17",
@@ -1501,8 +1502,8 @@
       }
     },
     "src/libraries/AppStorage.sol": {
-      "lastModificationDate": 1676904095804,
-      "contentHash": "9862eb3d8c4aeea7ebe21ac109291433",
+      "lastModificationDate": 1676907255133,
+      "contentHash": "f53433c7d8652b265e22ee6fcb3638b4",
       "sourceName": "src/libraries/AppStorage.sol",
       "solcConfig": {
         "settings": {
@@ -1661,6 +1662,52 @@
       "artifacts": {
         "LPercentages": {
           "0.8.17+commit.8df45f5f.Darwin.appleclang": "LPercentages.sol/LPercentages.json"
+        }
+      }
+    },
+    "src/upgradeInitializers/DiamondInit.sol": {
+      "lastModificationDate": 1676907255134,
+      "contentHash": "50a92973e11a2afbf44f004cd0f3eecb",
+      "sourceName": "src/upgradeInitializers/DiamondInit.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/clouds/src/diamond/LDiamond.sol",
+        "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "lib/clouds/src/interfaces/IDiamondLoupe.sol",
+        "lib/clouds/src/interfaces/IERC165.sol",
+        "lib/clouds/src/interfaces/IERC173.sol"
+      ],
+      "versionRequirement": "^0.8.17",
+      "artifacts": {
+        "DiamondInit": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "DiamondInit.sol/DiamondInit.json"
         }
       }
     }
