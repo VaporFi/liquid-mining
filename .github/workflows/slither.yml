@@ -18,7 +18,6 @@ jobs:
         uses: crytic/slither-action@dev
         id: slither
         with:
-          target: "src/"
           sarif: results.sarif
           fail-on: none
 
