@@ -17,13 +17,10 @@ struct UserData {
     uint256 depositPoints;
     uint256 boostPoints;
     uint256 lastBoostClaimTimestamp;
-<<<<<<< HEAD
     uint256 unlockAmount;
     uint256 unlockTimestamp;
     bool hasWithdrawnOrRestaked;
-=======
     bool hasClaimed;
->>>>>>> 40ec1b3a36c48f9d0bdd30a1077306dbccc2ac44
 }
 
 struct AppStorage {
