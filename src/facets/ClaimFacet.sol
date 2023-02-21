@@ -24,36 +24,26 @@ contract ClaimFacet {
 
     AppStorage s;
 
-    /////////////////
-    /// MODIFIERS ///
-    /////////////////
-
-    /// @dev Mark function is given a valid seasonId
-    /// @param _seasonId The ID to check
-    modifier checkSeason(uint256 _seasonId) {
-        if(s.seasons[_seasonId].endTimestamp >= block.timestamp) revert ClaimFacet__InProgressSeason();
-        if(_seasonId > s.currentSeasonId) revert ClaimFacet__InvalidSeason();
-        _;
-    }
-
     //////////////////////
     /// EXTERNAL LOGIC ///
     //////////////////////
 
     /// @notice Claim accrued VAPE reward token
-    /// @param _seasonId The ID of the season
-    function claim(uint256 _seasonId) checkSeason(_seasonId) external {
-        if(s.usersData[_seasonId][msg.sender].depositPoints == 0) {
+    function claim() external {
+        uint256 seasonId = s.addressToLastSeasonId[msg.sender];
+        UserData storage userData = s.usersData[seasonId][msg.sender];
+        if(userData.depositPoints == 0) {
             revert ClaimFacet__NotEnoughPoints();
         }
-        if(s.usersData[_seasonId][msg.sender].hasClaimed == true) {
+        if(userData.hasClaimed == true) {
             revert ClaimFacet__AlreadyClaimed();
         }
-        UserData storage _userData = s.usersData[_seasonId][msg.sender];
-        uint256 totalPoints = _userData.depositPoints + _userData.boostPoints;
-        uint256 userShare = calculateShare(totalPoints, _seasonId);
-        uint256 rewardTokenShare = vapeToDistribute(userShare, _seasonId);
-        s.usersData[_seasonId][msg.sender].hasClaimed == true;
+        
+        uint256 totalPoints = userData.depositPoints + userData.boostPoints;
+        uint256 userShare = calculateShare(totalPoints, seasonId);
+        uint256 rewardTokenShare = vapeToDistribute(userShare, seasonId);
+        userData.hasClaimed == true;
+        s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
         IERC20(s.rewardToken).transferFrom(address(this), msg.sender, rewardTokenShare);
         emit Claim(rewardTokenShare, msg.sender);
 
@@ -71,6 +61,6 @@ contract ClaimFacet {
     }
     /// @notice Calculate VAPE earned by User through share of the totalPoints
     function vapeToDistribute(uint256 _userShare, uint256 _seasonId) internal view returns(uint256) {
-        return (s.seasons[_seasonId].rewardTokenBalance * _userShare) / 1e18;
+        return (s.seasons[_seasonId].rewardTokensToDistribute * _userShare) / 1e18;
     }
 }
