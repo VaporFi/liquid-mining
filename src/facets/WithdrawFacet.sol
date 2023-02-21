@@ -18,8 +18,9 @@ contract WithdrawFacet {
     //////////////
     /// EVENTS ///
     //////////////
-    event WithdrawUnlocked(uint256 amount, address indexed to);
-    event Withdraw(uint256 amount, address indexed to);
+    event WithdrawUnlockedVPND(uint256 amount, address indexed to);
+    event WithdrawVPND(uint256 amount, address indexed to);
+    event WithdrawAll(uint256 amount, address indexed to);
     
     AppStorage s;
     
@@ -27,28 +28,33 @@ contract WithdrawFacet {
     /// EXTERNAL LOGIC ///
     //////////////////////
 
-    /// @notice Withdraw prematurely unlocked VPND 
-    /// @param _seasonId The ID of the season
-    /// @param _amount The amount of VPND to deposit
-    function withdrawUnlocked(uint256 _seasonId, uint256 _amount) external {
-        if(_amount > s.usersData[_seasonId][msg.sender].unlockAmount) {
+    /// @notice Withdraw prematurely unlocked VPND
+    /// @dev User cannot participate in new seasons until they withdraw 
+    function withdrawUnlocked() external {
+        address user = msg.sender;
+        uint256 seasonId = s.addressToLastSeasonId[user];
+        uint256 amount = s.usersData[seasonId][user].unlockAmount;
+        uint256 unlockTimestamp = s.usersData[seasonId][user].unlockTimestamp;
+        if(amount == 0) {
             revert WithdrawFacet__InsufficientBalance();
         } 
-        if(s.usersData[_seasonId][msg.sender].unlockTimestamp > block.timestamp) {
+        if(unlockTimestamp > block.timestamp) {
             revert WithdrawFacet__UnlockNotMatured();
         }
-        s.usersData[_seasonId][msg.sender].unlockAmount = 0;
-        s.usersData[_seasonId][msg.sender].unlockTimestamp = 0;
-        IERC20(s.depositToken).transferFrom(address(this), msg.sender, _amount);
-        emit WithdrawUnlocked(_amount, msg.sender);
+        s.usersData[seasonId][user].unlockAmount = 0;
+        s.usersData[seasonId][user].unlockTimestamp = 0;
+        IERC20(s.depositToken).transferFrom(address(this), user, amount); 
+        emit WithdrawUnlockedVPND(amount, user);
     }
 
 
-    /// @notice Withdraw unlocked VPND 
-    function withdraw(address _user) external {
-        uint256 seasonId = s.addressToLastSeasonId[_user];
+    /// @notice Withdraw unlocked VPND
+    /// @dev User cannot participate in new seasons until they withdraw 
+    function withdraw() external {
+        address user = msg.sender;
+        uint256 seasonId = s.addressToLastSeasonId[user];
 
-       if(s.usersData[seasonId][_user].depositAmount == 0) {
+       if(s.usersData[seasonId][user].depositAmount == 0) {
         revert WithdrawFacet__UserNotParticipated();
        }
 
@@ -56,14 +62,57 @@ contract WithdrawFacet {
         revert WithdrawFacet__InProgressSeason();
        }
 
-       if(s.usersData[seasonId][_user].hasWithdrawnOrRestaked == true) {
+       if(s.usersData[seasonId][user].hasWithdrawnOrRestaked == true) {
         revert WithdrawFacet__AlreadyWithdrawn();
        } 
 
-       uint256 amount = s.usersData[seasonId][_user].depositAmount;
-    //    s.usersData[seasonId][_user].depositAmount = 0; // @audit Do we want do this?
-        s.usersData[seasonId][_user].hasWithdrawnOrRestaked = true; // @audit Or this is better?
-       IERC20(s.depositToken).transferFrom(address(this), _user, amount);
-       emit Withdraw(amount, _user);
+       uint256 amount = s.usersData[seasonId][user].depositAmount;
+    //    s.usersData[seasonId][user].depositAmount = 0; // @audit Do we want do this?
+        s.usersData[seasonId][user].hasWithdrawnOrRestaked = true; // @audit Or this is better?
+       IERC20(s.depositToken).transferFrom(address(this), user, amount);
+       emit WithdrawVPND(amount, user);
+    }
+
+    /// @notice Withdraw all unlocked VPND
+    /// @dev User cannot participate in new seasons until they withdraw 
+    function withdrawAll() external {
+        address user = msg.sender;
+        uint256 seasonId = s.addressToLastSeasonId[user];
+        uint256 depositAmount = s.usersData[seasonId][user].depositAmount;
+        uint256 unlockAmount = s.usersData[seasonId][user].unlockAmount;
+        uint256 unlockTimestamp = s.usersData[seasonId][user].unlockTimestamp;
+        uint256 seasonEndTimestamp = s.seasons[seasonId].endTimestamp;
+        bool hasWithdrawnOrRestaked = s.usersData[seasonId][user].hasWithdrawnOrRestaked;
+
+        if(depositAmount == 0) {
+            revert WithdrawFacet__UserNotParticipated();
+        }
+
+
+        if(seasonEndTimestamp >= block.timestamp) {
+            revert WithdrawFacet__InProgressSeason();
+        }
+        
+        if(unlockAmount == 0) {
+            revert WithdrawFacet__InsufficientBalance();
+        }
+
+
+        if(unlockTimestamp > block.timestamp) {
+            revert WithdrawFacet__UnlockNotMatured();
+        }
+        
+
+        if(hasWithdrawnOrRestaked == true) {
+            revert WithdrawFacet__AlreadyWithdrawn();
+        } 
+
+
+        uint256 amount = depositAmount + unlockAmount;
+        s.usersData[seasonId][user].unlockAmount = 0;
+        s.usersData[seasonId][user].unlockTimestamp = 0;
+        s.usersData[seasonId][user].hasWithdrawnOrRestaked = true;
+        IERC20(s.depositToken).transferFrom(address(this), user, amount);
+        emit WithdrawAll(amount, user);
     }
 }
