@@ -23,8 +23,9 @@ struct UserData {
     uint256 lastBoostClaimTimestamp;
     uint256 unlockAmount;
     uint256 unlockTimestamp;
+    uint amountClaimed;
     bool hasWithdrawnOrRestaked;
-    bool hasClaimed;
+    
 }
 
 struct AppStorage {

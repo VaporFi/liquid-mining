@@ -35,14 +35,14 @@ contract ClaimFacet {
         if(userData.depositPoints == 0) {
             revert ClaimFacet__NotEnoughPoints();
         }
-        if(userData.hasClaimed == true) {
+        if(userData.amountClaimed > 0) {
             revert ClaimFacet__AlreadyClaimed();
         }
         
         uint256 totalPoints = userData.depositPoints + userData.boostPoints;
         uint256 userShare = calculateShare(totalPoints, seasonId);
         uint256 rewardTokenShare = vapeToDistribute(userShare, seasonId);
-        userData.hasClaimed == true;
+        userData.amountClaimed = 0;
         s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
         IERC20(s.rewardToken).transferFrom(address(this), msg.sender, rewardTokenShare);
         emit Claim(rewardTokenShare, msg.sender);
