@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+
+/// @dev rewardTokenToDistribute is the amount of reward token to distribute to users
+/// @dev rewardTokenBalance is the amount of reward token that is currently in the contract
 struct Season {
     uint256 id;
     uint256 startTimestamp;
     uint256 endTimestamp;
+    uint256 rewardTokensToDistribute;
     uint256 rewardTokenBalance;
     uint256 totalDepositAmount;
     uint256 totalClaimAmount;
@@ -17,6 +21,10 @@ struct UserData {
     uint256 depositPoints;
     uint256 boostPoints;
     uint256 lastBoostClaimTimestamp;
+    uint256 unlockAmount;
+    uint256 unlockTimestamp;
+    bool hasWithdrawnOrRestaked;
+    bool hasClaimed;
 }
 
 struct AppStorage {
