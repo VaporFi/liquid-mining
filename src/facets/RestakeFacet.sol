@@ -14,13 +14,13 @@ error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
 error RestakeFacet__InvalidFeeReceivers();
 
-contract RestakeFacet {
+contract RestakeFacet is ReentrancyGuard {
 
     event Restake(address indexed depositor, uint256 amount);
 
     AppStorage s;
 
-    function restake() external {
+    function restake() external nonReentrant {
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
         if(s.seasons[lastSeasonParticipated].endTimestamp >= block.timestamp) {
         revert RestakeFacet__InProgressSeason();
@@ -32,7 +32,7 @@ contract RestakeFacet {
 
         uint256 lastSeasonAmount = s.usersData[lastSeasonParticipated][msg.sender].depositAmount;
         _restake(lastSeasonAmount);
-
+        s.usersData[s.currentSeasonId][msg.sender].hasWithdrawnOrRestaked = true;
     }
 
     function _restake(uint256 _amount) internal {
