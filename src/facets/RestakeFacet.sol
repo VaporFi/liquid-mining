@@ -53,15 +53,14 @@ contract RestakeFacet is ReentrancyGuard {
     /// @return bool if account is stratosphere member
     /// @return uint256 tier of membership
     function _getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
-        (bool _isStratosphereMember, uint256 _tier) = (false, 0);
         IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
         uint256 _tokenId = stratosphere.tokenIdOf(_account);
-        if (_tokenId != 0) {
-            _isStratosphereMember = true;
-            _tier = IRewardsController(s.rewardsControllerAddress).tierOf(keccak256("STRATOSPHERE_PROGRAM"), _tokenId);
-        }
-
-        return (_isStratosphereMember, _tier);
+        return (
+            _tokenId != 0,
+            _tokenId != 0
+                ? IRewardsController(s.rewardsControllerAddress).tierOf(keccak256("STRATOSPHERE_PROGRAM"), _tokenId)
+                : 0
+        );
     }
 
     /// @notice Apply points
