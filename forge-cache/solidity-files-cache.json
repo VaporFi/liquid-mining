@@ -1107,8 +1107,8 @@
       }
     },
     "src/facets/ClaimFacet.sol": {
-      "lastModificationDate": 1676954363397,
-      "contentHash": "a4a15e65e265e7835d468dca5f332347",
+      "lastModificationDate": 1677045444527,
+      "contentHash": "9f634c18e9fec80c829e9cf84c4e3107",
       "sourceName": "src/facets/ClaimFacet.sol",
       "solcConfig": {
         "settings": {
@@ -1377,8 +1377,57 @@
         }
       }
     },
+    "src/facets/RestakeFacet.sol": {
+      "lastModificationDate": 1677066262697,
+      "contentHash": "90d8da33e2e22707225beeb7fa0de1dd",
+      "sourceName": "src/facets/RestakeFacet.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/clouds/src/diamond/LDiamond.sol",
+        "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "src/interfaces/IRewardsController.sol",
+        "src/interfaces/IStratosphere.sol",
+        "src/libraries/AppStorage.sol",
+        "src/libraries/LPercentages.sol"
+      ],
+      "versionRequirement": "^0.8.17",
+      "artifacts": {
+        "RestakeFacet": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "RestakeFacet.sol/RestakeFacet.json"
+        }
+      }
+    },
     "src/facets/WithdrawFacet.sol": {
-      "lastModificationDate": 1676958092005,
+      "lastModificationDate": 1676961088774,
       "contentHash": "b10dfc2e36bafe5f0473be73a376a700",
       "sourceName": "src/facets/WithdrawFacet.sol",
       "solcConfig": {
@@ -1503,8 +1552,8 @@
       }
     },
     "src/libraries/AppStorage.sol": {
-      "lastModificationDate": 1676954633125,
-      "contentHash": "8f0b8e70221387e3e1d8abc586303d49",
+      "lastModificationDate": 1677045444528,
+      "contentHash": "d4617db6ef2615bdeb9dccc98946acab",
       "sourceName": "src/libraries/AppStorage.sol",
       "solcConfig": {
         "settings": {

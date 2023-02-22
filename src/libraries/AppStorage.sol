@@ -13,6 +13,8 @@ struct Season {
     uint256 totalDepositAmount;
     uint256 totalClaimAmount;
     uint256 totalPoints;
+    uint256 depositFee;
+    uint256 restakeFee;
 }
 
 struct UserData {
