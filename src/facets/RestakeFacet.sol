@@ -56,12 +56,12 @@ contract RestakeFacet is ReentrancyGuard {
         IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
         uint256 tokenId = stratosphere.tokenIdOf(_account);
 
-        if (tokenId == 0) {
-            return (false, 0);
-        } else {
+        if (tokenId != 0) {
             IRewardsController rewardController = IRewardsController(s.rewardsControllerAddress);
             uint256 tier = rewardController.tierOf(keccak256("STRATOSPHERE_PROGRAM"), tokenId);
             return (true, tier);
+        } else {
+            return (false, 0);
         }
     }
 
