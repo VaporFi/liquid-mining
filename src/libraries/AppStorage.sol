@@ -52,6 +52,14 @@ struct AppStorage {
     address depositToken;
     address[] depositFeeReceivers;
     uint256[] depositFeeReceiversShares;
+    ///////////////
+    /// UNLOCK ///
+    ///////////////
+    uint256 unlockFee;
+    address[] unlockFeeReceivers;
+    uint256[] unlockFeeReceiversShares;
+    // mapping: tier => discount percentage
+    mapping(uint256 => uint256) unlockDiscountForStratosphereMembers;
     mapping(address => uint256) pendingWithdrawals;
     mapping(uint256 => uint256) depositDiscountForStratosphereMembers;
     // mapping: user => lastSeasonParticipated
