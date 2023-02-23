@@ -1,14 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+/// @dev rewardTokenToDistribute is the amount of reward token to distribute to users
+/// @dev rewardTokenBalance is the amount of reward token that is currently in the contract
 struct Season {
     uint256 id;
     uint256 startTimestamp;
     uint256 endTimestamp;
+    uint256 rewardTokensToDistribute;
     uint256 rewardTokenBalance;
     uint256 totalDepositAmount;
     uint256 totalClaimAmount;
     uint256 totalPoints;
+    uint256 depositFee;
+    uint256 restakeFee;
 }
 
 struct UserData {
@@ -19,6 +24,8 @@ struct UserData {
     uint256 lastBoostClaimTimestamp;
     uint256 unlockAmount;
     uint256 unlockTimestamp;
+    bool hasWithdrawnOrRestaked;
+    bool hasClaimed;
 }
 
 struct AppStorage {
@@ -53,6 +60,10 @@ struct AppStorage {
     uint256[] unlockFeeReceiversShares;
     // mapping: tier => discount percentage
     mapping(uint256 => uint256) unlockDiscountForStratosphereMembers;
+    mapping(address => uint256) pendingWithdrawals;
+    mapping(uint256 => uint256) depositDiscountForStratosphereMembers;
+    // mapping: user => lastSeasonParticipated
+    mapping(address => uint256) addressToLastSeasonId;
     ////////////////
     /// WITHDRAW ///
     ////////////////
@@ -67,4 +78,9 @@ struct AppStorage {
     mapping(uint256 => mapping(address => uint256)) claimAmounts;
     // total amount claimed for each season: seasonId => amount
     mapping(uint256 => uint256) totalClaimAmounts;
+    ///////////////
+    /// GENERAL ///
+    ///////////////
+    address stratoshpereAddress;
+    address rewardsControllerAddress;
 }

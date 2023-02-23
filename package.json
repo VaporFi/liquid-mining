@@ -6,6 +6,7 @@
   "author": "Jose Mejias <mejiasdev@icloud.com>",
   "license": "MIT",
   "devDependencies": {
+    "lint-staged": "^13.1.2",
     "prettier": "^2.8.2",
     "prettier-plugin-solidity": "^1.1.1"
   },
@@ -16,5 +17,11 @@
     "build": "make build",
     "lint": "solhint src/**/*.sol",
     "format": "prettier --write src/**/*.sol"
+  },
+  "lint-staged": {
+    "*.sol": [
+      "prettier --write",
+      "solhint"
+    ]
   }
 }
