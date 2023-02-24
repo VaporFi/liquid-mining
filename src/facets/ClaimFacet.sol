@@ -32,7 +32,7 @@ contract ClaimFacet {
         if (userData.depositPoints == 0) {
             revert ClaimFacet__NotEnoughPoints();
         }
-        if (userData.amountClaimed > 0) {
+        if (userData.hasClaimed == true) {
             revert ClaimFacet__AlreadyClaimed();
         }
 
