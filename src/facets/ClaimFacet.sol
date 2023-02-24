@@ -39,7 +39,7 @@ contract ClaimFacet {
         uint256 totalPoints = userData.depositPoints + userData.boostPoints;
         uint256 userShare = calculateShare(totalPoints, seasonId);
         uint256 rewardTokenShare = vapeToDistribute(userShare, seasonId);
-        userData.hasClaimed == true;
+        userData.amountClaimed = rewardTokenShare;
         s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
         IERC20(s.rewardToken).transferFrom(address(this), msg.sender, rewardTokenShare);
         emit Claim(rewardTokenShare, msg.sender);
