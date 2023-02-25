@@ -41,6 +41,10 @@ contract DiamondManagerFacet {
         emit DepositTokenSet(token);
     }
 
+    function getDepositToken() external view returns (address) {
+        return s.depositToken;
+    }
+
     function setCurrentSeasonId(uint256 seasonId) external onlyOwner {
         s.currentSeasonId = seasonId;
         emit SeasonIdSet(seasonId);

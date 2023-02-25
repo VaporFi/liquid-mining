@@ -49,6 +49,10 @@ contract DepositFacet is ReentrancyGuard {
         _token.transferFrom(msg.sender, address(this), _amount);
     }
 
+    function getSDepositToken() external view returns (address) {
+        return s.depositToken;
+    }
+
     /// @notice get details of stratosphere for member
     /// @param _account Account of member to check
     /// @return bool if account is stratosphere member

@@ -13,8 +13,8 @@
   },
   "files": {
     "lib/clouds/src/diamond/LDiamond.sol": {
-      "lastModificationDate": 1676981725313,
-      "contentHash": "390376926e8a29804ea2a0fbcec6252e",
+      "lastModificationDate": 1677306452209,
+      "contentHash": "cabee59bc71f182785b2e183dc26b643",
       "sourceName": "lib/clouds/src/diamond/LDiamond.sol",
       "solcConfig": {
         "settings": {
@@ -55,7 +55,7 @@
       }
     },
     "lib/clouds/src/interfaces/IDiamondCut.sol": {
-      "lastModificationDate": 1675744524392,
+      "lastModificationDate": 1675839259767,
       "contentHash": "d77a7f64cea08d7210e8274b0947a971",
       "sourceName": "lib/clouds/src/interfaces/IDiamondCut.sol",
       "solcConfig": {
@@ -95,7 +95,7 @@
       }
     },
     "lib/clouds/src/interfaces/IDiamondLoupe.sol": {
-      "lastModificationDate": 1675744524392,
+      "lastModificationDate": 1675839259767,
       "contentHash": "9fd2e00d9552568323645f3532957ffa",
       "sourceName": "lib/clouds/src/interfaces/IDiamondLoupe.sol",
       "solcConfig": {
@@ -135,7 +135,7 @@
       }
     },
     "lib/clouds/src/interfaces/IERC165.sol": {
-      "lastModificationDate": 1675744524392,
+      "lastModificationDate": 1675839259767,
       "contentHash": "cf5d70e1a027c89d46324c877e1ce828",
       "sourceName": "lib/clouds/src/interfaces/IERC165.sol",
       "solcConfig": {
@@ -175,7 +175,7 @@
       }
     },
     "lib/clouds/src/interfaces/IERC173.sol": {
-      "lastModificationDate": 1675744524392,
+      "lastModificationDate": 1675839259767,
       "contentHash": "1b35d90ae8bc3975e73ec35932b775ec",
       "sourceName": "lib/clouds/src/interfaces/IERC173.sol",
       "solcConfig": {
@@ -215,7 +215,7 @@
       }
     },
     "lib/forge-std/lib/ds-test/src/test.sol": {
-      "lastModificationDate": 1675744528722,
+      "lastModificationDate": 1675839264155,
       "contentHash": "962996f0e05d5218857a538a62d7c47e",
       "sourceName": "lib/forge-std/lib/ds-test/src/test.sol",
       "solcConfig": {
@@ -255,7 +255,7 @@
       }
     },
     "lib/forge-std/src/Common.sol": {
-      "lastModificationDate": 1675744527527,
+      "lastModificationDate": 1675839262846,
       "contentHash": "385215973dee04c2a4bfefa3a37e253c",
       "sourceName": "lib/forge-std/src/Common.sol",
       "solcConfig": {
@@ -308,7 +308,7 @@
       }
     },
     "lib/forge-std/src/Components.sol": {
-      "lastModificationDate": 1675744527528,
+      "lastModificationDate": 1675839262846,
       "contentHash": "745a7e4623550699a5e0333bcf4f0184",
       "sourceName": "lib/forge-std/src/Components.sol",
       "solcConfig": {
@@ -360,7 +360,7 @@
       }
     },
     "lib/forge-std/src/Script.sol": {
-      "lastModificationDate": 1675744527528,
+      "lastModificationDate": 1675839262846,
       "contentHash": "a0d7ca329f3374a1698e48c493ab4f1a",
       "sourceName": "lib/forge-std/src/Script.sol",
       "solcConfig": {
@@ -417,7 +417,7 @@
       }
     },
     "lib/forge-std/src/StdAssertions.sol": {
-      "lastModificationDate": 1675744527528,
+      "lastModificationDate": 1675839262846,
       "contentHash": "d3f7487aaf77c715fdbdea89ea4f8399",
       "sourceName": "lib/forge-std/src/StdAssertions.sol",
       "solcConfig": {
@@ -460,7 +460,7 @@
       }
     },
     "lib/forge-std/src/StdCheats.sol": {
-      "lastModificationDate": 1675744527529,
+      "lastModificationDate": 1675839262846,
       "contentHash": "e7337996cb2aa604814b2994c9e65826",
       "sourceName": "lib/forge-std/src/StdCheats.sol",
       "solcConfig": {
@@ -506,7 +506,7 @@
       }
     },
     "lib/forge-std/src/StdError.sol": {
-      "lastModificationDate": 1675744527529,
+      "lastModificationDate": 1675839262846,
       "contentHash": "64c896e1276a291776e5ea5aecb3870a",
       "sourceName": "lib/forge-std/src/StdError.sol",
       "solcConfig": {
@@ -546,7 +546,7 @@
       }
     },
     "lib/forge-std/src/StdJson.sol": {
-      "lastModificationDate": 1675744527529,
+      "lastModificationDate": 1675839262846,
       "contentHash": "1df82178ad2d4556c856d0ca4b8f614d",
       "sourceName": "lib/forge-std/src/StdJson.sol",
       "solcConfig": {
@@ -588,7 +588,7 @@
       }
     },
     "lib/forge-std/src/StdMath.sol": {
-      "lastModificationDate": 1675744527529,
+      "lastModificationDate": 1675839262846,
       "contentHash": "9da8f453eba6bb98f3d75bc6822bfb29",
       "sourceName": "lib/forge-std/src/StdMath.sol",
       "solcConfig": {
@@ -628,7 +628,7 @@
       }
     },
     "lib/forge-std/src/StdStorage.sol": {
-      "lastModificationDate": 1675744527530,
+      "lastModificationDate": 1675839262847,
       "contentHash": "3f1bd6d72997330e2f556ececa8114a7",
       "sourceName": "lib/forge-std/src/StdStorage.sol",
       "solcConfig": {
@@ -673,7 +673,7 @@
       }
     },
     "lib/forge-std/src/StdUtils.sol": {
-      "lastModificationDate": 1675744527530,
+      "lastModificationDate": 1675839262847,
       "contentHash": "1d1d6bf7b4609a675d06cc41f8dcd5ad",
       "sourceName": "lib/forge-std/src/StdUtils.sol",
       "solcConfig": {
@@ -715,7 +715,7 @@
       }
     },
     "lib/forge-std/src/Test.sol": {
-      "lastModificationDate": 1675744527530,
+      "lastModificationDate": 1675839262847,
       "contentHash": "23c73ad6c59f5d629042303f8ffc1359",
       "sourceName": "lib/forge-std/src/Test.sol",
       "solcConfig": {
@@ -772,7 +772,7 @@
       }
     },
     "lib/forge-std/src/Vm.sol": {
-      "lastModificationDate": 1675744527530,
+      "lastModificationDate": 1675839262847,
       "contentHash": "af4e1189b1763fe0d73a21d17cc2ea9c",
       "sourceName": "lib/forge-std/src/Vm.sol",
       "solcConfig": {
@@ -815,7 +815,7 @@
       }
     },
     "lib/forge-std/src/console.sol": {
-      "lastModificationDate": 1675744527531,
+      "lastModificationDate": 1675839262847,
       "contentHash": "100b8a33b917da1147740d7ab8b0ded3",
       "sourceName": "lib/forge-std/src/console.sol",
       "solcConfig": {
@@ -855,7 +855,7 @@
       }
     },
     "lib/forge-std/src/console2.sol": {
-      "lastModificationDate": 1675744527531,
+      "lastModificationDate": 1675839262847,
       "contentHash": "493035087920d89b7c215d662e53ace3",
       "sourceName": "lib/forge-std/src/console2.sol",
       "solcConfig": {
@@ -895,7 +895,7 @@
       }
     },
     "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol": {
-      "lastModificationDate": 1675744528918,
+      "lastModificationDate": 1675839264197,
       "contentHash": "ee1cd296e049da9a26bdb08e23a9036a",
       "sourceName": "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
       "solcConfig": {
@@ -935,7 +935,7 @@
       }
     },
     "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1675744528921,
+      "lastModificationDate": 1675839264199,
       "contentHash": "d3f395dc838796643e7a71419900ab23",
       "sourceName": "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
@@ -974,8 +974,48 @@
         }
       }
     },
+    "lib/solmate/src/tokens/ERC20.sol": {
+      "lastModificationDate": 1675839268736,
+      "contentHash": "0c7c7ada139062536af09d69d96d395c",
+      "sourceName": "lib/solmate/src/tokens/ERC20.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [],
+      "versionRequirement": ">=0.8.0",
+      "artifacts": {
+        "ERC20": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "ERC20.sol/ERC20.json"
+        }
+      }
+    },
     "script/deploy/DeployFuiji.s.sol": {
-      "lastModificationDate": 1675692880712,
+      "lastModificationDate": 1675839192682,
       "contentHash": "5e7eb9c30619be5e64acc9f2de652b51",
       "sourceName": "script/deploy/DeployFuiji.s.sol",
       "solcConfig": {
@@ -1030,7 +1070,7 @@
       }
     },
     "src/LiquidStakingDiamond.sol": {
-      "lastModificationDate": 1676352420318,
+      "lastModificationDate": 1675839192682,
       "contentHash": "8c5cd659edd71fd9bc205342113a3592",
       "sourceName": "src/LiquidStakingDiamond.sol",
       "solcConfig": {
@@ -1074,7 +1114,7 @@
       }
     },
     "src/facets/AuthorizationFacet.sol": {
-      "lastModificationDate": 1675692880712,
+      "lastModificationDate": 1675839192682,
       "contentHash": "809d88e3860b1b37cfc309a7021f69f6",
       "sourceName": "src/facets/AuthorizationFacet.sol",
       "solcConfig": {
@@ -1119,7 +1159,7 @@
       }
     },
     "src/facets/BoostFacet.sol": {
-      "lastModificationDate": 1675692880712,
+      "lastModificationDate": 1675839192682,
       "contentHash": "ee44bc8f8caeb033f31652d389a60e38",
       "sourceName": "src/facets/BoostFacet.sol",
       "solcConfig": {
@@ -1164,7 +1204,7 @@
       }
     },
     "src/facets/ClaimFacet.sol": {
-      "lastModificationDate": 1675692880713,
+      "lastModificationDate": 1677245071582,
       "contentHash": "f6a44d0d54c65baa32504e2f5333d1c8",
       "sourceName": "src/facets/ClaimFacet.sol",
       "solcConfig": {
@@ -1208,8 +1248,8 @@
       }
     },
     "src/facets/DepositFacet.sol": {
-      "lastModificationDate": 1676981974624,
-      "contentHash": "bd1ac96b653ea881607d0687b202b454",
+      "lastModificationDate": 1677309543257,
+      "contentHash": "db4e5de2f828bc8fc02f7212dd7e7d51",
       "sourceName": "src/facets/DepositFacet.sol",
       "solcConfig": {
         "settings": {
@@ -1271,7 +1311,7 @@
       }
     },
     "src/facets/DiamondCutFacet.sol": {
-      "lastModificationDate": 1675692880713,
+      "lastModificationDate": 1675839192683,
       "contentHash": "c585b08db64ea16e4652eec39761ceaf",
       "sourceName": "src/facets/DiamondCutFacet.sol",
       "solcConfig": {
@@ -1314,7 +1354,7 @@
       }
     },
     "src/facets/DiamondLoupeFacet.sol": {
-      "lastModificationDate": 1675692880713,
+      "lastModificationDate": 1675839192683,
       "contentHash": "3970c6178473ea0a0b2111713df063c6",
       "sourceName": "src/facets/DiamondLoupeFacet.sol",
       "solcConfig": {
@@ -1354,13 +1394,13 @@
       "versionRequirement": "^0.8.17",
       "artifacts": {
         "DiamondLoupeFacet": {
-          "0.8.17+commit.8df45f5f.Darwin.appleclang": "src/facets/DiamondLoupeFacet.sol/DiamondLoupeFacet.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "src/facets/src/facets/DiamondLoupeFacet.sol/DiamondLoupeFacet.json"
         }
       }
     },
     "src/facets/DiamondManagerFacet.sol": {
-      "lastModificationDate": 1676982103503,
-      "contentHash": "c4898e3ead39c4e0e103f1575d8b8645",
+      "lastModificationDate": 1677306981738,
+      "contentHash": "29bf31f6c650a7ddd86661b47b6ced4a",
       "sourceName": "src/facets/DiamondManagerFacet.sol",
       "solcConfig": {
         "settings": {
@@ -1417,7 +1457,7 @@
       }
     },
     "src/facets/OwnershipFacet.sol": {
-      "lastModificationDate": 1675692880713,
+      "lastModificationDate": 1675839192683,
       "contentHash": "aa786f64a376157207d21e7fc480add7",
       "sourceName": "src/facets/OwnershipFacet.sol",
       "solcConfig": {
@@ -1456,12 +1496,12 @@
       "versionRequirement": "^0.8.17",
       "artifacts": {
         "OwnershipFacet": {
-          "0.8.17+commit.8df45f5f.Darwin.appleclang": "src/facets/OwnershipFacet.sol/OwnershipFacet.json"
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "src/facets/src/facets/OwnershipFacet.sol/OwnershipFacet.json"
         }
       }
     },
     "src/facets/PausationFacet.sol": {
-      "lastModificationDate": 1675692880713,
+      "lastModificationDate": 1675839192683,
       "contentHash": "5ef80fc6925226c4774949c9e0dfc899",
       "sourceName": "src/facets/PausationFacet.sol",
       "solcConfig": {
@@ -1505,8 +1545,52 @@
         }
       }
     },
+    "src/facets/TestManagerFacet.sol": {
+      "lastModificationDate": 1677310151145,
+      "contentHash": "73142d3d76ff9e8f55f727e300bed3c1",
+      "sourceName": "src/facets/TestManagerFacet.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/clouds/src/diamond/LDiamond.sol",
+        "lib/clouds/src/interfaces/IDiamondCut.sol",
+        "src/libraries/AppStorage.sol"
+      ],
+      "versionRequirement": "=0.8.17",
+      "artifacts": {
+        "TestManagerFacet": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "TestManagerFacet.sol/TestManagerFacet.json"
+        }
+      }
+    },
     "src/facets/WithdrawFacet.sol": {
-      "lastModificationDate": 1675692880713,
+      "lastModificationDate": 1677245071583,
       "contentHash": "596a51eb4a3af7bcda62c1db23a28abc",
       "sourceName": "src/facets/WithdrawFacet.sol",
       "solcConfig": {
@@ -1550,7 +1634,7 @@
       }
     },
     "src/interfaces/IRewardsController.sol": {
-      "lastModificationDate": 1675951236983,
+      "lastModificationDate": 1676030618868,
       "contentHash": "8cb73e503d5f8a590053f9dce82da1c1",
       "sourceName": "src/interfaces/IRewardsController.sol",
       "solcConfig": {
@@ -1590,7 +1674,7 @@
       }
     },
     "src/interfaces/IStratosphere.sol": {
-      "lastModificationDate": 1675692880714,
+      "lastModificationDate": 1675839192683,
       "contentHash": "377a8b97b43f9d824ad4aa37a75346b2",
       "sourceName": "src/interfaces/IStratosphere.sol",
       "solcConfig": {
@@ -1630,7 +1714,7 @@
       }
     },
     "src/libraries/AppStorage.sol": {
-      "lastModificationDate": 1676262930950,
+      "lastModificationDate": 1677245071584,
       "contentHash": "9862eb3d8c4aeea7ebe21ac109291433",
       "sourceName": "src/libraries/AppStorage.sol",
       "solcConfig": {
@@ -1670,7 +1754,7 @@
       }
     },
     "src/libraries/LAuthorizable.sol": {
-      "lastModificationDate": 1675692880714,
+      "lastModificationDate": 1675839192683,
       "contentHash": "d20a6a5a645bab04680409df9584ef48",
       "sourceName": "src/libraries/LAuthorizable.sol",
       "solcConfig": {
@@ -1712,7 +1796,7 @@
       }
     },
     "src/libraries/LPausable.sol": {
-      "lastModificationDate": 1675692880714,
+      "lastModificationDate": 1675839192683,
       "contentHash": "7e10a3f12f2ceb0a999ca04d2002f0b0",
       "sourceName": "src/libraries/LPausable.sol",
       "solcConfig": {
@@ -1754,7 +1838,7 @@
       }
     },
     "src/libraries/LPercentages.sol": {
-      "lastModificationDate": 1675692880714,
+      "lastModificationDate": 1677245071584,
       "contentHash": "9a256be05c2f6f6e8826b33d8f75ac82",
       "sourceName": "src/libraries/LPercentages.sol",
       "solcConfig": {
@@ -1794,7 +1878,7 @@
       }
     },
     "src/upgradeInitializers/DiamondInit.sol": {
-      "lastModificationDate": 1676263875172,
+      "lastModificationDate": 1676961088774,
       "contentHash": "50a92973e11a2afbf44f004cd0f3eecb",
       "sourceName": "src/upgradeInitializers/DiamondInit.sol",
       "solcConfig": {
@@ -1840,8 +1924,8 @@
       }
     },
     "test/Facets/DepositFacet.t.sol": {
-      "lastModificationDate": 1677000489067,
-      "contentHash": "36938b596525a61846d2e5baeb7390d5",
+      "lastModificationDate": 1677310289111,
+      "contentHash": "c36a9f2eb59727e6de540d4d7b7e06d1",
       "sourceName": "test/Facets/DepositFacet.t.sol",
       "solcConfig": {
         "settings": {
@@ -1893,16 +1977,19 @@
         "lib/forge-std/src/console2.sol",
         "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "lib/solmate/src/tokens/ERC20.sol",
         "src/LiquidStakingDiamond.sol",
         "src/facets/DepositFacet.sol",
         "src/facets/DiamondCutFacet.sol",
         "src/facets/DiamondLoupeFacet.sol",
         "src/facets/DiamondManagerFacet.sol",
         "src/facets/OwnershipFacet.sol",
+        "src/facets/TestManagerFacet.sol",
         "src/interfaces/IRewardsController.sol",
         "src/interfaces/IStratosphere.sol",
         "src/libraries/AppStorage.sol",
         "src/libraries/LPercentages.sol",
+        "test/Mocks/ERC20.sol",
         "test/utils/DiamondTest.sol"
       ],
       "versionRequirement": "=0.8.17",
@@ -1912,9 +1999,51 @@
         }
       }
     },
+    "test/Mocks/ERC20.sol": {
+      "lastModificationDate": 1677307235104,
+      "contentHash": "4f9a59e477163ea2529f757b9ceb2ae0",
+      "sourceName": "test/Mocks/ERC20.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000000
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/solmate/src/tokens/ERC20.sol"
+      ],
+      "versionRequirement": "^0.8.17",
+      "artifacts": {
+        "MockERC20": {
+          "0.8.17+commit.8df45f5f.Darwin.appleclang": "ERC20.sol/MockERC20.json"
+        }
+      }
+    },
     "test/utils/DiamondTest.sol": {
-      "lastModificationDate": 1676981828811,
-      "contentHash": "6cfde37adfd9dd6be5807025c4fb10e5",
+      "lastModificationDate": 1677309342814,
+      "contentHash": "4fbb5dac56ee397fab4880145f4c106a",
       "sourceName": "test/utils/DiamondTest.sol",
       "solcConfig": {
         "settings": {

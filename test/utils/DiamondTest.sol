@@ -23,26 +23,16 @@ contract DiamondTest {
         functionSelectors[2] = DiamondLoupeFacet.facetAddress.selector;
         functionSelectors[3] = DiamondLoupeFacet.facetAddresses.selector;
         functionSelectors[4] = DiamondLoupeFacet.supportsInterface.selector;
-        cut.push(
-            IDiamondCut.FacetCut({
-                facetAddress: address(diamondLoupe),
-                action: IDiamondCut.FacetCutAction.Add,
-                functionSelectors: functionSelectors
-            })
-        );
+        addFacet(diamond, address(diamondLoupe), functionSelectors);
+
+
         // Ownership Facet
-        functionSelectors = new bytes4[](2);
-        functionSelectors[0] = OwnershipFacet.transferOwnership.selector;
-        functionSelectors[1] = OwnershipFacet.owner.selector;
-        cut.push(
-            IDiamondCut.FacetCut({
-                facetAddress: address(ownership),
-                action: IDiamondCut.FacetCutAction.Add,
-                functionSelectors: functionSelectors
-            })
-        );
-        DiamondCutFacet(address(diamond)).diamondCut(cut, address(0), "");
-        delete cut;
+        bytes4[] memory ownershipfunctionSelectors;
+        ownershipfunctionSelectors = new bytes4[](2);
+        ownershipfunctionSelectors[0] = OwnershipFacet.transferOwnership.selector;
+        ownershipfunctionSelectors[1] = OwnershipFacet.owner.selector;
+        addFacet(diamond, address(ownership), ownershipfunctionSelectors);
+
         return diamond;
         // return LiquidStakingDiamond(payable(address(0)));
     }
