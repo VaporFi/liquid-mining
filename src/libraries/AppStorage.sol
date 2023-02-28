@@ -83,4 +83,5 @@ struct AppStorage {
     ///////////////
     address stratoshpereAddress;
     address rewardsControllerAddress;
+    uint256 reentrancyGuardStatus;
 }
