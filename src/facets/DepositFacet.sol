@@ -3,7 +3,6 @@ pragma solidity ^0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
@@ -14,14 +13,23 @@ import "lib/forge-std/src/Test.sol";
 
 error DepositFacet__NotEnoughTokenBalance();
 error DepositFacet__InvalidFeeReceivers();
+error DepositFacet__ReentrancyGuard__ReentrantCall();
+error DepositFacet__SeasonEnded();
 
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
-contract DepositFacet is ReentrancyGuard {
+contract DepositFacet {
     event Deposit(address indexed depositor, uint256 amount);
 
     AppStorage s;
+
+    modifier nonReentrant() {
+        if (s.reentrancyGuardStatus == 2) revert DepositFacet__ReentrancyGuard__ReentrantCall();
+        s.reentrancyGuardStatus = 2;
+        _;
+        s.reentrancyGuardStatus = 1;
+    }
 
     /// @notice Deposit token to the contract
     /// @param _amount Amount of token to deposit
@@ -39,7 +47,7 @@ contract DepositFacet is ReentrancyGuard {
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
-        uint256 _fee = LPercentages.percentage(_amount, s.depositFee - (_discount * s.depositFee) / 100);
+        uint256 _fee = LPercentages.percentage(_amount, s.depositFee - (_discount * s.depositFee) / 10000);
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyDepositFee(_fee);
@@ -70,6 +78,9 @@ contract DepositFacet is ReentrancyGuard {
     /// @param _amount Amount of token to apply points
     function _applyPoints(uint256 _amount) internal {
         uint256 _seasonId = s.currentSeasonId;
+        if (block.timestamp > s.seasons[_seasonId].endTimestamp) {
+            revert DepositFacet__SeasonEnded();
+        }
         uint256 _daysUntilSeasonEnd = (s.seasons[_seasonId].endTimestamp - block.timestamp) / 1 days;
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
         _userData.depositAmount += _amount;

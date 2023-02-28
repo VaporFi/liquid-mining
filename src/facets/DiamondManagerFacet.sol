@@ -81,4 +81,26 @@ contract DiamondManagerFacet {
         s.depositFeeReceiversShares = proportion;
         emit DepositFeeReceiversSet(receivers, proportion);
     }
+
+    function getPendingWithdrawals(address depositFeeReceiver) external view returns (uint256) {
+        return s.pendingWithdrawals[depositFeeReceiver];
+    }
+
+    function getDepositAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.depositAmount;
+    }
+
+    function getDepositPointsOfUser(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.depositPoints;
+    }
+
+    function getTotalDepositAmountOfSeason(uint256 seasonId) external view returns (uint256) {
+        return s.seasons[seasonId].totalDepositAmount;
+    }
+
+    function getTotalPointsOfSeason(uint256 seasonId) external view returns (uint256) {
+        return s.seasons[seasonId].totalPoints;
+    }
 }

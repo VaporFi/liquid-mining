@@ -6,15 +6,17 @@ import "src/facets/DiamondCutFacet.sol";
 import "src/facets//DiamondLoupeFacet.sol";
 import "src/facets//OwnershipFacet.sol";
 import "lib/clouds/src/interfaces/IDiamondCut.sol";
+import "lib/forge-std/src/Test.sol";
 
-contract DiamondTest {
+contract DiamondTest is Test {
     IDiamondCut.FacetCut[] internal cut;
 
     function createDiamond() internal returns (LiquidStakingDiamond) {
         DiamondCutFacet diamondCut = new DiamondCutFacet();
         DiamondLoupeFacet diamondLoupe = new DiamondLoupeFacet();
         OwnershipFacet ownership = new OwnershipFacet();
-        LiquidStakingDiamond diamond = new LiquidStakingDiamond(address(this), address(diamondCut));
+        LiquidStakingDiamond diamond = new LiquidStakingDiamond(makeAddr("diamondOwner"), address(diamondCut));
+        // vm.startPrank(makeAddr("diamondOwner"));
         bytes4[] memory functionSelectors;
         // Diamond Loupe
         functionSelectors = new bytes4[](5);
@@ -42,6 +44,7 @@ contract DiamondTest {
             })
         );
         DiamondCutFacet(address(diamond)).diamondCut(cut, address(0), "");
+        // vm.stopPrank();
         delete cut;
         return diamond;
         // return LiquidStakingDiamond(payable(address(0)));
