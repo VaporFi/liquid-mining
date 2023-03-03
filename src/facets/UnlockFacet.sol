@@ -36,10 +36,7 @@ contract UnlockFacet {
             _timeDiscount = s.unlockDiscountForStratosphereMembers[tier];
         }
 
-        uint256 _unlockTimestamp = block.timestamp +
-            COOLDOWN_PERIOD -
-            (COOLDOWN_PERIOD * (_timeDiscount * COOLDOWN_PERIOD)) /
-            100;
+        uint256 _unlockTimestamp = block.timestamp + COOLDOWN_PERIOD - (_timeDiscount * COOLDOWN_PERIOD) / 10000;
 
         if (_unlockTimestamp >= s.seasons[s.currentSeasonId].endTimestamp) {
             revert UnlockFacet__InvalidUnlock();

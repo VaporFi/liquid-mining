@@ -3,8 +3,7 @@ pragma solidity 0.8.17;
 import "clouds/diamond/LDiamond.sol";
 
 import "../libraries/AppStorage.sol";
-
-import "forge-std/Test.sol";
+import {UserData} from "../libraries/AppStorage.sol";
 
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
@@ -21,6 +20,10 @@ contract DiamondManagerFacet {
     event RewardsControllerAddressSet(address indexed rewardsControllerAddress);
     event SeasonEndTimestampSet(uint256 indexed season, uint256 endTimestamp);
     event DepositFeeReceiversSet(address[] receivers, uint256[] proportion);
+
+    event UnlockTimestampDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
+    event UnlockFeeSet(uint256 fee);
+    event UnlockFeeReceiversSet(address[] receivers, uint256[] proportion);
 
     modifier onlyOwner() {
         if (msg.sender != LDiamond.contractOwner()) {
@@ -102,5 +105,45 @@ contract DiamondManagerFacet {
 
     function getTotalPointsOfSeason(uint256 seasonId) external view returns (uint256) {
         return s.seasons[seasonId].totalPoints;
+    }
+
+    function setUnlockTimestampDiscountForStratosphereMember(
+        uint256 tier,
+        uint256 discountBasisPoints
+    ) external onlyOwner {
+        s.unlockDiscountForStratosphereMembers[tier] = discountBasisPoints;
+        emit UnlockTimestampDiscountForStratosphereMemberSet(tier, discountBasisPoints);
+    }
+
+    function setUnlockFee(uint256 fee) external onlyOwner {
+        s.unlockFee = fee;
+        emit UnlockFeeSet(fee);
+    }
+
+    function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
+        if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.unlockFeeReceivers = receivers;
+        s.unlockFeeReceiversShares = proportion;
+        emit UnlockFeeReceiversSet(receivers, proportion);
+    }
+
+    function getUnlockAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.unlockAmount;
+    }
+
+    function getUnlockTimestampOfUser(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.unlockTimestamp;
+    }
+
+    function getCurrentSeasonId() external view returns (uint256) {
+        return s.currentSeasonId;
+    }
+
+    function getUserDataForSeason(address user, uint256 seasonId) external view returns (UserData memory) {
+        return s.usersData[seasonId][user];
     }
 }
