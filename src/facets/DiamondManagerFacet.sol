@@ -146,4 +146,16 @@ contract DiamondManagerFacet {
     function getUserDataForSeason(address user, uint256 seasonId) external view returns (UserData memory) {
         return s.usersData[seasonId][user];
     }
+
+    function getUserDataForCurrentSeason(address user) external view returns (UserData memory) {
+        return s.usersData[s.currentSeasonId][user];
+    }
+
+    function getCurrentSeasonData() external view returns (Season memory) {
+        return s.seasons[s.currentSeasonId];
+    }
+
+    function getSeasonData(uint256 seasonId) external view returns (Season memory) {
+        return s.seasons[seasonId];
+    }
 }
