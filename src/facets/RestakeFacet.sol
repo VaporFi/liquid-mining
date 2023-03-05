@@ -30,18 +30,17 @@ contract RestakeFacet is ReentrancyGuard {
 
         uint256 lastSeasonAmount = s.usersData[lastSeasonParticipated][msg.sender].depositAmount;
         _restake(lastSeasonAmount);
-        s.usersData[s.currentSeasonId][msg.sender].hasWithdrawnOrRestaked = true;
+        s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked = true;
     }
 
     function _restake(uint256 _amount) internal {
         uint256 _discount = 0;
-        uint256 restakeFee = s.seasons[s.currentSeasonId].restakeFee;
         s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
         (bool isStratosphereMember, uint256 tier) = _getStratosphereMembershipDetails(msg.sender);
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
-        uint256 _fee = LPercentages.percentage(_amount, restakeFee - ((restakeFee * _discount) / 100)); // audit
+        uint256 _fee = LPercentages.percentage(_amount, s.restakeFee - (_discount * s.restakeFee) / 10000);
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyRestakeFee(_fee);
@@ -53,14 +52,16 @@ contract RestakeFacet is ReentrancyGuard {
     /// @return bool if account is stratosphere member
     /// @return uint256 tier of membership
     function _getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
-        IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
-        uint256 _tokenId = stratosphere.tokenIdOf(_account);
-        return (
-            _tokenId != 0,
-            _tokenId != 0
-                ? IRewardsController(s.rewardsControllerAddress).tierOf(keccak256("STRATOSPHERE_PROGRAM"), _tokenId)
-                : 0
-        );
+        // IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
+        // uint256 _tokenId = stratosphere.tokenIdOf(_account);
+        // return (
+        //     _tokenId != 0,
+        //     _tokenId != 0
+        //         ? IRewardsController(s.rewardsControllerAddress).tierOf(keccak256("STRATOSPHERE_PROGRAM"), _tokenId)
+        //         : 0
+        // );
+
+        return (false, 0);
     }
 
     /// @notice Apply points
@@ -78,10 +79,10 @@ contract RestakeFacet is ReentrancyGuard {
     /// @notice Apply restake fee
     /// @param _fee Fee amount
     function _applyRestakeFee(uint256 _fee) internal {
-        uint256 _length = s.depositFeeReceivers.length;
+        uint256 _length = s.restakeFeeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.depositFeeReceiversShares[i]);
-            s.pendingWithdrawals[s.depositFeeReceivers[i]] += _share;
+            uint256 _share = LPercentages.percentage(_fee, s.restakeFeeReceiversShares[i]);
+            s.pendingWithdrawals[s.restakeFeeReceivers[i]] += _share;
             unchecked {
                 i++;
             }

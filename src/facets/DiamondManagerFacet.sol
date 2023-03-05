@@ -21,6 +21,9 @@ contract DiamondManagerFacet {
     event RewardsControllerAddressSet(address indexed rewardsControllerAddress);
     event SeasonEndTimestampSet(uint256 indexed season, uint256 endTimestamp);
     event DepositFeeReceiversSet(address[] receivers, uint256[] proportion);
+    event RestakeFeeSet(uint256 fee);
+    event RestakeFeeReceiversSet(address[] receivers, uint256[] proportion);
+    event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
 
     modifier onlyOwner() {
         if (msg.sender != LDiamond.contractOwner()) {
@@ -50,6 +53,8 @@ contract DiamondManagerFacet {
         s.depositDiscountForStratosphereMembers[tier] = discountBasisPoints;
         emit DepositDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
+
+    
 
     function setDepositFee(uint256 fee) external onlyOwner {
         s.depositFee = fee;
@@ -82,6 +87,27 @@ contract DiamondManagerFacet {
         emit DepositFeeReceiversSet(receivers, proportion);
     }
 
+
+    function setRestakeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner {
+        s.restakeDiscountForStratosphereMembers[tier] = discountBasisPoints;
+        emit RestakeDiscountForStratosphereMemberSet(tier, discountBasisPoints);
+    }
+
+    function setRestakeFee(uint256 fee) external onlyOwner {
+        s.restakeFee = fee;
+        emit RestakeFeeSet(fee);
+    }
+
+    function setRestakeFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
+        if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.restakeFeeReceivers = receivers;
+        s.restakeFeeReceiversShares = proportion;
+        emit RestakeFeeReceiversSet(receivers, proportion);
+    }
+
+
     function getPendingWithdrawals(address depositFeeReceiver) external view returns (uint256) {
         return s.pendingWithdrawals[depositFeeReceiver];
     }
@@ -102,5 +128,9 @@ contract DiamondManagerFacet {
 
     function getTotalPointsOfSeason(uint256 seasonId) external view returns (uint256) {
         return s.seasons[seasonId].totalPoints;
+    }
+
+    function getCurrentSeasonId() external view returns (uint256) {
+        return s.currentSeasonId;
     }
 }
