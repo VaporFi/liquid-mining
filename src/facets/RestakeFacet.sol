@@ -10,15 +10,17 @@ import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
 import "../interfaces/IRewardsController.sol";
 
+import "lib/forge-std/src/Test.sol";
+
 error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
 
-contract RestakeFacet is ReentrancyGuard {
+contract RestakeFacet {
     event Restake(address indexed depositor, uint256 amount);
 
     AppStorage s;
 
-    function restake() external nonReentrant {
+    function restake() external {
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
         if (s.seasons[lastSeasonParticipated].endTimestamp >= block.timestamp) {
             revert RestakeFacet__InProgressSeason();
@@ -29,6 +31,7 @@ contract RestakeFacet is ReentrancyGuard {
         }
 
         uint256 lastSeasonAmount = s.usersData[lastSeasonParticipated][msg.sender].depositAmount;
+        
         _restake(lastSeasonAmount);
         s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked = true;
     }
@@ -52,16 +55,14 @@ contract RestakeFacet is ReentrancyGuard {
     /// @return bool if account is stratosphere member
     /// @return uint256 tier of membership
     function _getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
-        // IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
-        // uint256 _tokenId = stratosphere.tokenIdOf(_account);
-        // return (
-        //     _tokenId != 0,
-        //     _tokenId != 0
-        //         ? IRewardsController(s.rewardsControllerAddress).tierOf(keccak256("STRATOSPHERE_PROGRAM"), _tokenId)
-        //         : 0
-        // );
-
-        return (false, 0);
+        IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
+        uint256 _tokenId = stratosphere.tokenIdOf(_account);
+        return (
+            _tokenId != 0,
+            _tokenId != 0
+                ? IRewardsController(s.rewardsControllerAddress).tierOf(keccak256("STRATOSPHERE_PROGRAM"), _tokenId)
+                : 0
+        );
     }
 
     /// @notice Apply points
@@ -88,4 +89,6 @@ contract RestakeFacet is ReentrancyGuard {
             }
         }
     }
+
+    
 }
