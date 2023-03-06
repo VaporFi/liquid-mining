@@ -9,7 +9,6 @@ import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
 import "../interfaces/IRewardsController.sol";
 
-import "lib/forge-std/src/Test.sol";
 
 error DepositFacet__NotEnoughTokenBalance();
 error DepositFacet__InvalidFeeReceivers();
@@ -92,13 +91,13 @@ contract DepositFacet {
     /// @notice Apply deposit fee
     /// @param _fee Fee amount
     function _applyDepositFee(uint256 _fee) internal {
-        if (s.depositFeeReceivers.length != s.depositFeeReceiversShares.length) {
+        if (s.feeReceivers.length != s.feeReceiversShares.length) {
             revert DepositFacet__InvalidFeeReceivers();
         }
-        uint256 _length = s.depositFeeReceivers.length;
+        uint256 _length = s.feeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.depositFeeReceiversShares[i]);
-            s.pendingWithdrawals[s.depositFeeReceivers[i]] += _share;
+            uint256 _share = LPercentages.percentage(_fee, s.feeReceiversShares[i]);
+            s.pendingWithdrawals[s.feeReceivers[i]] += _share;
             unchecked {
                 i++;
             }

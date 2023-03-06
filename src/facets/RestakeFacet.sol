@@ -10,8 +10,6 @@ import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
 import "../interfaces/IRewardsController.sol";
 
-import "lib/forge-std/src/Test.sol";
-
 error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
 
@@ -37,6 +35,7 @@ contract RestakeFacet {
     }
 
     function _restake(uint256 _amount) internal {
+        
         uint256 _discount = 0;
         s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
         (bool isStratosphereMember, uint256 tier) = _getStratosphereMembershipDetails(msg.sender);
@@ -75,15 +74,16 @@ contract RestakeFacet {
         _userData.depositPoints += _amount * _daysUntilSeasonEnd;
         s.seasons[_seasonId].totalDepositAmount += _amount;
         s.seasons[_seasonId].totalPoints += _amount * _daysUntilSeasonEnd;
+        
     }
 
     /// @notice Apply restake fee
     /// @param _fee Fee amount
     function _applyRestakeFee(uint256 _fee) internal {
-        uint256 _length = s.restakeFeeReceivers.length;
+        uint256 _length = s.feeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.restakeFeeReceiversShares[i]);
-            s.pendingWithdrawals[s.restakeFeeReceivers[i]] += _share;
+            uint256 _share = LPercentages.percentage(_fee, s.feeReceiversShares[i]);
+            s.pendingWithdrawals[s.feeReceivers[i]] += _share;
             unchecked {
                 i++;
             }

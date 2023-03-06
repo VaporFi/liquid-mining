@@ -48,14 +48,12 @@ struct AppStorage {
     ///////////////
     uint256 depositFee;
     address depositToken;
-    address[] depositFeeReceivers;
-    uint256[] depositFeeReceiversShares;
+    address[] feeReceivers;
+    uint256[] feeReceiversShares;
     ///////////////
     /// UNLOCK ///
     ///////////////
     uint256 unlockFee;
-    address[] unlockFeeReceivers;
-    uint256[] unlockFeeReceiversShares;
     // mapping: tier => discount percentage
     mapping(uint256 => uint256) unlockDiscountForStratosphereMembers;
     mapping(address => uint256) pendingWithdrawals;
@@ -73,15 +71,11 @@ struct AppStorage {
     /// CLAIM ///
     /////////////
     uint256 claimFee;
-    address[] claimFeeReceivers;
-    uint256[] claimFeeReceiversShares;
 
     ///////////////
     /// RESTAKE ///
     ///////////////
     uint256 restakeFee;
-    address[] restakeFeeReceivers;
-    uint256[] restakeFeeReceiversShares;
 
     address rewardToken;
     // nested mapping: seasonId => userAddress => amount

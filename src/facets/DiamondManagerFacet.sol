@@ -4,8 +4,6 @@ import "clouds/diamond/LDiamond.sol";
 
 import "../libraries/AppStorage.sol";
 
-import "forge-std/Test.sol";
-
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
@@ -82,8 +80,8 @@ contract DiamondManagerFacet {
         if (receivers.length != proportion.length) {
             revert DiamondManagerFacet__Invalid_Input();
         }
-        s.depositFeeReceivers = receivers;
-        s.depositFeeReceiversShares = proportion;
+        s.feeReceivers = receivers;
+        s.feeReceiversShares = proportion;
         emit DepositFeeReceiversSet(receivers, proportion);
     }
 
@@ -98,18 +96,9 @@ contract DiamondManagerFacet {
         emit RestakeFeeSet(fee);
     }
 
-    function setRestakeFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
-        if (receivers.length != proportion.length) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.restakeFeeReceivers = receivers;
-        s.restakeFeeReceiversShares = proportion;
-        emit RestakeFeeReceiversSet(receivers, proportion);
-    }
 
-
-    function getPendingWithdrawals(address depositFeeReceiver) external view returns (uint256) {
-        return s.pendingWithdrawals[depositFeeReceiver];
+    function getPendingWithdrawals(address feeReceiver) external view returns (uint256) {
+        return s.pendingWithdrawals[feeReceiver];
     }
 
     function getDepositAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
