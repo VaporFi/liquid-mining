@@ -1,12 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push]
 
 env:
   FOUNDRY_PROFILE: ci
@@ -34,3 +28,21 @@ jobs:
         run: |
           forge test -vvv
         id: test
+
+      - name: Run Forge coverage
+        run: |
+          forge coverage --report lcov --output-dir coverage
+      - name: Check code coverage
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const parse = require('lcov-parse');
+
+            const lcov = fs.readFileSync('./coverage/lcov.info', 'utf8');
+            parse(lcov, (err, data) => {
+              if (err) throw err;
+              const coverage = data.reduce((acc, file) => acc + file.lines.hit / file.lines.found, 0) / data.length;
+              if (coverage < 0.9) throw new Error(`Code coverage is ${coverage * 100}%`);
+            });
