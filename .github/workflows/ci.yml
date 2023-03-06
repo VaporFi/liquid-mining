@@ -31,7 +31,7 @@ jobs:
 
       - name: Run Forge coverage
         run: |
-          forge coverage --report lcov --output-dir coverage
+          forge coverage --report lcov
       - name: Check code coverage
         uses: actions/github-script@v4
         with:
@@ -40,7 +40,7 @@ jobs:
             const fs = require('fs');
             const parse = require('lcov-parse');
 
-            const lcov = fs.readFileSync('./coverage/lcov.info', 'utf8');
+            const lcov = fs.readFileSync('./lcov.info', 'utf8');
             parse(lcov, (err, data) => {
               if (err) throw err;
               const coverage = data.reduce((acc, file) => acc + file.lines.hit / file.lines.found, 0) / data.length;
