@@ -20,7 +20,6 @@ contract DiamondManagerFacet {
     event SeasonEndTimestampSet(uint256 indexed season, uint256 endTimestamp);
     event DepositFeeReceiversSet(address[] receivers, uint256[] proportion);
     event RestakeFeeSet(uint256 fee);
-    event RestakeFeeReceiversSet(address[] receivers, uint256[] proportion);
     event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
 
     modifier onlyOwner() {
