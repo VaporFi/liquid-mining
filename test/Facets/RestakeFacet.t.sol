@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.17;
 
-import "lib/forge-std/src/Test.sol";
+import "forge-std/Test.sol";
 import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
 import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidFeeReceivers} from "src/facets/DepositFacet.sol";
 import {RestakeFacet, RestakeFacet__InProgressSeason, RestakeFacet__HasWithdrawnOrRestaked} from "src/facets/RestakeFacet.sol";
@@ -11,7 +11,7 @@ import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
 import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
 import "../../src/libraries/LPercentages.sol";
 
-contract RestakeFacetTest is Test, DiamondTest {
+contract RestakeFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     LiquidStakingDiamond internal diamond;
     DepositFacet internal depositFacet;
