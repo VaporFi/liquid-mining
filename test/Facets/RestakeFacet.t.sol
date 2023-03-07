@@ -39,9 +39,6 @@ contract RestakeFacetTest is DiamondTest {
     uint256 restakeDiscountBasic = 500;
     uint256 restakeDiscountSilver = 550;
     uint256 restakeDiscountGold = 650;
-    
-
-
 
     function setUp() public {
         vm.startPrank(diamondOwner);
@@ -128,7 +125,6 @@ contract RestakeFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
-
     function test_DepositAndRestakeWithoutBeingStratosphereMember() public {
         vm.startPrank(user);
         uint256 amountAfterDepositFee = testDepositAmount - ((testDepositAmount * depositFee) / 10000);
@@ -154,7 +150,7 @@ contract RestakeFacetTest is DiamondTest {
     function test_DepositAndRestakeBeingStratosphereMemberTierBasic() public {
         // Deposit for the current season
         vm.startPrank(stratosphereMemberBasic);
-        _mintAndDeposit(stratosphereMemberBasic, testDepositAmount );
+        _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
         uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountBasic, depositFee);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 2), depositAmountAfterFee);
         vm.stopPrank();
@@ -176,9 +172,9 @@ contract RestakeFacetTest is DiamondTest {
     }
 
     function test_DepositAndRestakeBeingStratosphereMemberTierSilver() public {
-       // Deposit for the current season
+        // Deposit for the current season
         vm.startPrank(stratosphereMemberSilver);
-        _mintAndDeposit(stratosphereMemberSilver, testDepositAmount );
+        _mintAndDeposit(stratosphereMemberSilver, testDepositAmount);
         uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountSilver, depositFee);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberSilver, 2), depositAmountAfterFee);
         vm.stopPrank();
@@ -202,7 +198,7 @@ contract RestakeFacetTest is DiamondTest {
     function test_DepositAndRestakeBeingStratosphereMemberTierGold() public {
         // Deposit for the current season
         vm.startPrank(stratosphereMemberGold);
-        _mintAndDeposit(stratosphereMemberGold, testDepositAmount );
+        _mintAndDeposit(stratosphereMemberGold, testDepositAmount);
         uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountGold, depositFee);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGold, 2), depositAmountAfterFee);
         vm.stopPrank();
@@ -236,7 +232,6 @@ contract RestakeFacetTest is DiamondTest {
         uint256 newSeasonId = diamondManagerFacet.getCurrentSeasonId() + 1;
         diamondManagerFacet.setCurrentSeasonId(newSeasonId);
         diamondManagerFacet.setSeasonEndTimestamp(newSeasonId, block.timestamp + 30 days);
-        
     }
 
     function _getAmountAfterFee(uint256 _amount, uint256 _discount, uint256 _fee) internal view returns (uint256) {
