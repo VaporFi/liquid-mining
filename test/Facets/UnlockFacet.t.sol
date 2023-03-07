@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.17;
 
-import "lib/forge-std/src/Test.sol";
+import "forge-std/Test.sol";
 import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
 import {UnlockFacet, UnlockFacet__InvalidAmount, UnlockFacet__AlreadyUnlocked, UnlockFacet__InvalidFeeReceivers, UnlockFacet__InvalidUnlock} from "src/facets/UnlockFacet.sol";
 import {DepositFacet} from "src/facets/DepositFacet.sol";
@@ -10,7 +10,7 @@ import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
 import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
 import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
 
-contract UnlockFacetTest is Test, DiamondTest {
+contract UnlockFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     LiquidStakingDiamond internal diamond;
     UnlockFacet internal unlockFacet;
@@ -74,105 +74,7 @@ contract UnlockFacetTest is Test, DiamondTest {
         stratosphereMock = new StratosphereMock();
         rewardsControllerMock = new RewardsControllerMock();
 
-        vm.stopPrank();
-    }
-
-    function test_RevertIfUnlockerDoesNotHaveEnoughBalanceDeposited() public {
-        vm.startPrank(makeAddr("diamondOwner"));
         depositToken.mint(makeAddr("user"), 100);
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
-
-        vm.stopPrank();
-
-        vm.startPrank(makeAddr("user"));
-        depositToken.increaseAllowance(address(depositFacet), 1000000);
-
-        depositFacet.deposit(50);
-        vm.expectRevert(UnlockFacet__InvalidAmount.selector);
-        unlockFacet.unlock(100);
-    }
-
-    function test_RevertIfUnlockedTwice() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
-
-        vm.stopPrank();
-
-        vm.startPrank(makeAddr("user"));
-        depositToken.mint(makeAddr("user"), 100);
-        depositToken.increaseAllowance(address(depositFacet), 1000000);
-
-        depositFacet.deposit(100);
-        unlockFacet.unlock(50);
-        vm.expectRevert(UnlockFacet__AlreadyUnlocked.selector);
-        unlockFacet.unlock(10);
-    }
-
-    function test_RevertIfUnlockedWithInvalidAmount() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
-
-        vm.stopPrank();
-
-        vm.startPrank(makeAddr("user"));
-        depositToken.mint(makeAddr("user"), 100);
-        depositToken.increaseAllowance(address(depositFacet), 1000000);
-
-        depositFacet.deposit(100);
-        vm.expectRevert(UnlockFacet__InvalidAmount.selector);
-        unlockFacet.unlock(100);
-    }
-
-    function test_RevertIfUnlockedTimestampIsMoreThanSeasonEndTimestamp() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
-
-        vm.stopPrank();
-
-        vm.startPrank(makeAddr("user"));
-        depositToken.mint(makeAddr("user"), 100);
-        depositToken.increaseAllowance(address(depositFacet), 1000000);
-
-        depositFacet.deposit(100);
-        vm.warp(block.timestamp + 29 days);
-        vm.expectRevert(UnlockFacet__InvalidUnlock.selector);
-        unlockFacet.unlock(50);
-    }
-
-    function test_UnlockWithoutBeingStratosphereMember() public {
-        vm.startPrank(makeAddr("diamondOwner"));
 
         diamondManagerFacet.setCurrentSeasonId(1);
         diamondManagerFacet.setDepositFee(500);
@@ -203,7 +105,49 @@ contract UnlockFacetTest is Test, DiamondTest {
         diamondManagerFacet.setUnlockFeeReceivers(unlockFeeReceivers, unlockFeeProportions);
 
         vm.stopPrank();
+    }
 
+    function test_RevertIfUnlockerDoesNotHaveEnoughBalanceDeposited() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
+
+        depositFacet.deposit(50);
+        vm.expectRevert(UnlockFacet__InvalidAmount.selector);
+        unlockFacet.unlock(100);
+    }
+
+    function test_RevertIfUnlockedTwice() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
+
+        depositFacet.deposit(100);
+        unlockFacet.unlock(50);
+        vm.expectRevert(UnlockFacet__AlreadyUnlocked.selector);
+        unlockFacet.unlock(10);
+    }
+
+    function test_RevertIfUnlockedWithInvalidAmount() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.mint(makeAddr("user"), 100);
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
+
+        depositFacet.deposit(100);
+        vm.expectRevert(UnlockFacet__InvalidAmount.selector);
+        unlockFacet.unlock(100);
+    }
+
+    function test_RevertIfUnlockedTimestampIsMoreThanSeasonEndTimestamp() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.mint(makeAddr("user"), 100);
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
+
+        depositFacet.deposit(100);
+        vm.warp(block.timestamp + 29 days);
+        vm.expectRevert(UnlockFacet__InvalidUnlock.selector);
+        unlockFacet.unlock(50);
+    }
+
+    function test_UnlockWithoutBeingStratosphereMember() public {
         address user = makeAddr("user");
 
         vm.startPrank(user);
@@ -244,38 +188,6 @@ contract UnlockFacetTest is Test, DiamondTest {
     }
 
     function test_UnlockBeingBasicStratosphereMember() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
-        diamondManagerFacet.setUnlockFee(1000);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(3, 650);
-        address[] memory depositFeeReceivers = new address[](2);
-        uint256[] memory depositFeeProportions = new uint256[](2);
-        depositFeeReceivers[0] = depositFeeReceiver1;
-        depositFeeReceivers[1] = depositFeeReceiver2;
-        depositFeeProportions[0] = 7500;
-        depositFeeProportions[1] = 2500;
-        diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
-
-        address[] memory unlockFeeReceivers = new address[](2);
-        uint256[] memory unlockFeeProportions = new uint256[](2);
-        unlockFeeReceivers[0] = unlockFeeReceiver1;
-        unlockFeeReceivers[1] = unlockFeeReceiver2;
-        unlockFeeProportions[0] = 7500;
-        unlockFeeProportions[1] = 2500;
-        diamondManagerFacet.setUnlockFeeReceivers(unlockFeeReceivers, unlockFeeProportions);
-
-        vm.stopPrank();
-
         address user = makeAddr("stratosphere_member_basic");
 
         vm.startPrank(user);
@@ -320,38 +232,6 @@ contract UnlockFacetTest is Test, DiamondTest {
     }
 
     function test_UnlockBeingGoldStratosphereMember() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
-        diamondManagerFacet.setUnlockFee(1000);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(3, 650);
-        address[] memory depositFeeReceivers = new address[](2);
-        uint256[] memory depositFeeProportions = new uint256[](2);
-        depositFeeReceivers[0] = depositFeeReceiver1;
-        depositFeeReceivers[1] = depositFeeReceiver2;
-        depositFeeProportions[0] = 7500;
-        depositFeeProportions[1] = 2500;
-        diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
-
-        address[] memory unlockFeeReceivers = new address[](2);
-        uint256[] memory unlockFeeProportions = new uint256[](2);
-        unlockFeeReceivers[0] = unlockFeeReceiver1;
-        unlockFeeReceivers[1] = unlockFeeReceiver2;
-        unlockFeeProportions[0] = 7500;
-        unlockFeeProportions[1] = 2500;
-        diamondManagerFacet.setUnlockFeeReceivers(unlockFeeReceivers, unlockFeeProportions);
-
-        vm.stopPrank();
-
         address user = makeAddr("stratosphere_member_gold");
 
         vm.startPrank(user);
