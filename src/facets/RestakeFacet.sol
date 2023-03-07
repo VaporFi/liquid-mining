@@ -20,6 +20,7 @@ contract RestakeFacet {
 
     function restake() external {
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
+        UserData storage userData = s.usersData[lastSeasonParticipated][msg.sender];
         if (s.seasons[lastSeasonParticipated].endTimestamp >= block.timestamp) {
             revert RestakeFacet__InProgressSeason();
         }
@@ -28,10 +29,11 @@ contract RestakeFacet {
             revert RestakeFacet__HasWithdrawnOrRestaked();
         }
 
-        uint256 lastSeasonAmount = s.usersData[lastSeasonParticipated][msg.sender].depositAmount;
 
+        uint256 lastSeasonAmount = userData.depositAmount + userData.unlockAmount;
+        userData.unlockAmount = 0;
         _restake(lastSeasonAmount);
-        s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked = true;
+        userData.hasWithdrawnOrRestaked = true;
     }
 
     function _restake(uint256 _amount) internal {
