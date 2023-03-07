@@ -9,7 +9,6 @@ import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
 import "../interfaces/IRewardsController.sol";
 
-
 error DepositFacet__NotEnoughTokenBalance();
 error DepositFacet__InvalidFeeReceivers();
 error DepositFacet__ReentrancyGuard__ReentrantCall();

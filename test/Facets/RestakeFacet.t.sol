@@ -21,14 +21,27 @@ contract RestakeFacetTest is DiamondTest {
     StratosphereMock stratosphereMock;
     RewardsControllerMock rewardsControllerMock;
 
-    address FeeReceiver1 = makeAddr("FeeReceiver1");
-    address FeeReceiver2 = makeAddr("FeeReceiver2");
+    // setup addresses
+    address feeReceiver1 = makeAddr("FeeReceiver1");
+    address feeReceiver2 = makeAddr("FeeReceiver2");
     address diamondOwner = makeAddr("diamondOwner");
     address user = makeAddr("user");
-    address stratosphereMemberBasicTierAddress = makeAddr("stratosphere_member_basic");
-    address stratosphereMemberSilverTierAddress = makeAddr("stratosphere_member_silver");
-    address stratosphereMemberGoldTierAddress = makeAddr("stratosphere_member_gold");
+    address stratosphereMemberBasic = makeAddr("stratosphere_member_basic");
+    address stratosphereMemberSilver = makeAddr("stratosphere_member_silver");
+    address stratosphereMemberGold = makeAddr("stratosphere_member_gold");
+    // setup test details
+    uint256 testDepositAmount = 5000 * 1e18;
+    uint256 depositFee = 500;
+    uint256 depositDiscountBasic = 500;
+    uint256 depositDiscountSilver = 550;
+    uint256 depositDiscountGold = 650;
+    uint256 restakeFee = 300;
+    uint256 restakeDiscountBasic = 500;
+    uint256 restakeDiscountSilver = 550;
+    uint256 restakeDiscountGold = 650;
     
+
+
 
     function setUp() public {
         vm.startPrank(diamondOwner);
@@ -79,182 +92,154 @@ contract RestakeFacetTest is DiamondTest {
         stratosphereMock = new StratosphereMock();
         rewardsControllerMock = new RewardsControllerMock();
 
-        vm.stopPrank();
-
-
         // Set up season details for deposit
-        vm.startPrank(diamondOwner);
+
         diamondManagerFacet.setCurrentSeasonId(1);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
+        diamondManagerFacet.setDepositFee(depositFee);
+        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, depositDiscountBasic);
+        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, depositDiscountSilver);
+        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, depositDiscountGold);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
         diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
-        depositFeeReceivers[0] = FeeReceiver1;
-        depositFeeReceivers[1] = FeeReceiver2;
+        depositFeeReceivers[0] = feeReceiver1;
+        depositFeeReceivers[1] = feeReceiver2;
         depositFeeProportions[0] = 7500;
         depositFeeProportions[1] = 2500;
         diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
 
-
         // Restake Setup
-        diamondManagerFacet.setRestakeFee(300);
-        diamondManagerFacet.setRestakeDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setRestakeDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setRestakeDiscountForStratosphereMember(3, 650);
+        diamondManagerFacet.setRestakeFee(restakeFee);
+        diamondManagerFacet.setRestakeDiscountForStratosphereMember(1, restakeDiscountBasic);
+        diamondManagerFacet.setRestakeDiscountForStratosphereMember(2, restakeDiscountSilver);
+        diamondManagerFacet.setRestakeDiscountForStratosphereMember(3, restakeDiscountGold);
         vm.stopPrank();
-
 
         // Deposit for the current season
         vm.startPrank(user);
-        depositToken.increaseAllowance(address(depositFacet), 5000 * 1e18);
-        depositToken.mint(user, 5000 * 1e18);
-        depositFacet.deposit(5000 * 1e18);
+        _mintAndDeposit(user, testDepositAmount);
         vm.stopPrank();
-        
-        // Set up season details for restake
+
+        // Set up season for restake
         vm.startPrank(diamondOwner);
-        vm.warp(block.timestamp + 31 days);
-        diamondManagerFacet.setCurrentSeasonId(2);
-        diamondManagerFacet.setSeasonEndTimestamp(2, block.timestamp + 30 days);
+        _startNewSeason();
         vm.stopPrank();
     }
 
 
     function test_DepositAndRestakeWithoutBeingStratosphereMember() public {
-        
         vm.startPrank(user);
-        uint256 depositAmount = 5000 * 1e18;
-        uint256 amountAfterDepositFee = depositAmount - (depositAmount * 500 / 10000);
+        uint256 amountAfterDepositFee = testDepositAmount - ((testDepositAmount * depositFee) / 10000);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(user, 1), amountAfterDepositFee);
         assertEq(diamondManagerFacet.getCurrentSeasonId(), 2);
         assertTrue(block.timestamp > diamondManagerFacet.getSeasonEndTimestamp(1));
         restakeFacet.restake();
-        uint256 amountAfterRestakeFee = diamondManagerFacet.getDepositAmountOfUser(user, 1) - (diamondManagerFacet.getDepositAmountOfUser(user, 1) * 300 / 10000);
+        uint256 amountAfterRestakeFee = diamondManagerFacet.getDepositAmountOfUser(user, 1) -
+            ((diamondManagerFacet.getDepositAmountOfUser(user, 1) * restakeFee) / 10000);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(user, 2), amountAfterRestakeFee);
         assertEq(diamondManagerFacet.getWithdrawRestakeStatus(user, 1), true);
         vm.stopPrank();
-
     }
 
     function test_CannotRestakeTwiceForTheSameSeason() public {
-
         vm.startPrank(user);
         restakeFacet.restake();
-        assertEq(diamondManagerFacet.getWithdrawRestakeStatus(user, 1), true); 
+        assertEq(diamondManagerFacet.getWithdrawRestakeStatus(user, 1), true);
         vm.expectRevert(RestakeFacet__InProgressSeason.selector);
         restakeFacet.restake();
     }
 
     function test_DepositAndRestakeBeingStratosphereMemberTierBasic() public {
-        
-       // Deposit for the current season
-        vm.startPrank(stratosphereMemberBasicTierAddress);
-        uint256 depositAmount = 5000 * 1e18;
-        uint256 depositFee = 500;
-        uint256 depositDiscountForBasicTierMember = 500;
-        uint256 depositAmountAfterFee = depositAmount - LPercentages.percentage(depositAmount, depositFee - (depositDiscountForBasicTierMember * depositFee) / 10000);
-        depositToken.increaseAllowance(address(depositFacet), depositAmount);
-        depositToken.mint(stratosphereMemberBasicTierAddress, depositAmount);
-        depositFacet.deposit(depositAmount);
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasicTierAddress, 2), depositAmountAfterFee);
+        // Deposit for the current season
+        vm.startPrank(stratosphereMemberBasic);
+        _mintAndDeposit(stratosphereMemberBasic, testDepositAmount );
+        uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountBasic, depositFee);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 2), depositAmountAfterFee);
         vm.stopPrank();
 
         // Set a new season
         vm.startPrank(diamondOwner);
-        vm.warp(block.timestamp + 31 days);
-        diamondManagerFacet.setCurrentSeasonId(3);
-        diamondManagerFacet.setSeasonEndTimestamp(3, block.timestamp + 30 days);
+        _startNewSeason();
         assertTrue(block.timestamp > diamondManagerFacet.getSeasonEndTimestamp(2));
         assertEq(diamondManagerFacet.getCurrentSeasonId(), 3);
         vm.stopPrank();
 
         // Restake for the new season
-        vm.startPrank(stratosphereMemberBasicTierAddress);
-        uint256 restakeAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasicTierAddress, 2);
-        uint256 restakeFee = 300;
-        uint256 restakeDiscountForBasicTierMember = 500;
-        uint256 restakeAmountAfterFee = restakeAmount - LPercentages.percentage(restakeAmount, restakeFee - (restakeDiscountForBasicTierMember * restakeFee) / 10000);
+        vm.startPrank(stratosphereMemberBasic);
+        uint256 restakeAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 2);
+        uint256 restakeAmountAfterFee = _getAmountAfterFee(restakeAmount, restakeDiscountBasic, restakeFee);
         restakeFacet.restake();
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasicTierAddress, 3), restakeAmountAfterFee);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 3), restakeAmountAfterFee);
         vm.stopPrank();
-
     }
 
     function test_DepositAndRestakeBeingStratosphereMemberTierSilver() public {
-
-        
-        // Deposit for the current season
-        vm.startPrank(stratosphereMemberSilverTierAddress);
-        uint256 depositAmount = 5000 * 1e18;
-        uint256 depositFee = 500;
-        uint256 depositDiscountForSilverTierMember = 550;
-        uint256 depositAmountAfterFee = depositAmount - LPercentages.percentage(depositAmount, depositFee - (depositDiscountForSilverTierMember * depositFee) / 10000);
-        depositToken.increaseAllowance(address(depositFacet), depositAmount);
-        depositToken.mint(stratosphereMemberSilverTierAddress, depositAmount);
-        depositFacet.deposit(depositAmount);
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberSilverTierAddress, 2), depositAmountAfterFee);
+       // Deposit for the current season
+        vm.startPrank(stratosphereMemberSilver);
+        _mintAndDeposit(stratosphereMemberSilver, testDepositAmount );
+        uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountSilver, depositFee);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberSilver, 2), depositAmountAfterFee);
         vm.stopPrank();
 
         // Set a new season
         vm.startPrank(diamondOwner);
-        vm.warp(block.timestamp + 31 days);
-        diamondManagerFacet.setCurrentSeasonId(3);
-        diamondManagerFacet.setSeasonEndTimestamp(3, block.timestamp + 30 days);
+        _startNewSeason();
         assertTrue(block.timestamp > diamondManagerFacet.getSeasonEndTimestamp(2));
         assertEq(diamondManagerFacet.getCurrentSeasonId(), 3);
         vm.stopPrank();
 
         // Restake for the new season
-        vm.startPrank(stratosphereMemberSilverTierAddress);
-        uint256 restakeAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberSilverTierAddress, 2);
-        uint256 restakeFee = 300;
-        uint256 restakeDiscountForSilverTierMember = 550;
-        uint256 restakeAmountAfterFee = restakeAmount - LPercentages.percentage(restakeAmount, restakeFee - (restakeDiscountForSilverTierMember * restakeFee) / 10000);
+        vm.startPrank(stratosphereMemberSilver);
+        uint256 restakeAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberSilver, 2);
+        uint256 restakeAmountAfterFee = _getAmountAfterFee(restakeAmount, restakeDiscountSilver, restakeFee);
         restakeFacet.restake();
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberSilverTierAddress, 3), restakeAmountAfterFee);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberSilver, 3), restakeAmountAfterFee);
         vm.stopPrank();
-
     }
 
     function test_DepositAndRestakeBeingStratosphereMemberTierGold() public {
-        
         // Deposit for the current season
-        vm.startPrank(stratosphereMemberGoldTierAddress);
-        uint256 depositAmount = 5000 * 1e18;
-        uint256 depositFee = 500;
-        uint256 depositDiscountForGoldTierMember = 650;
-        uint256 depositAmountAfterFee = depositAmount - LPercentages.percentage(depositAmount, depositFee - (depositDiscountForGoldTierMember * depositFee) / 10000);
-        depositToken.increaseAllowance(address(depositFacet), depositAmount);
-        depositToken.mint(stratosphereMemberGoldTierAddress, depositAmount);
-        depositFacet.deposit(depositAmount);
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGoldTierAddress, 2), depositAmountAfterFee);
+        vm.startPrank(stratosphereMemberGold);
+        _mintAndDeposit(stratosphereMemberGold, testDepositAmount );
+        uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountGold, depositFee);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGold, 2), depositAmountAfterFee);
         vm.stopPrank();
 
         // Set a new season
         vm.startPrank(diamondOwner);
-        vm.warp(block.timestamp + 31 days);
-        diamondManagerFacet.setCurrentSeasonId(3);
-        diamondManagerFacet.setSeasonEndTimestamp(3, block.timestamp + 30 days);
+        _startNewSeason();
         assertTrue(block.timestamp > diamondManagerFacet.getSeasonEndTimestamp(2));
         assertEq(diamondManagerFacet.getCurrentSeasonId(), 3);
         vm.stopPrank();
 
         // Restake for the new season
-        vm.startPrank(stratosphereMemberGoldTierAddress);
-        uint256 restakeAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGoldTierAddress, 2);
-        uint256 restakeFee = 300;
-        uint256 restakeDiscountForGoldTierMember = 650;
-        uint256 restakeAmountAfterFee = restakeAmount - LPercentages.percentage(restakeAmount, restakeFee - (restakeDiscountForGoldTierMember * restakeFee) / 10000);
+        vm.startPrank(stratosphereMemberGold);
+        uint256 restakeAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGold, 2);
+        uint256 restakeAmountAfterFee = _getAmountAfterFee(restakeAmount, restakeDiscountGold, restakeFee);
         restakeFacet.restake();
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGoldTierAddress, 3), restakeAmountAfterFee);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGold, 3), restakeAmountAfterFee);
         vm.stopPrank();
-
     }
 
-    
+    // Helper functions
+
+    function _mintAndDeposit(address _addr, uint256 _amount) internal {
+        depositToken.increaseAllowance(address(depositFacet), _amount);
+        depositToken.mint(_addr, _amount);
+        depositFacet.deposit(_amount);
+    }
+
+    function _startNewSeason() internal {
+        vm.warp(block.timestamp + 31 days);
+        uint256 newSeasonId = diamondManagerFacet.getCurrentSeasonId() + 1;
+        diamondManagerFacet.setCurrentSeasonId(newSeasonId);
+        diamondManagerFacet.setSeasonEndTimestamp(newSeasonId, block.timestamp + 30 days);
+        
+    }
+
+    function _getAmountAfterFee(uint256 _amount, uint256 _discount, uint256 _fee) internal view returns (uint256) {
+        return _amount - LPercentages.percentage(_amount, _fee - (_discount * _fee) / 10000);
+    }
 }

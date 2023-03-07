@@ -51,8 +51,6 @@ contract DiamondManagerFacet {
         emit DepositDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
 
-    
-
     function setDepositFee(uint256 fee) external onlyOwner {
         s.depositFee = fee;
         emit DepositFeeSet(fee);
@@ -84,7 +82,6 @@ contract DiamondManagerFacet {
         emit DepositFeeReceiversSet(receivers, proportion);
     }
 
-
     function setRestakeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner {
         s.restakeDiscountForStratosphereMembers[tier] = discountBasisPoints;
         emit RestakeDiscountForStratosphereMemberSet(tier, discountBasisPoints);
@@ -94,7 +91,6 @@ contract DiamondManagerFacet {
         s.restakeFee = fee;
         emit RestakeFeeSet(fee);
     }
-
 
     function getPendingWithdrawals(address feeReceiver) external view returns (uint256) {
         return s.pendingWithdrawals[feeReceiver];
@@ -131,4 +127,3 @@ contract DiamondManagerFacet {
         return _userData.hasWithdrawnOrRestaked;
     }
 }
-

@@ -29,13 +29,12 @@ contract RestakeFacet {
         }
 
         uint256 lastSeasonAmount = s.usersData[lastSeasonParticipated][msg.sender].depositAmount;
-        
+
         _restake(lastSeasonAmount);
         s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked = true;
     }
 
     function _restake(uint256 _amount) internal {
-        
         uint256 _discount = 0;
         s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
         (bool isStratosphereMember, uint256 tier) = _getStratosphereMembershipDetails(msg.sender);
@@ -74,7 +73,6 @@ contract RestakeFacet {
         _userData.depositPoints += _amount * _daysUntilSeasonEnd;
         s.seasons[_seasonId].totalDepositAmount += _amount;
         s.seasons[_seasonId].totalPoints += _amount * _daysUntilSeasonEnd;
-        
     }
 
     /// @notice Apply restake fee
@@ -89,6 +87,4 @@ contract RestakeFacet {
             }
         }
     }
-
-    
 }

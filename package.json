@@ -16,7 +16,8 @@
   "scripts": {
     "build": "make build",
     "lint": "solhint src/**/*.sol",
-    "format": "prettier --write src/**/*.sol"
+    "format": "prettier --write src/**/*.sol",
+    "format-test": "prettier --write test/**/*.sol"
   },
   "lint-staged": {
     "*.sol": [

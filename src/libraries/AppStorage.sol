@@ -61,7 +61,6 @@ struct AppStorage {
     mapping(uint256 => uint256) restakeDiscountForStratosphereMembers;
     // mapping: user => lastSeasonParticipated
     mapping(address => uint256) addressToLastSeasonId;
-
     ////////////////
     /// WITHDRAW ///
     ////////////////
@@ -71,12 +70,10 @@ struct AppStorage {
     /// CLAIM ///
     /////////////
     uint256 claimFee;
-
     ///////////////
     /// RESTAKE ///
     ///////////////
     uint256 restakeFee;
-
     address rewardToken;
     // nested mapping: seasonId => userAddress => amount
     mapping(uint256 => mapping(address => uint256)) claimAmounts;
