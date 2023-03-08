@@ -4,6 +4,7 @@ import "clouds/diamond/LDiamond.sol";
 
 import "../libraries/AppStorage.sol";
 
+
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
@@ -21,6 +22,10 @@ contract DiamondManagerFacet {
     event DepositFeeReceiversSet(address[] receivers, uint256[] proportion);
     event RestakeFeeSet(uint256 fee);
     event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
+
+    event UnlockTimestampDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
+    event UnlockFeeSet(uint256 fee);
+    event UnlockFeeReceiversSet(address[] receivers, uint256[] proportion);
 
     modifier onlyOwner() {
         if (msg.sender != LDiamond.contractOwner()) {
@@ -156,9 +161,43 @@ contract DiamondManagerFacet {
         return s.seasons[seasonId].totalPoints;
     }
 
+
+    function setUnlockTimestampDiscountForStratosphereMember(
+        uint256 tier,
+        uint256 discountBasisPoints
+    ) external onlyOwner {
+        s.unlockDiscountForStratosphereMembers[tier] = discountBasisPoints;
+        emit UnlockTimestampDiscountForStratosphereMemberSet(tier, discountBasisPoints);
+    }
+
+    function setUnlockFee(uint256 fee) external onlyOwner {
+        s.unlockFee = fee;
+        emit UnlockFeeSet(fee);
+    }
+
+    function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
+        if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.unlockFeeReceivers = receivers;
+        s.unlockFeeReceiversShares = proportion;
+        emit UnlockFeeReceiversSet(receivers, proportion);
+    }
+
+    function getUnlockAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.unlockAmount;
+    }
+
+    function getUnlockTimestampOfUser(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.unlockTimestamp;
+    }
+
     function getCurrentSeasonId() external view returns (uint256) {
         return s.currentSeasonId;
     }
+
 
     function getSeasonEndTimestamp(uint256 seasonId) external view returns (uint256) {
         return s.seasons[seasonId].endTimestamp;
@@ -167,5 +206,20 @@ contract DiamondManagerFacet {
     function getWithdrawRestakeStatus(address user, uint256 seasonId) external view returns (bool) {
         UserData storage _userData = s.usersData[seasonId][user];
         return _userData.hasWithdrawnOrRestaked;
+
+    function getUserDataForSeason(address user, uint256 seasonId) external view returns (UserData memory) {
+        return s.usersData[seasonId][user];
+    }
+
+    function getUserDataForCurrentSeason(address user) external view returns (UserData memory) {
+        return s.usersData[s.currentSeasonId][user];
+    }
+
+    function getCurrentSeasonData() external view returns (Season memory) {
+        return s.seasons[s.currentSeasonId];
+    }
+
+    function getSeasonData(uint256 seasonId) external view returns (Season memory) {
+        return s.seasons[seasonId];
     }
 }
