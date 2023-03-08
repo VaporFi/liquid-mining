@@ -111,6 +111,27 @@ contract DiamondManagerFacet {
         return (_userData.depositAmount, _userData.depositPoints);
     }
 
+    function getUserClaimedRewards(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.amountClaimed;
+    }
+
+    function getRewardTokenBalancePool(uint256 seasonId) external view returns (uint256) {
+        return s.seasons[seasonId].rewardTokenBalance;
+    }
+
+    function getSeasonTotalPoints(uint256 seasonId) external view returns (uint256) {
+        return s.seasons[seasonId].totalPoints;
+    }
+
+    function getSeasonTotalClaimedRewards(uint256 seasonId) external view returns (uint256) {
+        return s.seasons[seasonId].totalClaimAmount;
+    }
+
+    function getUserTotalPoints(uint256 seasonId, address user) external view returns (uint256) {
+        return s.usersData[seasonId][user].depositPoints + s.usersData[seasonId][user].boostPoints;
+    }
+
     
 
     function getPendingWithdrawals(address feeReceiver) external view returns (uint256) {

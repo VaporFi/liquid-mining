@@ -8,7 +8,6 @@ import "forge-std/Test.sol";
 
 error ClaimFacet__NotEnoughPoints();
 error ClaimFacet__InProgressSeason();
-error ClaimFacet__InvalidSeason();
 error ClaimFacet__AlreadyClaimed();
 
 /// @title ClaimFacet
@@ -28,9 +27,12 @@ contract ClaimFacet {
 
     /// @notice Claim accrued VAPE reward token
     function claim() external {
-        console.log(s.seasons[s.currentSeasonId].totalPoints);
+        
         uint256 seasonId = s.addressToLastSeasonId[msg.sender];
         UserData storage userData = s.usersData[seasonId][msg.sender];
+        if (s.seasons[seasonId].endTimestamp >= block.timestamp) {
+            revert ClaimFacet__InProgressSeason();
+        }
         if (userData.depositPoints == 0) {
             revert ClaimFacet__NotEnoughPoints();
         }
@@ -40,11 +42,12 @@ contract ClaimFacet {
 
         uint256 totalPoints = userData.depositPoints + userData.boostPoints;
         uint256 userShare = _calculateShare(totalPoints, seasonId);
-        console.log("User Share", userShare);
+       
         uint256 rewardTokenShare = _vapeToDistribute(userShare, seasonId);
-        console.log("Reward Token Share", rewardTokenShare);
+       
         userData.amountClaimed = rewardTokenShare;
         s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
+        s.seasons[seasonId].totalClaimAmount += rewardTokenShare;
         IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare);
         emit Claim(rewardTokenShare, msg.sender);
     }
