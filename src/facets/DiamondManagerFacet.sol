@@ -92,6 +92,27 @@ contract DiamondManagerFacet {
         emit RestakeFeeSet(fee);
     }
 
+    function setRewardToken(address token) external validAddress(token) onlyOwner {
+        s.rewardToken = token;
+    }
+
+    function startNewSeason(uint256 _rewardTokenToDistribute) external onlyOwner {
+        s.currentSeasonId = s.currentSeasonId + 1;
+       Season storage season  = s.seasons[s.currentSeasonId];
+       season.id = s.currentSeasonId;
+       season.startTimestamp = block.timestamp;
+        season.endTimestamp = block.timestamp + 30 days;
+        season.rewardTokensToDistribute = _rewardTokenToDistribute;
+        season.rewardTokenBalance = _rewardTokenToDistribute;
+    }
+
+    function getUserDepositAmount(address user, uint256 seasonId) external view returns (uint256, uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return (_userData.depositAmount, _userData.depositPoints);
+    }
+
+    
+
     function getPendingWithdrawals(address feeReceiver) external view returns (uint256) {
         return s.pendingWithdrawals[feeReceiver];
     }
