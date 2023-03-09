@@ -33,7 +33,7 @@ contract BoostFacet {
             revert BoostFacet__InvalidBoostLevel();
         }
         if (isStratosphereMember) {
-            _boostFee = s.boostLevelToFee[tier];
+            _boostFee = s.boostLevelToFee[boostLevel];
         }
         if (_boostFee > 0) {
             IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);
