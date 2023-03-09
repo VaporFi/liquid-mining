@@ -75,8 +75,8 @@ struct AppStorage {
     address boostFeeToken;
     //mapping: level => USDC fee
     mapping(uint256 => uint256) boostLevelToFee;
-    // nested mapping: days passed => boostlevel => boost enhance points
-    mapping(uint256 => mapping(uint256 => uint256)) boostPercentFromDaysToLevel;
+    // nested mapping: tier => boostlevel => boost enhance points
+    mapping(uint256 => mapping(uint256 => uint256)) boostPercentFromTierToLevel;
     /////////////
     /// CLAIM ///
     /////////////

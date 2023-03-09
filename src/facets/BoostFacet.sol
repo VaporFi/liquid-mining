@@ -33,13 +33,13 @@ contract BoostFacet {
             revert BoostFacet__InvalidBoostLevel();
         }
         if (isStratosphereMember) {
-            _boostFee = s.depositDiscountForStratosphereMembers[tier];
+            _boostFee = s.boostLevelToFee[tier];
         }
         if (_boostFee > 0) {
             IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);
         }
         _userData.lastBoostClaimTimestamp = block.timestamp;
-        _userData.boostPoints += _calculatePoints(_userData, boostLevel);
+        _userData.boostPoints += _calculatePoints(_userData, boostLevel, tier);
         emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints);
     }
 
@@ -48,9 +48,12 @@ contract BoostFacet {
     /// @return Boost points
     /// @dev Utilizes 'LPercentages'.
     /// @dev _daysSinceSeasonStart starts from 0 equal to the first day of the season.
-    function _calculatePoints(UserData storage _userData, uint256 _boostLevel) internal view returns (uint256) {
-        uint256 _daysSinceSeasonStart = (block.timestamp - s.seasons[s.currentSeasonId].startTimestamp) / 1 days;
-        uint256 _boostPointsAmount = s.boostPercentFromDaysToLevel[_daysSinceSeasonStart][_boostLevel];
+    function _calculatePoints(
+        UserData storage _userData,
+        uint256 _boostLevel,
+        uint256 _tier
+    ) internal view returns (uint256) {
+        uint256 _boostPointsAmount = s.boostPercentFromTierToLevel[_tier][_boostLevel];
         if (_boostPointsAmount == 0) {
             return 0;
         }
