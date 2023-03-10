@@ -1,6 +1,7 @@
 pragma solidity 0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
+import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "../libraries/AppStorage.sol";
 import {UserData} from "../libraries/AppStorage.sol";
@@ -12,6 +13,7 @@ error DiamondManagerFacet__Invalid_Input();
 contract DiamondManagerFacet {
     AppStorage s;
 
+    event BoostFeeWithdrawn(address indexed to, uint256 amount);
     event DepositTokenSet(address indexed token);
     event SeasonIdSet(uint256 indexed seasonId);
     event DepositDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
@@ -37,6 +39,11 @@ contract DiamondManagerFacet {
             revert DiamondManagerFacet__Invalid_Address();
         }
         _;
+    }
+
+    function withdrawBoostFee(address to, uint256 amount) external onlyOwner {
+        IERC20(s.boostFeeToken).transfer(to, amount);
+        emit BoostFeeWithdrawn(to, amount);
     }
 
     function setDepositToken(address token) external validAddress(token) onlyOwner {
