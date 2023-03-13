@@ -13,6 +13,7 @@ error DepositFacet__NotEnoughTokenBalance();
 error DepositFacet__InvalidFeeReceivers();
 error DepositFacet__ReentrancyGuard__ReentrantCall();
 error DepositFacet__SeasonEnded();
+error DepositFacet__FundsInPrevSeason();
 
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
@@ -36,6 +37,14 @@ contract DepositFacet {
         // checks
         if (_amount > IERC20(_token).balanceOf(msg.sender)) {
             revert DepositFacet__NotEnoughTokenBalance();
+        }
+        uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
+
+        if (
+            s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0 ||
+            s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == false
+        ) {
+            revert DepositFacet__FundsInPrevSeason();
         }
 
         //effects
