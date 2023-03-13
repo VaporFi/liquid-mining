@@ -12,8 +12,6 @@ struct Season {
     uint256 totalDepositAmount;
     uint256 totalClaimAmount;
     uint256 totalPoints;
-    uint256 depositFee;
-    uint256 restakeFee;
 }
 
 struct UserData {
@@ -50,18 +48,17 @@ struct AppStorage {
     ///////////////
     uint256 depositFee;
     address depositToken;
-    address[] depositFeeReceivers;
-    uint256[] depositFeeReceiversShares;
+    address[] feeReceivers;
+    uint256[] feeReceiversShares;
     ///////////////
     /// UNLOCK ///
     ///////////////
     uint256 unlockFee;
-    address[] unlockFeeReceivers;
-    uint256[] unlockFeeReceiversShares;
     // mapping: tier => discount percentage
     mapping(uint256 => uint256) unlockDiscountForStratosphereMembers;
     mapping(address => uint256) pendingWithdrawals;
     mapping(uint256 => uint256) depositDiscountForStratosphereMembers;
+    mapping(uint256 => uint256) restakeDiscountForStratosphereMembers;
     // mapping: user => lastSeasonParticipated
     mapping(address => uint256) addressToLastSeasonId;
     ////////////////
@@ -69,10 +66,22 @@ struct AppStorage {
     ////////////////
     // TODO: Add withdraw state variables
 
+    ////////////////
+    /// BOOST ///
+    ////////////////
+    address boostFeeToken;
+    //mapping: level => USDC fee
+    mapping(uint256 => uint256) boostLevelToFee;
+    // nested mapping: tier => boostlevel => boost enhance points
+    mapping(uint256 => mapping(uint256 => uint256)) boostPercentFromTierToLevel;
     /////////////
     /// CLAIM ///
     /////////////
     uint256 claimFee;
+    ///////////////
+    /// RESTAKE ///
+    ///////////////
+    uint256 restakeFee;
     address rewardToken;
     // nested mapping: seasonId => userAddress => amount
     mapping(uint256 => mapping(address => uint256)) claimAmounts;

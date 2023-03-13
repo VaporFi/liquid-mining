@@ -33,6 +33,7 @@ contract WithdrawFacet {
     function withdrawUnlocked() external {
         address user = msg.sender;
         uint256 seasonId = s.addressToLastSeasonId[user];
+
         UserData storage userData = s.usersData[seasonId][user];
         uint256 amount = userData.unlockAmount;
         uint256 unlockTimestamp = userData.unlockTimestamp;
@@ -44,7 +45,7 @@ contract WithdrawFacet {
         }
         s.usersData[seasonId][user].unlockAmount = 0;
         s.usersData[seasonId][user].unlockTimestamp = 0;
-        IERC20(s.depositToken).transferFrom(address(this), user, amount);
+        IERC20(s.depositToken).transfer(user, amount);
         emit WithdrawUnlockedVPND(amount, user);
     }
 
@@ -68,9 +69,9 @@ contract WithdrawFacet {
         }
 
         uint256 amount = userData.depositAmount;
-        //    userData.depositAmount = 0; // @audit Do we want do this?
-        userData.hasWithdrawnOrRestaked = true; // @audit Or this is better?
-        IERC20(s.depositToken).transferFrom(address(this), user, amount);
+        //    userData.depositAmount = 0;
+        userData.hasWithdrawnOrRestaked = true;
+        IERC20(s.depositToken).transfer(user, amount);
         emit WithdrawVPND(amount, user);
     }
 
@@ -112,7 +113,7 @@ contract WithdrawFacet {
         userData.unlockAmount = 0;
         userData.unlockTimestamp = 0;
         userData.hasWithdrawnOrRestaked = true;
-        IERC20(s.depositToken).transferFrom(address(this), user, amount);
+        IERC20(s.depositToken).transfer(user, amount);
         emit WithdrawAll(amount, user);
     }
 }

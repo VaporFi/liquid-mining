@@ -14,13 +14,14 @@ error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
 error RestakeFacet__FundsInPrevSeason();
 
-contract RestakeFacet is ReentrancyGuard {
+contract RestakeFacet {
     event Restake(address indexed depositor, uint256 amount);
 
     AppStorage s;
 
-    function restake() external nonReentrant {
+    function restake() external {
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
+        UserData storage userData = s.usersData[lastSeasonParticipated][msg.sender];
         if (s.seasons[lastSeasonParticipated].endTimestamp >= block.timestamp) {
             revert RestakeFacet__InProgressSeason();
         }
@@ -28,6 +29,7 @@ contract RestakeFacet is ReentrancyGuard {
         if (s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == true) {
             revert RestakeFacet__HasWithdrawnOrRestaked();
         }
+
 
         if (s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0) {
             revert RestakeFacet__FundsInPrevSeason();
@@ -38,17 +40,17 @@ contract RestakeFacet is ReentrancyGuard {
         _restake(lastSeasonAmount);
         userData.hasWithdrawnOrRestaked = true;
         s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
+
     }
 
     function _restake(uint256 _amount) internal {
         uint256 _discount = 0;
-        uint256 restakeFee = s.seasons[s.currentSeasonId].restakeFee;
         s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
         (bool isStratosphereMember, uint256 tier) = _getStratosphereMembershipDetails(msg.sender);
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
-        uint256 _fee = LPercentages.percentage(_amount, restakeFee - ((restakeFee * _discount) / 100)); // audit
+        uint256 _fee = LPercentages.percentage(_amount, s.restakeFee - (_discount * s.restakeFee) / 10000);
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyRestakeFee(_fee);
@@ -85,10 +87,10 @@ contract RestakeFacet is ReentrancyGuard {
     /// @notice Apply restake fee
     /// @param _fee Fee amount
     function _applyRestakeFee(uint256 _fee) internal {
-        uint256 _length = s.depositFeeReceivers.length;
+        uint256 _length = s.feeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.depositFeeReceiversShares[i]);
-            s.pendingWithdrawals[s.depositFeeReceivers[i]] += _share;
+            uint256 _share = LPercentages.percentage(_fee, s.feeReceiversShares[i]);
+            s.pendingWithdrawals[s.feeReceivers[i]] += _share;
             unchecked {
                 i++;
             }
