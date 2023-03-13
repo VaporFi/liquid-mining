@@ -33,9 +33,10 @@ contract RestakeFacet is ReentrancyGuard {
             revert RestakeFacet__FundsInPrevSeason();
         }
 
-        uint256 lastSeasonAmount = s.usersData[lastSeasonParticipated][msg.sender].depositAmount;
+       uint256 lastSeasonAmount = userData.depositAmount + userData.unlockAmount;
+        userData.unlockAmount = 0;
         _restake(lastSeasonAmount);
-        s.usersData[s.currentSeasonId][msg.sender].hasWithdrawnOrRestaked = true;
+        userData.hasWithdrawnOrRestaked = true;
         s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
     }
 
