@@ -11,6 +11,7 @@ import "../interfaces/IRewardsController.sol";
 
 error BoostFacet__InvalidBoostLevel();
 error BoostFacet__BoostAlreadyClaimed();
+error BoostFacet__UserNotParticipated();
 
 /// @title BoostFacet
 /// @notice Facet in charge of point's boosts
@@ -24,6 +25,9 @@ contract BoostFacet {
     function claimBoost(uint256 boostLevel) external {
         uint256 _seasonId = s.currentSeasonId;
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
+        if(_userData.depositPoints == 0) {
+            revert BoostFacet__UserNotParticipated();
+        }
         if (_userData.lastBoostClaimTimestamp != 0 && block.timestamp - _userData.lastBoostClaimTimestamp < 1 days) {
             revert BoostFacet__BoostAlreadyClaimed();
         }

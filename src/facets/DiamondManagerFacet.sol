@@ -186,8 +186,8 @@ contract DiamondManagerFacet {
         if (receivers.length != proportion.length) {
             revert DiamondManagerFacet__Invalid_Input();
         }
-        s.unlockFeeReceivers = receivers;
-        s.unlockFeeReceiversShares = proportion;
+        s.feeReceivers = receivers;
+        s.feeReceiversShares = proportion;
         emit UnlockFeeReceiversSet(receivers, proportion);
     }
 
@@ -212,7 +212,7 @@ contract DiamondManagerFacet {
 
     function getWithdrawRestakeStatus(address user, uint256 seasonId) external view returns (bool) {
         UserData storage _userData = s.usersData[seasonId][user];
-        return _userData.hasWithdrawnOrRestaked;
+        return _userData.hasWithdrawnOrRestaked; }
 
     function getUserDataForSeason(address user, uint256 seasonId) external view returns (UserData memory) {
         return s.usersData[seasonId][user];
