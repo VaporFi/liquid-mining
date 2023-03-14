@@ -29,7 +29,6 @@ contract RestakeFacet {
             revert RestakeFacet__HasWithdrawnOrRestaked();
         }
 
-
         uint256 lastSeasonAmount = userData.depositAmount + userData.unlockAmount;
         userData.unlockAmount = 0;
         _restake(lastSeasonAmount);
@@ -53,9 +52,9 @@ contract RestakeFacet {
     /// @notice get details of stratosphere for member
     /// @param _account Account of member to check
     /// @return bool if account is stratosphere member
-    /// @return uint256 tier of membership
+    /// @return uint256 tier of membershipstratosphereAddress
     function _getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
-        IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
+        IStratosphere stratosphere = IStratosphere(s.stratosphereAddress);
         uint256 _tokenId = stratosphere.tokenIdOf(_account);
         return (
             _tokenId != 0,

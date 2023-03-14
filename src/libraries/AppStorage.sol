@@ -90,7 +90,7 @@ struct AppStorage {
     ///////////////
     /// GENERAL ///
     ///////////////
-    address stratoshpereAddress;
+    address stratosphereAddress;
     address rewardsControllerAddress;
     uint256 reentrancyGuardStatus;
 }

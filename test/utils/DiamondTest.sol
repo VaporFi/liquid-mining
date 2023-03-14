@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.17;
 
+import "forge-std/Test.sol";
+import "clouds/interfaces/IDiamondCut.sol";
+
 import "src/LiquidStakingDiamond.sol";
 import "src/facets/DiamondCutFacet.sol";
-import "src/facets//DiamondLoupeFacet.sol";
-import "src/facets//OwnershipFacet.sol";
-import "lib/clouds/src/interfaces/IDiamondCut.sol";
-import "lib/forge-std/src/Test.sol";
+import "src/facets/DiamondLoupeFacet.sol";
+import "src/facets/OwnershipFacet.sol";
 
 contract DiamondTest is Test {
     IDiamondCut.FacetCut[] internal cut;

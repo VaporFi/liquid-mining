@@ -65,7 +65,7 @@ contract BoostFacet {
     /// @return bool if account is stratosphere member
     /// @return uint256 tier of membership
     function getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
-        IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
+        IStratosphere stratosphere = IStratosphere(s.stratosphereAddress);
         uint256 tokenId = stratosphere.tokenIdOf(_account);
 
         if (tokenId == 0) {
