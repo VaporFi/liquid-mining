@@ -191,6 +191,24 @@ contract DiamondManagerFacet {
         emit UnlockFeeReceiversSet(receivers, proportion);
     }
 
+    function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
+        s.boostLevelToFee[boostLevel] = boostFee;
+    }
+
+    function setBoostFeeToken(address boostFeeToken) external onlyOwner {
+        s.boostFeeToken = boostFeeToken;
+    }
+
+    function setBoostPercentTierLevel(uint256 tier, uint256 level, uint256 percent) external onlyOwner {
+        s.boostPercentFromTierToLevel[tier][level] = percent;
+    }
+
+
+    function getUserPoints(address user, uint256 seasonId) external view returns (uint256, uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return (_userData.depositPoints, _userData.boostPoints);
+    }
+
     function getUnlockAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
         UserData storage _userData = s.usersData[seasonId][user];
         return _userData.unlockAmount;
