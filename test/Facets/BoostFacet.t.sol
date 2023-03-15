@@ -169,7 +169,7 @@ contract BoostFacetTest is DiamondTest {
 
     }
 
-    function test_revertIf_NotStratosphereMember() public {
+    function test_RevertIf_NotStratosphereMember() public {
         vm.startPrank(user);
         _mintAndDeposit(user, testDepositAmount);
         vm.expectRevert(BoostFacet__InvalidBoostLevel.selector);
@@ -177,14 +177,14 @@ contract BoostFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
-    function test_revertIf_NoDeposit() public {
+    function test_RevertIf_NoDeposit() public {
         vm.startPrank(stratosphereMemberBasic);
         vm.expectRevert(BoostFacet__UserNotParticipated.selector);
         boostFacet.claimBoost(1);
         vm.stopPrank();
     }
 
-    function test_boostWithStratBasicLvl1() public {
+    function test_BoostWithStratBasicLvl1() public {
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
         _fundUserWithBoostFeeToken(stratosphereMemberBasic, boostFeeLvl1);
@@ -199,7 +199,7 @@ contract BoostFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
-    function test_boostWithStratSilverLvl1() public {
+    function test_BoostWithStratSilverLvl1() public {
         vm.startPrank(stratosphereMemberSilver);
         _mintAndDeposit(stratosphereMemberSilver, testDepositAmount);
         _fundUserWithBoostFeeToken(stratosphereMemberSilver, boostFeeLvl1);
@@ -214,7 +214,7 @@ contract BoostFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
-    function test_boostWithStratGoldLvl1() public {
+    function test_BoostWithStratGoldLvl1() public {
         vm.startPrank(stratosphereMemberGold);
         _mintAndDeposit(stratosphereMemberGold, testDepositAmount);
         _fundUserWithBoostFeeToken(stratosphereMemberGold, boostFeeLvl1);
@@ -229,7 +229,7 @@ contract BoostFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
-    function test_boostWithStratBasicLvl2() public {
+    function test_BoostWithStratBasicLvl2() public {
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
         _fundUserWithBoostFeeToken(stratosphereMemberBasic, boostFeeLvl2);
