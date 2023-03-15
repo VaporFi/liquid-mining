@@ -26,13 +26,13 @@ contract BoostFacetTest is DiamondTest {
     RewardsControllerMock rewardsControllerMock;
 
     // setup addresses
-    address feeReceiver1 = makeAddr("FeeReceiver1");
-    address feeReceiver2 = makeAddr("FeeReceiver2");
+    address feeReceiver1 = makeAddr("feeReceiver1");
+    address feeReceiver2 = makeAddr("feeReceiver2");
     address diamondOwner = makeAddr("diamondOwner");
     address user = makeAddr("user");
-    address stratosphereMemberBasic = makeAddr("stratosphere_member_basic");
-    address stratosphereMemberSilver = makeAddr("stratosphere_member_silver");
-    address stratosphereMemberGold = makeAddr("stratosphere_member_gold");
+    address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
+    address stratosphereMemberSilver = makeAddr("stratosphereMemberSilver");
+    address stratosphereMemberGold = makeAddr("stratosphereMemberGold");
     // setup test details
     uint256 rewardTokenToDistribute = 10000 * 1e18;
     uint256 testDepositAmount = 5000 * 1e18;
