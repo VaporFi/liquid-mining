@@ -7,16 +7,16 @@ import "lib/forge-std/src/Test.sol";
 
 contract StratosphereMock is IStratosphere, Test {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
-    address stratosphereMemberBasicTierAddress = makeAddr("stratosphere_member_basic");
-    address stratosphereMemberSilverTierAddress = makeAddr("stratosphere_member_silver");
-    address stratosphereMemberGoldTierAddress = makeAddr("stratosphere_member_gold");
+    address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
+    address stratosphereMemberSilver = makeAddr("stratosphereMemberSilver");
+    address stratosphereMemberGold = makeAddr("stratosphereMemberGold");
 
     function tokenIdOf(address account) external view returns (uint256) {
-        if (account == stratosphereMemberBasicTierAddress) {
+        if (account == stratosphereMemberBasic) {
             return 1;
-        } else if (account == stratosphereMemberSilverTierAddress) {
+        } else if (account == stratosphereMemberSilver) {
             return 2;
-        } else if (account == stratosphereMemberGoldTierAddress) {
+        } else if (account == stratosphereMemberGold) {
             return 3;
         } else {
             return 0;
