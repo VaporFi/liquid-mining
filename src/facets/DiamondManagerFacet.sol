@@ -186,9 +186,27 @@ contract DiamondManagerFacet {
         if (receivers.length != proportion.length) {
             revert DiamondManagerFacet__Invalid_Input();
         }
-        s.unlockFeeReceivers = receivers;
-        s.unlockFeeReceiversShares = proportion;
+        s.feeReceivers = receivers;
+        s.feeReceiversShares = proportion;
         emit UnlockFeeReceiversSet(receivers, proportion);
+    }
+
+    function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
+        s.boostLevelToFee[boostLevel] = boostFee;
+    }
+
+    function setBoostFeeToken(address boostFeeToken) external onlyOwner {
+        s.boostFeeToken = boostFeeToken;
+    }
+
+    function setBoostPercentTierLevel(uint256 tier, uint256 level, uint256 percent) external onlyOwner {
+        s.boostPercentFromTierToLevel[tier][level] = percent;
+    }
+
+
+    function getUserPoints(address user, uint256 seasonId) external view returns (uint256, uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return (_userData.depositPoints, _userData.boostPoints);
     }
 
     function getUnlockAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
@@ -212,7 +230,7 @@ contract DiamondManagerFacet {
 
     function getWithdrawRestakeStatus(address user, uint256 seasonId) external view returns (bool) {
         UserData storage _userData = s.usersData[seasonId][user];
-        return _userData.hasWithdrawnOrRestaked;
+        return _userData.hasWithdrawnOrRestaked; }
 
     function getUserDataForSeason(address user, uint256 seasonId) external view returns (UserData memory) {
         return s.usersData[seasonId][user];
