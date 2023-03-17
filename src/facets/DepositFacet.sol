@@ -40,12 +40,14 @@ contract DepositFacet {
         }
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
 
-        if (
-            s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0 ||
-            s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == false
-        ) {
-            revert DepositFacet__FundsInPrevSeason();
+        if (lastSeasonParticipated > 1) {
+            if (s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0 ||
+                s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == false
+            ) {
+                revert DepositFacet__FundsInPrevSeason();
+            }
         }
+            
 
         //effects
         uint256 _discount = 0;
