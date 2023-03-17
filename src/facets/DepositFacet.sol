@@ -39,13 +39,12 @@ contract DepositFacet {
             revert DepositFacet__NotEnoughTokenBalance();
         }
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
-        bool isFundsInPrevSeason = s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0 || s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == false;
+        bool isFundsInPrevSeason = s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0 ||
+            s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == false;
 
         if (lastSeasonParticipated > 1 && isFundsInPrevSeason == true) {
-                revert DepositFacet__FundsInPrevSeason();
-            }
-        
-            
+            revert DepositFacet__FundsInPrevSeason();
+        }
 
         //effects
         uint256 _discount = 0;
