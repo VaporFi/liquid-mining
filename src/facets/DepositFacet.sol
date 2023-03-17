@@ -40,9 +40,9 @@ contract DepositFacet {
         }
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
         bool isFundsInPrevSeason = lastSeasonParticipated > 1
-            ? s.usersData[lastSeasonParticipated - 1][msg.sender].unlockAmount > 0 ||
-                s.usersData[lastSeasonParticipated - 1][msg.sender].hasWithdrawnOrRestaked == false
-            : false;
+            ? (s.usersData[lastSeasonParticipated - 1][msg.sender].unlockAmount > 0 ||
+                s.usersData[lastSeasonParticipated - 1][msg.sender].hasWithdrawnOrRestaked == false)
+            : true;
 
         if (isFundsInPrevSeason) {
             revert DepositFacet__FundsInPrevSeason();
