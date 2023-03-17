@@ -182,15 +182,6 @@ contract DiamondManagerFacet {
         emit UnlockFeeSet(fee);
     }
 
-    function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
-        if (receivers.length != proportion.length) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.feeReceivers = receivers;
-        s.feeReceiversShares = proportion;
-        emit UnlockFeeReceiversSet(receivers, proportion);
-    }
-
     function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
         s.boostLevelToFee[boostLevel] = boostFee;
     }

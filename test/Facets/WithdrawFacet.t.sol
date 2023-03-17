@@ -19,8 +19,8 @@ contract WithdrawFacetTest is DiamondTest {
     WithdrawFacet internal withdrawFacet;
     DiamondManagerFacet internal diamondManagerFacet;
     ERC20Mock internal depositToken;
-    address feeReceiver1 = makeAddr("FeeReceiver1");
-    address feeReceiver2 = makeAddr("FeeReceiver2");
+    address feeReceiver1 = makeAddr("feeReceiver1");
+    address feeReceiver2 = makeAddr("feeReceiver2");
     StratosphereMock stratosphereMock;
 
     RewardsControllerMock rewardsControllerMock;
@@ -47,7 +47,7 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFunctionSelectors[2] = withdrawFacet.withdrawAll.selector;
         addFacet(diamond, address(withdrawFacet), withdrawFunctionSelectors);
 
-        bytes4[] memory managerFunctionSelectors = new bytes4[](19);
+        bytes4[] memory managerFunctionSelectors = new bytes4[](18);
         managerFunctionSelectors[0] = diamondManagerFacet.setDepositToken.selector;
         managerFunctionSelectors[1] = diamondManagerFacet.setCurrentSeasonId.selector;
         managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
@@ -63,10 +63,9 @@ contract WithdrawFacetTest is DiamondTest {
         managerFunctionSelectors[12] = diamondManagerFacet.getTotalPointsOfSeason.selector;
         managerFunctionSelectors[13] = diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember.selector;
         managerFunctionSelectors[14] = diamondManagerFacet.setUnlockFee.selector;
-        managerFunctionSelectors[15] = diamondManagerFacet.setUnlockFeeReceivers.selector;
-        managerFunctionSelectors[16] = diamondManagerFacet.getUnlockAmountOfUser.selector;
-        managerFunctionSelectors[17] = diamondManagerFacet.getUnlockTimestampOfUser.selector;
-        managerFunctionSelectors[18] = diamondManagerFacet.getCurrentSeasonId.selector;
+        managerFunctionSelectors[15] = diamondManagerFacet.getUnlockAmountOfUser.selector;
+        managerFunctionSelectors[16] = diamondManagerFacet.getUnlockTimestampOfUser.selector;
+        managerFunctionSelectors[17] = diamondManagerFacet.getCurrentSeasonId.selector;
 
         addFacet(diamond, address(diamondManagerFacet), managerFunctionSelectors);
 
@@ -102,7 +101,6 @@ contract WithdrawFacetTest is DiamondTest {
         feeProportions[0] = 7500;
         feeProportions[1] = 2500;
         diamondManagerFacet.setDepositFeeReceivers(feeReceivers, feeProportions);
-        diamondManagerFacet.setUnlockFeeReceivers(feeReceivers, feeProportions);
 
         vm.stopPrank();
     }
