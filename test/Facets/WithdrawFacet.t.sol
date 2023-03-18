@@ -7,8 +7,8 @@ import {WithdrawFacet, WithdrawFacet__InProgressSeason, WithdrawFacet__Insuffici
 import {DepositFacet} from "src/facets/DepositFacet.sol";
 import {UnlockFacet} from "src/facets/UnlockFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
-import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
+import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
+import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
 
 contract WithdrawFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);

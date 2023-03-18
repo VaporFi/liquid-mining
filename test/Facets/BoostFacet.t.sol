@@ -7,8 +7,8 @@ import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonE
 import {ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed} from "src/facets/ClaimFacet.sol";
 import {BoostFacet, BoostFacet__InvalidBoostLevel, BoostFacet__BoostAlreadyClaimed, BoostFacet__UserNotParticipated} from "src/facets/BoostFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
-import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
+import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
+import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
 import "src/libraries/LPercentages.sol";
 
 contract BoostFacetTest is DiamondTest {

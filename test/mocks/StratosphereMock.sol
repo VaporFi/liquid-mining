@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.12;
 
-import "../interfaces/IStratosphere.sol";
-import "lib/forge-std/src/Test.sol";
+import "forge-std/Test.sol";
+import "src/interfaces/IStratosphere.sol";
 
 contract StratosphereMock is IStratosphere, Test {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
