@@ -8,7 +8,6 @@ import {DepositFacet} from "src/facets/DepositFacet.sol";
 import {UnlockFacet} from "src/facets/UnlockFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
 import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
 import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
 
 contract WithdrawFacetTest is DiamondTest {
@@ -22,8 +21,6 @@ contract WithdrawFacetTest is DiamondTest {
     address feeReceiver1 = makeAddr("FeeReceiver1");
     address feeReceiver2 = makeAddr("FeeReceiver2");
     StratosphereMock stratosphereMock;
-
-    RewardsControllerMock rewardsControllerMock;
 
     function setUp() public {
         vm.startPrank(makeAddr("diamondOwner"));
@@ -53,7 +50,6 @@ contract WithdrawFacetTest is DiamondTest {
         managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
         managerFunctionSelectors[3] = diamondManagerFacet.setDepositFee.selector;
         managerFunctionSelectors[4] = diamondManagerFacet.setStratosphereAddress.selector;
-        managerFunctionSelectors[5] = diamondManagerFacet.setRewardsControllerAddress.selector;
         managerFunctionSelectors[6] = diamondManagerFacet.setSeasonEndTimestamp.selector;
         managerFunctionSelectors[7] = diamondManagerFacet.setDepositFeeReceivers.selector;
         managerFunctionSelectors[8] = diamondManagerFacet.getPendingWithdrawals.selector;
@@ -81,7 +77,6 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet = WithdrawFacet(address(diamond));
 
         stratosphereMock = new StratosphereMock();
-        rewardsControllerMock = new RewardsControllerMock();
 
         diamondManagerFacet.setCurrentSeasonId(1);
         diamondManagerFacet.setDepositFee(500);
@@ -90,7 +85,6 @@ contract WithdrawFacetTest is DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         diamondManagerFacet.setUnlockFee(1000);
         diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(1, 500);
         diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(2, 550);

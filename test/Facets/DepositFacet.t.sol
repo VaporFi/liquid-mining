@@ -6,10 +6,9 @@ import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
 import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidFeeReceivers} from "src/facets/DepositFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
 import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
 import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
 
-contract DepositFacetTest is Test, DiamondTest {
+contract DepositFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     LiquidStakingDiamond internal diamond;
     DepositFacet internal depositFacet;
@@ -18,7 +17,6 @@ contract DepositFacetTest is Test, DiamondTest {
     address depositFeeReceiver1 = makeAddr("depositFeeReceiver1");
     address depositFeeReceiver2 = makeAddr("depositFeeReceiver2");
     StratosphereMock stratosphereMock;
-    RewardsControllerMock rewardsControllerMock;
 
     function setUp() public {
         vm.startPrank(makeAddr("diamondOwner"));
@@ -35,7 +33,6 @@ contract DepositFacetTest is Test, DiamondTest {
         managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
         managerFunctionSelectors[3] = diamondManagerFacet.setDepositFee.selector;
         managerFunctionSelectors[4] = diamondManagerFacet.setStratosphereAddress.selector;
-        managerFunctionSelectors[5] = diamondManagerFacet.setRewardsControllerAddress.selector;
         managerFunctionSelectors[6] = diamondManagerFacet.setSeasonEndTimestamp.selector;
         managerFunctionSelectors[7] = diamondManagerFacet.setDepositFeeReceivers.selector;
         managerFunctionSelectors[8] = diamondManagerFacet.getPendingWithdrawals.selector;
@@ -55,7 +52,6 @@ contract DepositFacetTest is Test, DiamondTest {
         depositFacet = DepositFacet(address(diamond));
 
         stratosphereMock = new StratosphereMock();
-        rewardsControllerMock = new RewardsControllerMock();
 
         vm.stopPrank();
     }
@@ -77,7 +73,6 @@ contract DepositFacetTest is Test, DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = depositFeeReceiver1;
@@ -119,7 +114,6 @@ contract DepositFacetTest is Test, DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = depositFeeReceiver1;
@@ -164,7 +158,6 @@ contract DepositFacetTest is Test, DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = depositFeeReceiver1;
@@ -209,7 +202,6 @@ contract DepositFacetTest is Test, DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = depositFeeReceiver1;
@@ -241,7 +233,6 @@ contract DepositFacetTest is Test, DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = depositFeeReceiver1;

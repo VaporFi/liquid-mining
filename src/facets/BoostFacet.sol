@@ -7,7 +7,7 @@ import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
-import "../interfaces/IRewardsController.sol";
+import "../libraries/LStratosphere.sol";
 
 error BoostFacet__InvalidBoostLevel();
 error BoostFacet__BoostAlreadyClaimed();
@@ -25,14 +25,14 @@ contract BoostFacet {
     function claimBoost(uint256 boostLevel) external {
         uint256 _seasonId = s.currentSeasonId;
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
-        if(_userData.depositAmount == 0) {
+        if (_userData.depositAmount == 0) {
             revert BoostFacet__UserNotParticipated();
         }
         if (_userData.lastBoostClaimTimestamp != 0 && block.timestamp - _userData.lastBoostClaimTimestamp < 1 days) {
             revert BoostFacet__BoostAlreadyClaimed();
         }
         uint256 _boostFee = 0;
-        (bool isStratosphereMember, uint256 tier) = getStratosphereMembershipDetails(msg.sender);
+        (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
         if (!isStratosphereMember && boostLevel > 0) {
             revert BoostFacet__InvalidBoostLevel();
         }
@@ -64,7 +64,6 @@ contract BoostFacet {
         return LPercentages.percentage(_userData.depositAmount, _boostPointsAmount);
     }
 
-
     /// @notice get details of stratosphere for member
     /// @param _account Account of member to check
     /// @return bool if account is stratosphere member
@@ -81,6 +80,4 @@ contract BoostFacet {
             return (true, tier);
         }
     }
-
-
 }

@@ -8,7 +8,6 @@ import {ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, C
 import {BoostFacet, BoostFacet__InvalidBoostLevel, BoostFacet__BoostAlreadyClaimed, BoostFacet__UserNotParticipated} from "src/facets/BoostFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
 import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
 import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
 import "src/libraries/LPercentages.sol";
 
@@ -23,7 +22,6 @@ contract BoostFacetTest is DiamondTest {
     ERC20Mock internal rewardToken;
     ERC20Mock internal boostFeeToken;
     StratosphereMock stratosphereMock;
-    RewardsControllerMock rewardsControllerMock;
 
     // setup addresses
     address feeReceiver1 = makeAddr("feeReceiver1");
@@ -66,9 +64,6 @@ contract BoostFacetTest is DiamondTest {
     uint256 boostLvl3Tier5 = 4400;
     uint256 boostLvl3Tier6 = 4500;
 
-    
-
-
     function setUp() public {
         vm.startPrank(diamondOwner);
 
@@ -77,7 +72,6 @@ contract BoostFacetTest is DiamondTest {
         claimFacet = new ClaimFacet();
         boostFacet = new BoostFacet();
         diamondManagerFacet = new DiamondManagerFacet();
-        
 
         // Deposit Facet Setup
         bytes4[] memory depositFunctionSelectors = new bytes4[](1);
@@ -101,7 +95,6 @@ contract BoostFacetTest is DiamondTest {
         managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
         managerFunctionSelectors[3] = diamondManagerFacet.setDepositFee.selector;
         managerFunctionSelectors[4] = diamondManagerFacet.setStratosphereAddress.selector;
-        managerFunctionSelectors[5] = diamondManagerFacet.setRewardsControllerAddress.selector;
         managerFunctionSelectors[6] = diamondManagerFacet.setSeasonEndTimestamp.selector;
         managerFunctionSelectors[7] = diamondManagerFacet.setDepositFeeReceivers.selector;
         managerFunctionSelectors[8] = diamondManagerFacet.getPendingWithdrawals.selector;
@@ -137,7 +130,6 @@ contract BoostFacetTest is DiamondTest {
         claimFacet = ClaimFacet(address(diamond));
         boostFacet = BoostFacet(address(diamond));
         stratosphereMock = new StratosphereMock();
-        rewardsControllerMock = new RewardsControllerMock();
 
         // Set up season details for deposit
         rewardToken.mint(address(diamond), rewardTokenToDistribute);
@@ -148,7 +140,6 @@ contract BoostFacetTest is DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(2, depositDiscountSilver);
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, depositDiscountGold);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = feeReceiver1;
@@ -164,9 +155,8 @@ contract BoostFacetTest is DiamondTest {
         diamondManagerFacet.setBoostPercentTierLevel(2, 1, boostLvl1Tier2);
         diamondManagerFacet.setBoostPercentTierLevel(3, 1, boostLvl1Tier3);
         diamondManagerFacet.setBoostPercentTierLevel(1, 2, boostLvl2Tier1);
-        
-        vm.stopPrank();
 
+        vm.stopPrank();
     }
 
     function test_RevertIf_NotStratosphereMember() public {
@@ -192,7 +182,7 @@ contract BoostFacetTest is DiamondTest {
         boostFacet.claimBoost(1);
         uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountBasic, depositFee);
         uint256 expectedBoostPoints = _calculatePoints(boostLvl1Tier1, depositAmountAfterFee);
-        (uint256 depositPoints , uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberBasic, 1);
+        (uint256 depositPoints, uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberBasic, 1);
         assertEq(boostPoints, expectedBoostPoints);
         assertEq(boostFeeToken.balanceOf(stratosphereMemberBasic), 0);
         assertEq(boostFeeToken.balanceOf(address(boostFacet)), boostFeeLvl1);
@@ -207,7 +197,7 @@ contract BoostFacetTest is DiamondTest {
         boostFacet.claimBoost(1);
         uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountSilver, depositFee);
         uint256 expectedBoostPoints = _calculatePoints(boostLvl1Tier2, depositAmountAfterFee);
-        (uint256 depositPoints , uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberSilver, 1);
+        (uint256 depositPoints, uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberSilver, 1);
         assertEq(boostPoints, expectedBoostPoints);
         assertEq(boostFeeToken.balanceOf(stratosphereMemberSilver), 0);
         assertEq(boostFeeToken.balanceOf(address(boostFacet)), boostFeeLvl1);
@@ -222,7 +212,7 @@ contract BoostFacetTest is DiamondTest {
         boostFacet.claimBoost(1);
         uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountGold, depositFee);
         uint256 expectedBoostPoints = _calculatePoints(boostLvl1Tier3, depositAmountAfterFee);
-        (uint256 depositPoints , uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberGold, 1);
+        (uint256 depositPoints, uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberGold, 1);
         assertEq(boostPoints, expectedBoostPoints);
         assertEq(boostFeeToken.balanceOf(stratosphereMemberGold), 0);
         assertEq(boostFeeToken.balanceOf(address(boostFacet)), boostFeeLvl1);
@@ -237,14 +227,12 @@ contract BoostFacetTest is DiamondTest {
         boostFacet.claimBoost(2);
         uint256 depositAmountAfterFee = _getAmountAfterFee(testDepositAmount, depositDiscountBasic, depositFee);
         uint256 expectedBoostPoints = _calculatePoints(boostLvl2Tier1, depositAmountAfterFee);
-        (uint256 depositPoints , uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberBasic, 1);
+        (uint256 depositPoints, uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberBasic, 1);
         assertEq(boostPoints, expectedBoostPoints);
         assertEq(boostFeeToken.balanceOf(stratosphereMemberBasic), 0);
         assertEq(boostFeeToken.balanceOf(address(boostFacet)), boostFeeLvl2);
         vm.stopPrank();
     }
-
-    
 
     // Helper functions
 
@@ -263,11 +251,7 @@ contract BoostFacetTest is DiamondTest {
         boostFeeToken.increaseAllowance(address(boostFacet), _amount);
     }
 
-   function _calculatePoints(
-        uint256 boostPointsAmount,
-        uint256 depositAmount
-    ) internal view returns (uint256) {
+    function _calculatePoints(uint256 boostPointsAmount, uint256 depositAmount) internal view returns (uint256) {
         return LPercentages.percentage(depositAmount, boostPointsAmount);
     }
-
 }

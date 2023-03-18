@@ -22,4 +22,12 @@ contract StratosphereMock is IStratosphere, Test {
             return 0;
         }
     }
+
+    function tierOf(uint256 tokenId) external pure returns (uint8) {
+        if (tokenId == 0 || tokenId > 3) {
+            return 0;
+        } else {
+            return uint8(tokenId);
+        }
+    }
 }

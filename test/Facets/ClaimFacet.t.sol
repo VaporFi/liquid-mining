@@ -7,7 +7,6 @@ import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonE
 import {ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed} from "src/facets/ClaimFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
 import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
 import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
 import "../../src/libraries/LPercentages.sol";
 
@@ -20,7 +19,6 @@ contract RestakeFacetTest is DiamondTest {
     ERC20Mock internal depositToken;
     ERC20Mock internal rewardToken;
     StratosphereMock stratosphereMock;
-    RewardsControllerMock rewardsControllerMock;
 
     // setup addresses
     address feeReceiver1 = makeAddr("FeeReceiver1");
@@ -63,7 +61,6 @@ contract RestakeFacetTest is DiamondTest {
         managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
         managerFunctionSelectors[3] = diamondManagerFacet.setDepositFee.selector;
         managerFunctionSelectors[4] = diamondManagerFacet.setStratosphereAddress.selector;
-        managerFunctionSelectors[5] = diamondManagerFacet.setRewardsControllerAddress.selector;
         managerFunctionSelectors[6] = diamondManagerFacet.setSeasonEndTimestamp.selector;
         managerFunctionSelectors[7] = diamondManagerFacet.setDepositFeeReceivers.selector;
         managerFunctionSelectors[8] = diamondManagerFacet.getPendingWithdrawals.selector;
@@ -93,7 +90,6 @@ contract RestakeFacetTest is DiamondTest {
         depositFacet = DepositFacet(address(diamond));
         claimFacet = ClaimFacet(address(diamond));
         stratosphereMock = new StratosphereMock();
-        rewardsControllerMock = new RewardsControllerMock();
 
         // Set up season details for deposit
         rewardToken.mint(address(diamond), rewardTokenToDistribute);
@@ -104,7 +100,6 @@ contract RestakeFacetTest is DiamondTest {
         diamondManagerFacet.setDepositDiscountForStratosphereMember(2, depositDiscountSilver);
         diamondManagerFacet.setDepositDiscountForStratosphereMember(3, depositDiscountGold);
         diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = feeReceiver1;
@@ -113,12 +108,9 @@ contract RestakeFacetTest is DiamondTest {
         depositFeeProportions[1] = 2500;
         diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
         vm.stopPrank();
-
     }
 
     function test_claimRewardsWihtoutBeingStratMember() public {
-
-       
         vm.startPrank(user);
         _mintAndDeposit(user, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
@@ -132,8 +124,6 @@ contract RestakeFacetTest is DiamondTest {
     }
 
     function test_claimRewardsWithStratMemberBasic() public {
-
-      
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
@@ -142,12 +132,11 @@ contract RestakeFacetTest is DiamondTest {
         assertEq(rewardToken.balanceOf(stratosphereMemberBasic), rewardTokenToDistribute);
         assertEq(rewardToken.balanceOf(user), rewardTokenToDistribute);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberBasic, 1), rewardTokenToDistribute);
-        
+
         vm.stopPrank();
     }
 
     function test_claimRewardsWithStratMemberSilver() public {
-
         // Set up season for restake
         vm.startPrank(stratosphereMemberSilver);
         _mintAndDeposit(stratosphereMemberSilver, testDepositAmount);
@@ -155,12 +144,11 @@ contract RestakeFacetTest is DiamondTest {
         claimFacet.claim();
         assertEq(rewardToken.balanceOf(stratosphereMemberSilver), rewardTokenToDistribute);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberSilver, 1), rewardTokenToDistribute);
-        
+
         vm.stopPrank();
     }
 
     function test_claimRewardsWithStratMemberGold() public {
-
         // Set up season for restake
         vm.startPrank(stratosphereMemberGold);
         _mintAndDeposit(stratosphereMemberGold, testDepositAmount);
@@ -168,7 +156,7 @@ contract RestakeFacetTest is DiamondTest {
         claimFacet.claim();
         assertEq(rewardToken.balanceOf(stratosphereMemberGold), rewardTokenToDistribute);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberGold, 1), rewardTokenToDistribute);
-        
+
         vm.stopPrank();
     }
 
@@ -228,7 +216,7 @@ contract RestakeFacetTest is DiamondTest {
         vm.startPrank(user);
         _mintAndDeposit(user, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
-         assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), 0);
+        assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), 0);
         claimFacet.claim();
         assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), rewardTokenToDistribute);
         vm.stopPrank();
@@ -238,7 +226,7 @@ contract RestakeFacetTest is DiamondTest {
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
-         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberBasic, 1), 0);
+        assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberBasic, 1), 0);
         claimFacet.claim();
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberBasic, 1), rewardTokenToDistribute);
         vm.stopPrank();
@@ -252,7 +240,6 @@ contract RestakeFacetTest is DiamondTest {
         depositFacet.deposit(_amount);
     }
 
-   
     function _calculateShare(address _addr, uint256 _seasonId) internal view returns (uint256) {
         uint256 seasonTotalPoints = diamondManagerFacet.getSeasonTotalPoints(_seasonId);
         uint256 userTotalPoints = diamondManagerFacet.getUserTotalPoints(1, _addr);
@@ -260,9 +247,7 @@ contract RestakeFacetTest is DiamondTest {
         return _vapeToDistribute(userShare);
     }
 
-   
     function _vapeToDistribute(uint256 _userShare) internal view returns (uint256) {
         return (rewardTokenToDistribute * _userShare) / 1e18;
     }
-
 }
