@@ -55,7 +55,6 @@ contract DeployFuji is Script {
         initArgs.boostFeeToken = USDC;
         initArgs.rewardToken = VAPE;
         initArgs.stratosphere = STRATOSPHERE;
-        initArgs.rewardsController = address(0);
         bytes memory data = abi.encodeWithSelector(DiamondInit.init.selector, initArgs);
         DiamondCutFacet(address(diamond)).diamondCut(cut, address(diamondInit), data);
 
@@ -156,8 +155,38 @@ contract DeployFuji is Script {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](2);
-        functionSelectors[0] = DiamondManagerFacet.setUnlockFee.selector;
+        functionSelectors = new bytes4[](32);
+        functionSelectors[0] = diamondManager.setDepositToken.selector;
+        functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
+        functionSelectors[2] = diamondManager.setDepositDiscountForStratosphereMember.selector;
+        functionSelectors[3] = diamondManager.setDepositFee.selector;
+        functionSelectors[4] = diamondManager.setStratosphereAddress.selector;
+        functionSelectors[6] = diamondManager.setSeasonEndTimestamp.selector;
+        functionSelectors[7] = diamondManager.setDepositFeeReceivers.selector;
+        functionSelectors[8] = diamondManager.getPendingWithdrawals.selector;
+        functionSelectors[9] = diamondManager.getDepositAmountOfUser.selector;
+        functionSelectors[10] = diamondManager.getDepositPointsOfUser.selector;
+        functionSelectors[11] = diamondManager.getTotalDepositAmountOfSeason.selector;
+        functionSelectors[12] = diamondManager.getTotalPointsOfSeason.selector;
+        functionSelectors[13] = diamondManager.setRestakeDiscountForStratosphereMember.selector;
+        functionSelectors[14] = diamondManager.setRestakeFee.selector;
+        functionSelectors[15] = diamondManager.getCurrentSeasonId.selector;
+        functionSelectors[16] = diamondManager.getSeasonEndTimestamp.selector;
+        functionSelectors[17] = diamondManager.getWithdrawRestakeStatus.selector;
+        functionSelectors[18] = diamondManager.startNewSeason.selector;
+        functionSelectors[19] = diamondManager.getUserDepositAmount.selector;
+        functionSelectors[20] = diamondManager.setRewardToken.selector;
+        functionSelectors[21] = diamondManager.getUserClaimedRewards.selector;
+        functionSelectors[22] = diamondManager.getSeasonTotalPoints.selector;
+        functionSelectors[23] = diamondManager.getSeasonTotalClaimedRewards.selector;
+        functionSelectors[24] = diamondManager.getUserTotalPoints.selector;
+        functionSelectors[25] = diamondManager.setBoostFee.selector;
+        functionSelectors[26] = diamondManager.setBoostFeeToken.selector;
+        functionSelectors[27] = diamondManager.setBoostPercentTierLevel.selector;
+        functionSelectors[28] = diamondManager.getUserPoints.selector;
+        functionSelectors[29] = diamondManager.setUnlockFeeReceivers.selector;
+        functionSelectors[30] = diamondManager.getUnlockAmountOfUser.selector;
+        functionSelectors[31] = diamondManager.getUnlockTimestampOfUser.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(diamondManager),

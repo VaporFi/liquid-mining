@@ -34,7 +34,6 @@ contract DiamondInit {
         address boostFeeToken;
         address rewardToken;
         address stratosphere;
-        address rewardsController;
     }
 
     // You can add parameters to this function in order to pass in
@@ -56,7 +55,6 @@ contract DiamondInit {
 
         // General
         s.stratosphereAddress = _args.stratosphere;
-        s.rewardsControllerAddress = _args.rewardsController;
 
         // DepositFacet
         s.depositFee = _args.depositFee;
@@ -64,14 +62,41 @@ contract DiamondInit {
 
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
-        s.unlockDiscountForStratosphereMembers[0] = 0;
-        s.depositDiscountForStratosphereMembers[0] = 0;
-        s.restakeDiscountForStratosphereMembers[0] = 0;
+        s.unlockDiscountForStratosphereMembers[1] = 500;
+        s.unlockDiscountForStratosphereMembers[2] = 550;
+        s.unlockDiscountForStratosphereMembers[3] = 650;
+        s.depositDiscountForStratosphereMembers[1] = 500;
+        s.depositDiscountForStratosphereMembers[2] = 550;
+        s.depositDiscountForStratosphereMembers[3] = 650;
+        s.restakeDiscountForStratosphereMembers[1] = 500;
+        s.restakeDiscountForStratosphereMembers[2] = 550;
+        s.restakeDiscountForStratosphereMembers[3] = 650;
 
         // BoostFacet
         s.boostFeeToken = _args.boostFeeToken;
         s.boostLevelToFee[0] = 0;
-        s.boostPercentFromTierToLevel[0][0] = 0;
+        /// @dev using 1e6 because USDC has 6 decimals
+        s.boostLevelToFee[1] = 2 * 1e6;
+        s.boostLevelToFee[2] = 3 * 1e6;
+        s.boostLevelToFee[3] = 4 * 1e6;
+        s.boostPercentFromTierToLevel[1][1] = 1000;
+        s.boostPercentFromTierToLevel[1][2] = 1100;
+        s.boostPercentFromTierToLevel[1][3] = 1200;
+        s.boostPercentFromTierToLevel[1][4] = 1300;
+        s.boostPercentFromTierToLevel[1][5] = 1400;
+        s.boostPercentFromTierToLevel[1][6] = 1500;
+        s.boostPercentFromTierToLevel[2][1] = 2000;
+        s.boostPercentFromTierToLevel[2][2] = 2100;
+        s.boostPercentFromTierToLevel[2][3] = 2200;
+        s.boostPercentFromTierToLevel[2][4] = 2300;
+        s.boostPercentFromTierToLevel[2][5] = 2400;
+        s.boostPercentFromTierToLevel[2][6] = 2500;
+        s.boostPercentFromTierToLevel[3][1] = 4000;
+        s.boostPercentFromTierToLevel[3][2] = 4100;
+        s.boostPercentFromTierToLevel[3][3] = 4200;
+        s.boostPercentFromTierToLevel[3][4] = 4300;
+        s.boostPercentFromTierToLevel[3][5] = 4400;
+        s.boostPercentFromTierToLevel[3][6] = 4500;
 
         // ClaimFacet
         s.claimFee = _args.claimFee;

@@ -15,73 +15,23 @@ contract UnlockFacetTest is DiamondTest {
     UnlockFacet internal unlockFacet;
     DepositFacet internal depositFacet;
     DiamondManagerFacet internal diamondManagerFacet;
-    ERC20Mock internal depositToken;
     address depositFeeReceiver1 = makeAddr("depositFeeReceiver1");
     address depositFeeReceiver2 = makeAddr("depositFeeReceiver2");
     address unlockFeeReceiver1 = makeAddr("unlockFeeReceiver1");
     address unlockFeeReceiver2 = makeAddr("unlockFeeReceiver2");
-    StratosphereMock stratosphereMock;
 
     function setUp() public {
         vm.startPrank(makeAddr("diamondOwner"));
 
         diamond = createDiamond();
-        unlockFacet = new UnlockFacet();
-        diamondManagerFacet = new DiamondManagerFacet();
-        bytes4[] memory unlockFunctionSelectors = new bytes4[](1);
-        unlockFunctionSelectors[0] = unlockFacet.unlock.selector;
-        addFacet(diamond, address(unlockFacet), unlockFunctionSelectors);
-
-        depositFacet = new DepositFacet();
-        bytes4[] memory depositFunctionSelectors = new bytes4[](1);
-        depositFunctionSelectors[0] = depositFacet.deposit.selector;
-        addFacet(diamond, address(depositFacet), depositFunctionSelectors);
-
-        bytes4[] memory managerFunctionSelectors = new bytes4[](18);
-        managerFunctionSelectors[0] = diamondManagerFacet.setDepositToken.selector;
-        managerFunctionSelectors[1] = diamondManagerFacet.setCurrentSeasonId.selector;
-        managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
-        managerFunctionSelectors[3] = diamondManagerFacet.setDepositFee.selector;
-        managerFunctionSelectors[4] = diamondManagerFacet.setStratosphereAddress.selector;
-        managerFunctionSelectors[6] = diamondManagerFacet.setSeasonEndTimestamp.selector;
-        managerFunctionSelectors[7] = diamondManagerFacet.setDepositFeeReceivers.selector;
-        managerFunctionSelectors[8] = diamondManagerFacet.getPendingWithdrawals.selector;
-        managerFunctionSelectors[9] = diamondManagerFacet.getDepositAmountOfUser.selector;
-        managerFunctionSelectors[10] = diamondManagerFacet.getDepositPointsOfUser.selector;
-        managerFunctionSelectors[11] = diamondManagerFacet.getTotalDepositAmountOfSeason.selector;
-        managerFunctionSelectors[12] = diamondManagerFacet.getTotalPointsOfSeason.selector;
-        managerFunctionSelectors[13] = diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember.selector;
-        managerFunctionSelectors[14] = diamondManagerFacet.setUnlockFee.selector;
-        managerFunctionSelectors[15] = diamondManagerFacet.setUnlockFeeReceivers.selector;
-        managerFunctionSelectors[16] = diamondManagerFacet.getUnlockAmountOfUser.selector;
-        managerFunctionSelectors[17] = diamondManagerFacet.getUnlockTimestampOfUser.selector;
-
-        addFacet(diamond, address(diamondManagerFacet), managerFunctionSelectors);
-
         diamondManagerFacet = DiamondManagerFacet(address(diamond));
-
-        depositToken = new ERC20Mock("Vapor nodes", "VPND");
-
-        diamondManagerFacet.setDepositToken(address(depositToken));
-
         unlockFacet = UnlockFacet(address(diamond));
         depositFacet = DepositFacet(address(diamond));
-
-        stratosphereMock = new StratosphereMock();
 
         depositToken.mint(makeAddr("user"), 100);
 
         diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setUnlockFee(1000);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(3, 650);
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = depositFeeReceiver1;
@@ -101,7 +51,7 @@ contract UnlockFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
-    function test_RevertIfUnlockerDoesNotHaveEnoughBalanceDeposited() public {
+    function test_RevertIf_UnlockerDoesNotHaveEnoughBalanceDeposited() public {
         vm.startPrank(makeAddr("user"));
         depositToken.increaseAllowance(address(depositFacet), 1000000);
 
@@ -110,7 +60,7 @@ contract UnlockFacetTest is DiamondTest {
         unlockFacet.unlock(100);
     }
 
-    function test_RevertIfUnlockedTwice() public {
+    function test_RevertIf_UnlockedTwice() public {
         vm.startPrank(makeAddr("user"));
         depositToken.increaseAllowance(address(depositFacet), 1000000);
 
@@ -120,7 +70,7 @@ contract UnlockFacetTest is DiamondTest {
         unlockFacet.unlock(10);
     }
 
-    function test_RevertIfUnlockedWithInvalidAmount() public {
+    function test_RevertIf_UnlockedWithInvalidAmount() public {
         vm.startPrank(makeAddr("user"));
         depositToken.mint(makeAddr("user"), 100);
         depositToken.increaseAllowance(address(depositFacet), 1000000);
@@ -130,7 +80,7 @@ contract UnlockFacetTest is DiamondTest {
         unlockFacet.unlock(100);
     }
 
-    function test_RevertIfUnlockedTimestampIsMoreThanSeasonEndTimestamp() public {
+    function test_RevertIf_UnlockedTimestampIsMoreThanSeasonEndTimestamp() public {
         vm.startPrank(makeAddr("user"));
         depositToken.mint(makeAddr("user"), 100);
         depositToken.increaseAllowance(address(depositFacet), 1000000);
@@ -182,12 +132,12 @@ contract UnlockFacetTest is DiamondTest {
     }
 
     function test_UnlockBeingBasicStratosphereMember() public {
-        address user = makeAddr("stratosphere_member_basic");
+        address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
 
-        vm.startPrank(user);
+        vm.startPrank(stratosphereMemberBasic);
 
         depositToken.increaseAllowance(address(depositFacet), 1000000);
-        depositToken.mint(user, 1000);
+        depositToken.mint(stratosphereMemberBasic, 1000);
 
         vm.warp(block.timestamp + 1 days);
 
@@ -201,8 +151,8 @@ contract UnlockFacetTest is DiamondTest {
 
         assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 35);
         assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 11);
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(user, 1), 953);
-        assertEq(diamondManagerFacet.getDepositPointsOfUser(user, 1), 29 * 953);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 1), 953);
+        assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 29 * 953);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 953);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 29 * 953);
 
@@ -210,12 +160,15 @@ contract UnlockFacetTest is DiamondTest {
         unlockFacet.unlock(954);
 
         unlockFacet.unlock(953);
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(user, 1), 0);
-        assertEq(diamondManagerFacet.getDepositPointsOfUser(user, 1), 0);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 1), 0);
+        assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 0);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 0);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 0);
-        assertEq(diamondManagerFacet.getUnlockAmountOfUser(user, 1), 953 - 95);
-        assertEq(diamondManagerFacet.getUnlockTimestampOfUser(user, 1), block.timestamp + 3 days - 12960);
+        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberBasic, 1), 953 - 95);
+        assertEq(
+            diamondManagerFacet.getUnlockTimestampOfUser(stratosphereMemberBasic, 1),
+            block.timestamp + 3 days - 12960
+        );
         assertEq(
             diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1) +
                 diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2),
@@ -226,12 +179,12 @@ contract UnlockFacetTest is DiamondTest {
     }
 
     function test_UnlockBeingGoldStratosphereMember() public {
-        address user = makeAddr("stratosphere_member_gold");
+        address stratosphereMemberGold = makeAddr("stratosphereMemberGold");
 
-        vm.startPrank(user);
+        vm.startPrank(stratosphereMemberGold);
 
         depositToken.increaseAllowance(address(depositFacet), 1000000);
-        depositToken.mint(user, 1000);
+        depositToken.mint(stratosphereMemberGold, 1000);
 
         vm.warp(block.timestamp + 5 days);
 
@@ -245,8 +198,8 @@ contract UnlockFacetTest is DiamondTest {
 
         assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 34);
         assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 11);
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(user, 1), 954);
-        assertEq(diamondManagerFacet.getDepositPointsOfUser(user, 1), 25 * 954);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGold, 1), 954);
+        assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberGold, 1), 25 * 954);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 954);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 25 * 954);
 
@@ -254,12 +207,15 @@ contract UnlockFacetTest is DiamondTest {
         unlockFacet.unlock(955);
 
         unlockFacet.unlock(954);
-        assertEq(diamondManagerFacet.getDepositAmountOfUser(user, 1), 0);
-        assertEq(diamondManagerFacet.getDepositPointsOfUser(user, 1), 0);
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGold, 1), 0);
+        assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberGold, 1), 0);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 0);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 0);
-        assertEq(diamondManagerFacet.getUnlockAmountOfUser(user, 1), 954 - 95);
-        assertEq(diamondManagerFacet.getUnlockTimestampOfUser(user, 1), block.timestamp + 3 days - 16848);
+        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberGold, 1), 954 - 95);
+        assertEq(
+            diamondManagerFacet.getUnlockTimestampOfUser(stratosphereMemberGold, 1),
+            block.timestamp + 3 days - 16848
+        );
         assertEq(
             diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1) +
                 diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2),
