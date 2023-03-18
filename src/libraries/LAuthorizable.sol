@@ -6,7 +6,6 @@ import "./AppStorage.sol";
 error LAuthorizable__OnlyAuthorized();
 
 /// @title LAuthorizable
-/// @author mektigboy
 library LAuthorizable {
     /////////////
     /// LOGIC ///
