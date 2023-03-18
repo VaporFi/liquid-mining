@@ -12,6 +12,7 @@ import "../interfaces/IRewardsController.sol";
 
 error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
+error RestakeFacet__FundsInPrevSeason();
 
 contract RestakeFacet {
     event Restake(address indexed depositor, uint256 amount);
@@ -29,10 +30,15 @@ contract RestakeFacet {
             revert RestakeFacet__HasWithdrawnOrRestaked();
         }
 
+        if (s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0) {
+            revert RestakeFacet__FundsInPrevSeason();
+        }
+
         uint256 lastSeasonAmount = userData.depositAmount + userData.unlockAmount;
         userData.unlockAmount = 0;
         _restake(lastSeasonAmount);
         userData.hasWithdrawnOrRestaked = true;
+        s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
     }
 
     function _restake(uint256 _amount) internal {

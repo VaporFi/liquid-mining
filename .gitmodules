@@ -8,6 +8,7 @@
 [submodule "lib/clouds"]
 	path = lib/clouds
 	url = https://github.com/vaporfi/clouds
+	branch = main
 [submodule "lib/openzeppelin-contracts"]
 	path = lib/openzeppelin-contracts
 	url = https://github.com/openzeppelin/openzeppelin-contracts
