@@ -97,45 +97,45 @@ contract UnlockFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
-    // function test_RevertIfUnlockerDoesNotHaveEnoughBalanceDeposited() public {
-    //     vm.startPrank(makeAddr("user"));
-    //     depositToken.increaseAllowance(address(depositFacet), 1000000);
+    function test_RevertIfUnlockerDoesNotHaveEnoughBalanceDeposited() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
 
-    //     depositFacet.deposit(50);
-    //     vm.expectRevert(UnlockFacet__InvalidAmount.selector);
-    //     unlockFacet.unlock(100);
-    // }
+        depositFacet.deposit(50);
+        vm.expectRevert(UnlockFacet__InvalidAmount.selector);
+        unlockFacet.unlock(100);
+    }
 
-    // function test_RevertIfUnlockedTwice() public {
-    //     vm.startPrank(makeAddr("user"));
-    //     depositToken.increaseAllowance(address(depositFacet), 1000000);
+    function test_RevertIfUnlockedTwice() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
 
-    //     depositFacet.deposit(100);
-    //     unlockFacet.unlock(50);
-    //     vm.expectRevert(UnlockFacet__AlreadyUnlocked.selector);
-    //     unlockFacet.unlock(10);
-    // }
+        depositFacet.deposit(100);
+        unlockFacet.unlock(50);
+        vm.expectRevert(UnlockFacet__AlreadyUnlocked.selector);
+        unlockFacet.unlock(10);
+    }
 
-    // function test_RevertIfUnlockedWithInvalidAmount() public {
-    //     vm.startPrank(makeAddr("user"));
-    //     depositToken.mint(makeAddr("user"), 100);
-    //     depositToken.increaseAllowance(address(depositFacet), 1000000);
+    function test_RevertIfUnlockedWithInvalidAmount() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.mint(makeAddr("user"), 100);
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
 
-    //     depositFacet.deposit(100);
-    //     vm.expectRevert(UnlockFacet__InvalidAmount.selector);
-    //     unlockFacet.unlock(100);
-    // }
+        depositFacet.deposit(100);
+        vm.expectRevert(UnlockFacet__InvalidAmount.selector);
+        unlockFacet.unlock(100);
+    }
 
-    // function test_RevertIfUnlockedTimestampIsMoreThanSeasonEndTimestamp() public {
-    //     vm.startPrank(makeAddr("user"));
-    //     depositToken.mint(makeAddr("user"), 100);
-    //     depositToken.increaseAllowance(address(depositFacet), 1000000);
+    function test_RevertIfUnlockedTimestampIsMoreThanSeasonEndTimestamp() public {
+        vm.startPrank(makeAddr("user"));
+        depositToken.mint(makeAddr("user"), 100);
+        depositToken.increaseAllowance(address(depositFacet), 1000000);
 
-    //     depositFacet.deposit(100);
-    //     vm.warp(block.timestamp + 29 days);
-    //     vm.expectRevert(UnlockFacet__InvalidUnlock.selector);
-    //     unlockFacet.unlock(50);
-    // }
+        depositFacet.deposit(100);
+        vm.warp(block.timestamp + 29 days);
+        vm.expectRevert(UnlockFacet__InvalidUnlock.selector);
+        unlockFacet.unlock(50);
+    }
 
     function test_UnlockWithoutBeingStratosphereMember() public {
         address user = makeAddr("user");
