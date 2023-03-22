@@ -151,8 +151,8 @@ contract BoostFacetTest is DiamondTest {
         uint256 expectedBoostPoints = _calculatePoints(boostLvl2Tier1, depositAmountAfterFee);
         (, uint256 boostPoints) = diamondManagerFacet.getUserPoints(stratosphereMemberBasic, 1);
         assertEq(boostPoints, expectedBoostPoints);
-        // assertEq(boostFeeToken.balanceOf(stratosphereMemberBasic), 0);
-        // assertEq(boostFeeToken.balanceOf(address(boostFacet)), boostFeeLvl2);
+        assertEq(boostFeeToken.balanceOf(stratosphereMemberBasic), 0);
+        assertEq(boostFeeToken.balanceOf(address(boostFacet)), boostFeeLvl2);
         vm.stopPrank();
     }
 
