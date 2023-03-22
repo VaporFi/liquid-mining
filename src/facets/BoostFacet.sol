@@ -61,7 +61,6 @@ contract BoostFacet {
         if (_boostPointsAmount == 0) {
             return 0;
         }
-        console.log("boostpointamount", _boostPointsAmount);
         return LPercentages.percentage(_userData.depositAmount, _boostPointsAmount);
     }
 }
