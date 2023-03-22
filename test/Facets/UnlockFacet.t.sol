@@ -39,15 +39,6 @@ contract UnlockFacetTest is DiamondTest {
         depositFeeProportions[0] = 7500;
         depositFeeProportions[1] = 2500;
         diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
-
-        address[] memory unlockFeeReceivers = new address[](2);
-        uint256[] memory unlockFeeProportions = new uint256[](2);
-        unlockFeeReceivers[0] = unlockFeeReceiver1;
-        unlockFeeReceivers[1] = unlockFeeReceiver2;
-        unlockFeeProportions[0] = 7500;
-        unlockFeeProportions[1] = 2500;
-        diamondManagerFacet.setUnlockFeeReceivers(unlockFeeReceivers, unlockFeeProportions);
-
         vm.stopPrank();
     }
 
@@ -123,12 +114,12 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getUnlockAmountOfUser(user, 1), 950 - 95);
         assertEq(diamondManagerFacet.getUnlockTimestampOfUser(user, 1), block.timestamp + 3 days);
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2),
-            94
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            94 + 49
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1), 71);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2), 23);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 71 + 37);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 23 + 12);
     }
 
     function test_UnlockBeingBasicStratosphereMember() public {
@@ -170,12 +161,12 @@ contract UnlockFacetTest is DiamondTest {
             block.timestamp + 3 days - 12960
         );
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2),
-            94
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            94 + 46
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1), 71);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2), 23);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 71 + 35);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 23 + 11);
     }
 
     function test_UnlockBeingGoldStratosphereMember() public {
@@ -217,11 +208,11 @@ contract UnlockFacetTest is DiamondTest {
             block.timestamp + 3 days - 16848
         );
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2),
-            94
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            94 + 45
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver1), 71);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(unlockFeeReceiver2), 23);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 71 + 34);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 23 + 11);
     }
 }

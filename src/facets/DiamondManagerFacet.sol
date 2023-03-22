@@ -242,4 +242,8 @@ contract DiamondManagerFacet {
     function getSeasonData(uint256 seasonId) external view returns (Season memory) {
         return s.seasons[seasonId];
     }
+
+    function getStratosphereAddress() external view returns (address) {
+        return s.stratosphereAddress;
+    }
 }
