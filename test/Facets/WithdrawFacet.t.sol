@@ -19,23 +19,27 @@ contract WithdrawFacetTest is DiamondTest {
     DiamondManagerFacet internal diamondManagerFacet;
     address feeReceiver1 = makeAddr("FeeReceiver1");
     address feeReceiver2 = makeAddr("FeeReceiver2");
+    uint256 rewardTokenToDistribute = 10000 * 1e18;
 
     function setUp() public {
         vm.startPrank(makeAddr("diamondOwner"));
 
         diamond = createDiamond();
         diamondManagerFacet = DiamondManagerFacet(address(diamond));
-        unlockFacet = UnlockFacet(address(diamond));
         depositFacet = DepositFacet(address(diamond));
+        unlockFacet = UnlockFacet(address(diamond));
         withdrawFacet = WithdrawFacet(address(diamond));
 
-        address[] memory feeReceivers = new address[](2);
-        uint256[] memory feeProportions = new uint256[](2);
-        feeReceivers[0] = feeReceiver1;
-        feeReceivers[1] = feeReceiver2;
-        feeProportions[0] = 7500;
-        feeProportions[1] = 2500;
-        diamondManagerFacet.setDepositFeeReceivers(feeReceivers, feeProportions);
+        // Set up season details for deposit
+        rewardToken.mint(address(diamond), rewardTokenToDistribute);
+        diamondManagerFacet.startNewSeason(rewardTokenToDistribute);
+        address[] memory depositFeeReceivers = new address[](2);
+        uint256[] memory depositFeeProportions = new uint256[](2);
+        depositFeeReceivers[0] = feeReceiver1;
+        depositFeeReceivers[1] = feeReceiver2;
+        depositFeeProportions[0] = 7500;
+        depositFeeProportions[1] = 2500;
+        diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
 
         vm.stopPrank();
     }
@@ -50,14 +54,14 @@ contract WithdrawFacetTest is DiamondTest {
         unlockFacet.unlock(amount);
     }
 
-    function test_RevertIf_NotUnlocked() external {
+    function test_Revert_If_Not_Unlocked() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         vm.expectRevert(WithdrawFacet__InsufficientBalance.selector);
         withdrawFacet.withdrawUnlocked();
     }
 
-    function test_RevertIf_PrematureUnlocked() external {
+    function test_Revert_If_Premature_Unlocked() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         unlockHelper(90);
@@ -77,7 +81,7 @@ contract WithdrawFacetTest is DiamondTest {
         assertEq(finalBalanceOfUser, previousBalanceOfUser + 950 - 95);
     }
 
-    function test_RevertIf_WithdrawAgain() external {
+    function test_Revert_Withdraw_Again() external {
         address user = makeAddr("user");
         vm.startPrank(user);
         depositHelper(user, 1000);
@@ -91,7 +95,7 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet.withdrawUnlocked();
     }
 
-    function test_RevertIf_Withdraw() external {
+    function test_Revert_If_Withdraw() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         unlockHelper(95);
@@ -99,7 +103,7 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet.withdraw();
     }
 
-    function test_RevertIf_WithdrawWhenSeasonInProgress() external {
+    function test_Revert_If_Withdraw_When_Season_In_Progress() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         unlockHelper(90);
@@ -107,7 +111,7 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet.withdraw();
     }
 
-    function test_RevertIf_WithdrawTwice() external {
+    function test_Revert_If_Withdraw_Twice() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         unlockHelper(90);
@@ -117,7 +121,7 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet.withdraw();
     }
 
-    function test_Withdraw_AfterSeasonEndSuccessful() external {
+    function test_Withdraw_After_SeasonEnd_Successful() external {
         address user = makeAddr("user");
         vm.startPrank(user);
         depositHelper(user, 1000);
@@ -128,7 +132,7 @@ contract WithdrawFacetTest is DiamondTest {
         assertEq(finalBalanceOfUser, previousBalanceOfUser + 950);
     }
 
-    function test_RevertIf_WithdrawAllWithoutDeposit() external {
+    function test_Revert_If_WithdrawAll_Without_Deposit() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         unlockHelper(95);
@@ -136,14 +140,14 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet.withdrawAll();
     }
 
-    function test_RevertIf_WithdrawAllWithoutSeasonEnd() external {
+    function test_Revert_If_WithdrawAll_Without_SeasonEnd() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         vm.expectRevert(WithdrawFacet__InProgressSeason.selector);
         withdrawFacet.withdrawAll();
     }
 
-    function test_RevertIf_WithdrawAllWithoutUnlockAmount() external {
+    function test_Revert_If_WithdrawAll_Without_UnlockAmount() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         vm.warp(block.timestamp + 31 days);
@@ -151,7 +155,7 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet.withdrawAll();
     }
 
-    function test_RevertIf_WithdrawAllTwice() external {
+    function test_Revert_If_WithdrawAll_Twice() external {
         vm.startPrank(makeAddr("user"));
         depositHelper(makeAddr("user"), 100);
         unlockHelper(90);
@@ -161,7 +165,7 @@ contract WithdrawFacetTest is DiamondTest {
         withdrawFacet.withdrawAll();
     }
 
-    function test_WithdrawAll_AfterSeasonEndSuccessful() external {
+    function test_WithdrawAll_After_SeasonEnd_Successful() external {
         address user = makeAddr("user");
         vm.startPrank(user);
         depositHelper(user, 1000);
