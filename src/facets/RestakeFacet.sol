@@ -8,7 +8,7 @@ import "openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
-import "../interfaces/IRewardsController.sol";
+import "../libraries/LStratosphere.sol";
 
 error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
@@ -44,7 +44,7 @@ contract RestakeFacet {
     function _restake(uint256 _amount) internal {
         uint256 _discount = 0;
         s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
-        (bool isStratosphereMember, uint256 tier) = _getStratosphereMembershipDetails(msg.sender);
+        (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
@@ -53,21 +53,6 @@ contract RestakeFacet {
         _applyPoints(_amountMinusFee);
         _applyRestakeFee(_fee);
         emit Restake(msg.sender, _amount);
-    }
-
-    /// @notice get details of stratosphere for member
-    /// @param _account Account of member to check
-    /// @return bool if account is stratosphere member
-    /// @return uint256 tier of membership
-    function _getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
-        IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
-        uint256 _tokenId = stratosphere.tokenIdOf(_account);
-        return (
-            _tokenId != 0,
-            _tokenId != 0
-                ? IRewardsController(s.rewardsControllerAddress).tierOf(keccak256("STRATOSPHERE_PROGRAM"), _tokenId)
-                : 0
-        );
     }
 
     /// @notice Apply points

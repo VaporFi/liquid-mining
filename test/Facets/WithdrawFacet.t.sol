@@ -7,9 +7,8 @@ import {WithdrawFacet, WithdrawFacet__InProgressSeason, WithdrawFacet__Insuffici
 import {DepositFacet} from "src/facets/DepositFacet.sol";
 import {UnlockFacet} from "src/facets/UnlockFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
-import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
-import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
+import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
+import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
 
 contract WithdrawFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
@@ -18,89 +17,29 @@ contract WithdrawFacetTest is DiamondTest {
     DepositFacet internal depositFacet;
     WithdrawFacet internal withdrawFacet;
     DiamondManagerFacet internal diamondManagerFacet;
-    ERC20Mock internal depositToken;
-    address feeReceiver1 = makeAddr("feeReceiver1");
-    address feeReceiver2 = makeAddr("feeReceiver2");
-    StratosphereMock stratosphereMock;
-
-    RewardsControllerMock rewardsControllerMock;
+    address feeReceiver1 = makeAddr("FeeReceiver1");
+    address feeReceiver2 = makeAddr("FeeReceiver2");
+    uint256 rewardTokenToDistribute = 10000 * 1e18;
 
     function setUp() public {
         vm.startPrank(makeAddr("diamondOwner"));
 
         diamond = createDiamond();
-        unlockFacet = new UnlockFacet();
-        diamondManagerFacet = new DiamondManagerFacet();
-        bytes4[] memory unlockFunctionSelectors = new bytes4[](1);
-        unlockFunctionSelectors[0] = unlockFacet.unlock.selector;
-        addFacet(diamond, address(unlockFacet), unlockFunctionSelectors);
-
-        depositFacet = new DepositFacet();
-        bytes4[] memory depositFunctionSelectors = new bytes4[](1);
-        depositFunctionSelectors[0] = depositFacet.deposit.selector;
-        addFacet(diamond, address(depositFacet), depositFunctionSelectors);
-
-        withdrawFacet = new WithdrawFacet();
-        bytes4[] memory withdrawFunctionSelectors = new bytes4[](3);
-        withdrawFunctionSelectors[0] = withdrawFacet.withdrawUnlocked.selector;
-        withdrawFunctionSelectors[1] = withdrawFacet.withdraw.selector;
-        withdrawFunctionSelectors[2] = withdrawFacet.withdrawAll.selector;
-        addFacet(diamond, address(withdrawFacet), withdrawFunctionSelectors);
-
-        bytes4[] memory managerFunctionSelectors = new bytes4[](18);
-        managerFunctionSelectors[0] = diamondManagerFacet.setDepositToken.selector;
-        managerFunctionSelectors[1] = diamondManagerFacet.setCurrentSeasonId.selector;
-        managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
-        managerFunctionSelectors[3] = diamondManagerFacet.setDepositFee.selector;
-        managerFunctionSelectors[4] = diamondManagerFacet.setStratosphereAddress.selector;
-        managerFunctionSelectors[5] = diamondManagerFacet.setRewardsControllerAddress.selector;
-        managerFunctionSelectors[6] = diamondManagerFacet.setSeasonEndTimestamp.selector;
-        managerFunctionSelectors[7] = diamondManagerFacet.setDepositFeeReceivers.selector;
-        managerFunctionSelectors[8] = diamondManagerFacet.getPendingWithdrawals.selector;
-        managerFunctionSelectors[9] = diamondManagerFacet.getDepositAmountOfUser.selector;
-        managerFunctionSelectors[10] = diamondManagerFacet.getDepositPointsOfUser.selector;
-        managerFunctionSelectors[11] = diamondManagerFacet.getTotalDepositAmountOfSeason.selector;
-        managerFunctionSelectors[12] = diamondManagerFacet.getTotalPointsOfSeason.selector;
-        managerFunctionSelectors[13] = diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember.selector;
-        managerFunctionSelectors[14] = diamondManagerFacet.setUnlockFee.selector;
-        managerFunctionSelectors[15] = diamondManagerFacet.getUnlockAmountOfUser.selector;
-        managerFunctionSelectors[16] = diamondManagerFacet.getUnlockTimestampOfUser.selector;
-        managerFunctionSelectors[17] = diamondManagerFacet.getCurrentSeasonId.selector;
-
-        addFacet(diamond, address(diamondManagerFacet), managerFunctionSelectors);
-
         diamondManagerFacet = DiamondManagerFacet(address(diamond));
-
-        depositToken = new ERC20Mock("Vapor nodes", "VPND");
-
-        diamondManagerFacet.setDepositToken(address(depositToken));
-
-        unlockFacet = UnlockFacet(address(diamond));
         depositFacet = DepositFacet(address(diamond));
+        unlockFacet = UnlockFacet(address(diamond));
         withdrawFacet = WithdrawFacet(address(diamond));
 
-        stratosphereMock = new StratosphereMock();
-        rewardsControllerMock = new RewardsControllerMock();
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setDepositFee(500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, 650);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
-        diamondManagerFacet.setUnlockFee(1000);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(1, 500);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(2, 550);
-        diamondManagerFacet.setUnlockTimestampDiscountForStratosphereMember(3, 650);
-        address[] memory feeReceivers = new address[](2);
-        uint256[] memory feeProportions = new uint256[](2);
-        feeReceivers[0] = feeReceiver1;
-        feeReceivers[1] = feeReceiver2;
-        feeProportions[0] = 7500;
-        feeProportions[1] = 2500;
-        diamondManagerFacet.setDepositFeeReceivers(feeReceivers, feeProportions);
+        // Set up season details for deposit
+        rewardToken.mint(address(diamond), rewardTokenToDistribute);
+        diamondManagerFacet.startNewSeason(rewardTokenToDistribute);
+        address[] memory depositFeeReceivers = new address[](2);
+        uint256[] memory depositFeeProportions = new uint256[](2);
+        depositFeeReceivers[0] = feeReceiver1;
+        depositFeeReceivers[1] = feeReceiver2;
+        depositFeeProportions[0] = 7500;
+        depositFeeProportions[1] = 2500;
+        diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
 
         vm.stopPrank();
     }

@@ -6,9 +6,8 @@ import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
 import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidFeeReceivers} from "src/facets/DepositFacet.sol";
 import {RestakeFacet, RestakeFacet__InProgressSeason, RestakeFacet__HasWithdrawnOrRestaked} from "src/facets/RestakeFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
-import {ERC20Mock} from "src/mocks/ERC20Mock.sol";
-import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
-import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
+import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
+import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
 import "../../src/libraries/LPercentages.sol";
 
 contract RestakeFacetTest is DiamondTest {
@@ -17,9 +16,6 @@ contract RestakeFacetTest is DiamondTest {
     DepositFacet internal depositFacet;
     RestakeFacet internal restakeFacet;
     DiamondManagerFacet internal diamondManagerFacet;
-    ERC20Mock internal depositToken;
-    StratosphereMock stratosphereMock;
-    RewardsControllerMock rewardsControllerMock;
 
     // setup addresses
     address feeReceiver1 = makeAddr("FeeReceiver1");
@@ -44,61 +40,13 @@ contract RestakeFacetTest is DiamondTest {
         vm.startPrank(diamondOwner);
 
         diamond = createDiamond();
-        depositFacet = new DepositFacet();
-        restakeFacet = new RestakeFacet();
-        diamondManagerFacet = new DiamondManagerFacet();
-
-        // Deposit Facet Setup
-        bytes4[] memory depositFunctionSelectors = new bytes4[](1);
-        depositFunctionSelectors[0] = depositFacet.deposit.selector;
-        addFacet(diamond, address(depositFacet), depositFunctionSelectors);
-
-        // Restake Facet Setup
-        bytes4[] memory restakeFunctionSelectors = new bytes4[](1);
-        restakeFunctionSelectors[0] = restakeFacet.restake.selector;
-        addFacet(diamond, address(restakeFacet), restakeFunctionSelectors);
-
-        // Diamond Manager Facet Setup
-        bytes4[] memory managerFunctionSelectors = new bytes4[](18);
-        managerFunctionSelectors[0] = diamondManagerFacet.setDepositToken.selector;
-        managerFunctionSelectors[1] = diamondManagerFacet.setCurrentSeasonId.selector;
-        managerFunctionSelectors[2] = diamondManagerFacet.setDepositDiscountForStratosphereMember.selector;
-        managerFunctionSelectors[3] = diamondManagerFacet.setDepositFee.selector;
-        managerFunctionSelectors[4] = diamondManagerFacet.setStratosphereAddress.selector;
-        managerFunctionSelectors[5] = diamondManagerFacet.setRewardsControllerAddress.selector;
-        managerFunctionSelectors[6] = diamondManagerFacet.setSeasonEndTimestamp.selector;
-        managerFunctionSelectors[7] = diamondManagerFacet.setDepositFeeReceivers.selector;
-        managerFunctionSelectors[8] = diamondManagerFacet.getPendingWithdrawals.selector;
-        managerFunctionSelectors[9] = diamondManagerFacet.getDepositAmountOfUser.selector;
-        managerFunctionSelectors[10] = diamondManagerFacet.getDepositPointsOfUser.selector;
-        managerFunctionSelectors[11] = diamondManagerFacet.getTotalDepositAmountOfSeason.selector;
-        managerFunctionSelectors[12] = diamondManagerFacet.getTotalPointsOfSeason.selector;
-        managerFunctionSelectors[13] = diamondManagerFacet.setRestakeDiscountForStratosphereMember.selector;
-        managerFunctionSelectors[14] = diamondManagerFacet.setRestakeFee.selector;
-        managerFunctionSelectors[15] = diamondManagerFacet.getCurrentSeasonId.selector;
-        managerFunctionSelectors[16] = diamondManagerFacet.getSeasonEndTimestamp.selector;
-        managerFunctionSelectors[17] = diamondManagerFacet.getWithdrawRestakeStatus.selector;
-        addFacet(diamond, address(diamondManagerFacet), managerFunctionSelectors);
-
-        // Initializers
         diamondManagerFacet = DiamondManagerFacet(address(diamond));
-        depositToken = new ERC20Mock("Vapor nodes", "VPND");
-        diamondManagerFacet.setDepositToken(address(depositToken));
         depositFacet = DepositFacet(address(diamond));
         restakeFacet = RestakeFacet(address(diamond));
-        stratosphereMock = new StratosphereMock();
-        rewardsControllerMock = new RewardsControllerMock();
 
         // Set up season details for deposit
-
         diamondManagerFacet.setCurrentSeasonId(1);
         diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setDepositFee(depositFee);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(1, depositDiscountBasic);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(2, depositDiscountSilver);
-        diamondManagerFacet.setDepositDiscountForStratosphereMember(3, depositDiscountGold);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-        diamondManagerFacet.setRewardsControllerAddress(address(rewardsControllerMock));
         address[] memory depositFeeReceivers = new address[](2);
         uint256[] memory depositFeeProportions = new uint256[](2);
         depositFeeReceivers[0] = feeReceiver1;
@@ -107,11 +55,6 @@ contract RestakeFacetTest is DiamondTest {
         depositFeeProportions[1] = 2500;
         diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
 
-        // Restake Setup
-        diamondManagerFacet.setRestakeFee(restakeFee);
-        diamondManagerFacet.setRestakeDiscountForStratosphereMember(1, restakeDiscountBasic);
-        diamondManagerFacet.setRestakeDiscountForStratosphereMember(2, restakeDiscountSilver);
-        diamondManagerFacet.setRestakeDiscountForStratosphereMember(3, restakeDiscountGold);
         vm.stopPrank();
 
         // Deposit for the current season
@@ -234,7 +177,7 @@ contract RestakeFacetTest is DiamondTest {
         diamondManagerFacet.setSeasonEndTimestamp(newSeasonId, block.timestamp + 30 days);
     }
 
-    function _getAmountAfterFee(uint256 _amount, uint256 _discount, uint256 _fee) internal view returns (uint256) {
+    function _getAmountAfterFee(uint256 _amount, uint256 _discount, uint256 _fee) internal pure returns (uint256) {
         return _amount - LPercentages.percentage(_amount, _fee - (_discount * _fee) / 10000);
     }
 }

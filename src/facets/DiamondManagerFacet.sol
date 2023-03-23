@@ -68,7 +68,7 @@ contract DiamondManagerFacet {
     }
 
     function setStratosphereAddress(address stratosphereAddress) external validAddress(stratosphereAddress) onlyOwner {
-        s.stratoshpereAddress = stratosphereAddress;
+        s.stratosphereAddress = stratosphereAddress;
         emit StratosphereAddressSet(stratosphereAddress);
     }
 
@@ -232,5 +232,9 @@ contract DiamondManagerFacet {
 
     function getSeasonData(uint256 seasonId) external view returns (Season memory) {
         return s.seasons[seasonId];
+    }
+
+    function getStratosphereAddress() external view returns (address) {
+        return s.stratosphereAddress;
     }
 }

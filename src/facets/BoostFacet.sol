@@ -7,7 +7,7 @@ import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
-import "../interfaces/IRewardsController.sol";
+import "../libraries/LStratosphere.sol";
 
 error BoostFacet__InvalidBoostLevel();
 error BoostFacet__BoostAlreadyClaimed();
@@ -32,7 +32,7 @@ contract BoostFacet {
             revert BoostFacet__BoostAlreadyClaimed();
         }
         uint256 _boostFee = 0;
-        (bool isStratosphereMember, uint256 tier) = getStratosphereMembershipDetails(msg.sender);
+        (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
         if (!isStratosphereMember && boostLevel > 0) {
             revert BoostFacet__InvalidBoostLevel();
         }
@@ -62,22 +62,5 @@ contract BoostFacet {
             return 0;
         }
         return LPercentages.percentage(_userData.depositAmount, _boostPointsAmount);
-    }
-
-    /// @notice get details of stratosphere for member
-    /// @param _account Account of member to check
-    /// @return bool if account is stratosphere member
-    /// @return uint256 tier of membership
-    function getStratosphereMembershipDetails(address _account) private view returns (bool, uint256) {
-        IStratosphere stratosphere = IStratosphere(s.stratoshpereAddress);
-        uint256 tokenId = stratosphere.tokenIdOf(_account);
-
-        if (tokenId == 0) {
-            return (false, 0);
-        } else {
-            IRewardsController rewardController = IRewardsController(s.rewardsControllerAddress);
-            uint256 tier = rewardController.tierOf(keccak256("STRATOSPHERE_PROGRAM"), tokenId);
-            return (true, tier);
-        }
     }
 }
