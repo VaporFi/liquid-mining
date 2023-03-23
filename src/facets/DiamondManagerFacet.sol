@@ -5,7 +5,6 @@ import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "../libraries/AppStorage.sol";
 
-
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
@@ -110,9 +109,9 @@ contract DiamondManagerFacet {
 
     function startNewSeason(uint256 _rewardTokenToDistribute) external onlyOwner {
         s.currentSeasonId = s.currentSeasonId + 1;
-       Season storage season  = s.seasons[s.currentSeasonId];
-       season.id = s.currentSeasonId;
-       season.startTimestamp = block.timestamp;
+        Season storage season = s.seasons[s.currentSeasonId];
+        season.id = s.currentSeasonId;
+        season.startTimestamp = block.timestamp;
         season.endTimestamp = block.timestamp + 30 days;
         season.rewardTokensToDistribute = _rewardTokenToDistribute;
         season.rewardTokenBalance = _rewardTokenToDistribute;
@@ -144,8 +143,6 @@ contract DiamondManagerFacet {
         return s.usersData[seasonId][user].depositPoints + s.usersData[seasonId][user].boostPoints;
     }
 
-    
-
     function getPendingWithdrawals(address feeReceiver) external view returns (uint256) {
         return s.pendingWithdrawals[feeReceiver];
     }
@@ -168,7 +165,6 @@ contract DiamondManagerFacet {
         return s.seasons[seasonId].totalPoints;
     }
 
-
     function setUnlockTimestampDiscountForStratosphereMember(
         uint256 tier,
         uint256 discountBasisPoints
@@ -182,15 +178,6 @@ contract DiamondManagerFacet {
         emit UnlockFeeSet(fee);
     }
 
-    function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
-        if (receivers.length != proportion.length) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.feeReceivers = receivers;
-        s.feeReceiversShares = proportion;
-        emit UnlockFeeReceiversSet(receivers, proportion);
-    }
-
     function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
         s.boostLevelToFee[boostLevel] = boostFee;
     }
@@ -202,7 +189,6 @@ contract DiamondManagerFacet {
     function setBoostPercentTierLevel(uint256 tier, uint256 level, uint256 percent) external onlyOwner {
         s.boostPercentFromTierToLevel[tier][level] = percent;
     }
-
 
     function getUserPoints(address user, uint256 seasonId) external view returns (uint256, uint256) {
         UserData storage _userData = s.usersData[seasonId][user];
@@ -223,14 +209,14 @@ contract DiamondManagerFacet {
         return s.currentSeasonId;
     }
 
-
     function getSeasonEndTimestamp(uint256 seasonId) external view returns (uint256) {
         return s.seasons[seasonId].endTimestamp;
     }
 
     function getWithdrawRestakeStatus(address user, uint256 seasonId) external view returns (bool) {
         UserData storage _userData = s.usersData[seasonId][user];
-        return _userData.hasWithdrawnOrRestaked; }
+        return _userData.hasWithdrawnOrRestaked;
+    }
 
     function getUserDataForSeason(address user, uint256 seasonId) external view returns (UserData memory) {
         return s.usersData[seasonId][user];

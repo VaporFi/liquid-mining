@@ -67,6 +67,8 @@ contract DepositFacetTest is Test, DiamondTest {
         depositFacet.deposit(100);
     }
 
+
+
     function test_DepositWithoutBeingStratosphereMember() public {
         vm.startPrank(makeAddr("diamondOwner"));
 
@@ -130,7 +132,7 @@ contract DepositFacetTest is Test, DiamondTest {
 
         vm.stopPrank();
 
-        address user = makeAddr("stratosphere_member_basic");
+        address user = makeAddr("stratosphereMemberBasic");
 
         vm.startPrank(user);
         depositToken.increaseAllowance(address(depositFacet), 1000000);
@@ -175,7 +177,7 @@ contract DepositFacetTest is Test, DiamondTest {
 
         vm.stopPrank();
 
-        address user = makeAddr("stratosphere_member_gold");
+        address user = makeAddr("stratosphereMemberGold");
 
         vm.startPrank(user);
         depositToken.increaseAllowance(address(depositFacet), 1000000);
@@ -220,7 +222,7 @@ contract DepositFacetTest is Test, DiamondTest {
 
         vm.stopPrank();
 
-        address user = makeAddr("stratosphere_member_gold");
+        address user = makeAddr("stratosphereMemberGold");
 
         vm.startPrank(user);
         depositToken.increaseAllowance(address(depositFacet), 1000000);
@@ -274,7 +276,7 @@ contract DepositFacetTest is Test, DiamondTest {
 
         vm.stopPrank();
 
-        user = makeAddr("stratosphere_member_basic");
+        user = makeAddr("stratosphereMemberBasic");
 
         vm.startPrank(user);
         depositToken.increaseAllowance(address(depositFacet), 1000000);
