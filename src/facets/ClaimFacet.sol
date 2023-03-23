@@ -27,7 +27,6 @@ contract ClaimFacet {
 
     /// @notice Claim accrued VAPE reward token
     function claim() external {
-        
         uint256 seasonId = s.addressToLastSeasonId[msg.sender];
         UserData storage userData = s.usersData[seasonId][msg.sender];
         if (s.seasons[seasonId].endTimestamp >= block.timestamp) {
@@ -42,9 +41,9 @@ contract ClaimFacet {
 
         uint256 totalPoints = userData.depositPoints + userData.boostPoints;
         uint256 userShare = _calculateShare(totalPoints, seasonId);
-       
+
         uint256 rewardTokenShare = _vapeToDistribute(userShare, seasonId);
-       
+
         userData.amountClaimed = rewardTokenShare;
         s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
         s.seasons[seasonId].totalClaimAmount += rewardTokenShare;

@@ -39,6 +39,7 @@ contract UnlockFacetTest is DiamondTest {
         depositFeeProportions[0] = 7500;
         depositFeeProportions[1] = 2500;
         diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
+
         vm.stopPrank();
     }
 

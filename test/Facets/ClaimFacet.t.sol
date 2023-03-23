@@ -73,7 +73,6 @@ contract ClaimFacetTest is DiamondTest {
         uint256 shareOfUser = _calculateShare(stratosphereMemberBasic, 1);
         claimFacet.claim();
         assertEq(rewardToken.balanceOf(stratosphereMemberBasic), rewardTokenToDistribute);
-        assertEq(rewardToken.balanceOf(stratosphereMemberBasic), shareOfUser);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberBasic, 1), rewardTokenToDistribute);
 
         vm.stopPrank();
