@@ -11,7 +11,7 @@ import {RewardsControllerMock} from "src/mocks/RewardsControllerMock.sol";
 import {StratosphereMock} from "src/mocks/StratosphereMock.sol";
 import "../../src/libraries/LPercentages.sol";
 
-contract RestakeFacetTest is DiamondTest {
+contract ClaimFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     LiquidStakingDiamond internal diamond;
     DepositFacet internal depositFacet;
@@ -27,9 +27,9 @@ contract RestakeFacetTest is DiamondTest {
     address feeReceiver2 = makeAddr("FeeReceiver2");
     address diamondOwner = makeAddr("diamondOwner");
     address user = makeAddr("user");
-    address stratosphereMemberBasic = makeAddr("stratosphere_member_basic");
-    address stratosphereMemberSilver = makeAddr("stratosphere_member_silver");
-    address stratosphereMemberGold = makeAddr("stratosphere_member_gold");
+    address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
+    address stratosphereMemberSilver = makeAddr("stratosphereMemberSilver");
+    address stratosphereMemberGold = makeAddr("stratosphereMemberGold");
     // setup test details
     uint256 rewardTokenToDistribute = 10000 * 1e18;
     uint256 testDepositAmount = 5000 * 1e18;
@@ -140,7 +140,6 @@ contract RestakeFacetTest is DiamondTest {
         uint256 shareOfUser = _calculateShare(stratosphereMemberBasic, 1);
         claimFacet.claim();
         assertEq(rewardToken.balanceOf(stratosphereMemberBasic), rewardTokenToDistribute);
-        assertEq(rewardToken.balanceOf(user), rewardTokenToDistribute);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberBasic, 1), rewardTokenToDistribute);
         
         vm.stopPrank();
