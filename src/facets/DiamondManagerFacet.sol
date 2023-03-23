@@ -72,13 +72,6 @@ contract DiamondManagerFacet {
         emit StratosphereAddressSet(stratosphereAddress);
     }
 
-    function setRewardsControllerAddress(
-        address rewardsControllerAddress
-    ) external validAddress(rewardsControllerAddress) onlyOwner {
-        s.rewardsControllerAddress = rewardsControllerAddress;
-        emit RewardsControllerAddressSet(rewardsControllerAddress);
-    }
-
     function setSeasonEndTimestamp(uint256 seasonId, uint256 timestamp) external onlyOwner {
         s.seasons[seasonId].endTimestamp = timestamp;
         emit SeasonEndTimestampSet(seasonId, timestamp);

@@ -86,13 +86,16 @@ contract DepositFacet {
     /// @notice Apply deposit fee
     /// @param _fee Fee amount
     function _applyDepositFee(uint256 _fee) internal {
-        if (s.feeReceivers.length != s.feeReceiversShares.length) {
+        address[] storage _receivers = s.depositFeeReceivers;
+        uint256[] storage _shares = s.depositFeeReceiversShares;
+        uint256 _length = _receivers.length;
+
+        if (_length != _shares.length) {
             revert DepositFacet__InvalidFeeReceivers();
         }
-        uint256 _length = s.feeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.feeReceiversShares[i]);
-            s.pendingWithdrawals[s.feeReceivers[i]] += _share;
+            uint256 _share = LPercentages.percentage(_fee, _shares[i]);
+            s.pendingWithdrawals[_receivers[i]][s.depositToken] += _share;
             unchecked {
                 i++;
             }

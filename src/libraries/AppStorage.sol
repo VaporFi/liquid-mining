@@ -47,20 +47,20 @@ struct AppStorage {
     /// DEPOSIT ///
     ///////////////
     uint256 depositFee;
-    address depositToken;
-    address[] feeReceivers;
-    uint256[] feeReceiversShares;
+    address[] depositFeeReceivers;
+    uint256[] depositFeeReceiversShares;
     ///////////////
     /// UNLOCK ///
     ///////////////
     uint256 unlockFee;
     // mapping: tier => discount percentage
     mapping(uint256 => uint256) unlockDiscountForStratosphereMembers;
-    mapping(address => uint256) pendingWithdrawals;
     mapping(uint256 => uint256) depositDiscountForStratosphereMembers;
     mapping(uint256 => uint256) restakeDiscountForStratosphereMembers;
     // mapping: user => lastSeasonParticipated
     mapping(address => uint256) addressToLastSeasonId;
+    address[] unlockFeeReceivers;
+    uint256[] unlockFeeReceiversShares;
     ////////////////
     /// WITHDRAW ///
     ////////////////
@@ -74,23 +74,31 @@ struct AppStorage {
     mapping(uint256 => uint256) boostLevelToFee;
     // nested mapping: tier => boostlevel => boost enhance points
     mapping(uint256 => mapping(uint256 => uint256)) boostPercentFromTierToLevel;
+    address[] boostFeeReceivers;
+    uint256[] boostFeeReceiversShares;
     /////////////
     /// CLAIM ///
     /////////////
     uint256 claimFee;
+    address[] claimFeeReceivers;
+    uint256[] claimFeeReceiversShares;
     ///////////////
     /// RESTAKE ///
     ///////////////
     uint256 restakeFee;
-    address rewardToken;
     // nested mapping: seasonId => userAddress => amount
     mapping(uint256 => mapping(address => uint256)) claimAmounts;
     // total amount claimed for each season: seasonId => amount
     mapping(uint256 => uint256) totalClaimAmounts;
+    address[] restakeFeeReceivers;
+    uint256[] restakeFeeReceiversShares;
     ///////////////
     /// GENERAL ///
     ///////////////
+    address depositToken;
+    address rewardToken;
     address stratosphereAddress;
-    address rewardsControllerAddress;
     uint256 reentrancyGuardStatus;
+    // nested mapping: userAddress => tokenAddress => amount
+    mapping(address => mapping(address => uint256)) pendingWithdrawals;
 }
