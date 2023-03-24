@@ -17,6 +17,7 @@ import "src/facets/PausationFacet.sol";
 import "src/facets/RestakeFacet.sol";
 import "src/facets/UnlockFacet.sol";
 import "src/facets/WithdrawFacet.sol";
+import "src/facets/FeeCollectorFacet.sol";
 import "src/upgradeInitializers/DiamondInit.sol";
 import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
 import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
@@ -50,6 +51,7 @@ contract DiamondTest is Test {
         setRestakeFacet();
         setUnlockFacet();
         setWithdrawFacet();
+        setFeeCollectorfacet();
 
         initArgs.depositFee = 500;
         initArgs.claimFee = 500;
@@ -113,6 +115,23 @@ contract DiamondTest is Test {
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(authorization),
+                action: IDiamondCut.FacetCutAction.Add,
+                functionSelectors: functionSelectors
+            })
+        );
+    }
+
+    function setFeeCollectorfacet() private {
+        FeeCollectorFacet feeCollector = new FeeCollectorFacet();
+        bytes4[] memory functionSelectors = new bytes4[](5);
+        functionSelectors[0] = FeeCollectorFacet.collectBoostFees.selector;
+        functionSelectors[1] = FeeCollectorFacet.collectClaimFees.selector;
+        functionSelectors[2] = FeeCollectorFacet.collectDepositFees.selector;
+        functionSelectors[3] = FeeCollectorFacet.collectRestakeFees.selector;
+        functionSelectors[4] = FeeCollectorFacet.collectUnlockFees.selector;
+        cut.push(
+            IDiamondCut.FacetCut({
+                facetAddress: address(feeCollector),
                 action: IDiamondCut.FacetCutAction.Add,
                 functionSelectors: functionSelectors
             })
