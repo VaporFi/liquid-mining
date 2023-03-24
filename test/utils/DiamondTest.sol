@@ -164,7 +164,7 @@ contract DiamondTest is Test {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](33);
+        functionSelectors = new bytes4[](37);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setDepositDiscountForStratosphereMember.selector;
@@ -197,6 +197,11 @@ contract DiamondTest is Test {
         functionSelectors[30] = diamondManager.getUnlockTimestampOfUser.selector;
         functionSelectors[31] = diamondManager.getStratosphereAddress.selector;
         functionSelectors[32] = diamondManager.setUnlockTimestampDiscountForStratosphereMember.selector;
+        functionSelectors[33] = diamondManager.setBoostFeeReceivers.selector;
+        functionSelectors[34] = diamondManager.setClaimFeeReceivers.selector;
+        functionSelectors[35] = diamondManager.setRestakeFeeReceivers.selector;
+        functionSelectors[36] = diamondManager.setUnlockFeeReceivers.selector;
+
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(diamondManager),

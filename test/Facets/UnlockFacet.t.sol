@@ -39,6 +39,7 @@ contract UnlockFacetTest is DiamondTest {
         depositFeeProportions[0] = 7500;
         depositFeeProportions[1] = 2500;
         diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
+        diamondManagerFacet.setUnlockFeeReceivers(depositFeeReceivers, depositFeeProportions);
 
         vm.stopPrank();
     }
@@ -92,13 +93,13 @@ contract UnlockFacetTest is DiamondTest {
         depositFacet.deposit(1000);
 
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
             49
         );
 
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 37);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 12);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 37);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 12);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(user, 1), 950);
         assertEq(diamondManagerFacet.getDepositPointsOfUser(user, 1), 30 * 950);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 950);
@@ -115,12 +116,12 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getUnlockAmountOfUser(user, 1), 950 - 95);
         assertEq(diamondManagerFacet.getUnlockTimestampOfUser(user, 1), block.timestamp + 3 days);
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
             94 + 49
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 71 + 37);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 23 + 12);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 71 + 37);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 23 + 12);
     }
 
     function test_UnlockBeingBasicStratosphereMember() public {
@@ -136,13 +137,13 @@ contract UnlockFacetTest is DiamondTest {
         depositFacet.deposit(1000);
 
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
             46
         );
 
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 35);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 11);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 35);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 11);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 1), 953);
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 29 * 953);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 953);
@@ -162,12 +163,12 @@ contract UnlockFacetTest is DiamondTest {
             block.timestamp + 3 days - 12960
         );
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
             94 + 46
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 71 + 35);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 23 + 11);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 71 + 35);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 23 + 11);
     }
 
     function test_UnlockBeingGoldStratosphereMember() public {
@@ -183,13 +184,13 @@ contract UnlockFacetTest is DiamondTest {
         depositFacet.deposit(1000);
 
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
             45
         );
 
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 34);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 11);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 34);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 11);
         assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberGold, 1), 954);
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberGold, 1), 25 * 954);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 954);
@@ -209,11 +210,11 @@ contract UnlockFacetTest is DiamondTest {
             block.timestamp + 3 days - 16848
         );
         assertEq(
-            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1) +
-                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2),
+            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
+                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
             94 + 45
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1), 71 + 34);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2), 23 + 11);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 71 + 34);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 23 + 11);
     }
 }

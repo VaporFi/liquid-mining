@@ -70,10 +70,10 @@ contract RestakeFacet {
     /// @notice Apply restake fee
     /// @param _fee Fee amount
     function _applyRestakeFee(uint256 _fee) internal {
-        uint256 _length = s.feeReceivers.length;
+        uint256 _length = s.restakeFeeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.feeReceiversShares[i]);
-            s.pendingWithdrawals[s.feeReceivers[i]] += _share;
+            uint256 _share = LPercentages.percentage(_fee, s.restakeFeeReceiversShares[i]);
+            s.pendingWithdrawals[s.restakeFeeReceivers[i]][s.depositToken] += _share;
             unchecked {
                 i++;
             }

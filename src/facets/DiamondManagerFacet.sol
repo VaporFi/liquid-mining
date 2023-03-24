@@ -21,6 +21,10 @@ contract DiamondManagerFacet {
     event RewardsControllerAddressSet(address indexed rewardsControllerAddress);
     event SeasonEndTimestampSet(uint256 indexed season, uint256 endTimestamp);
     event DepositFeeReceiversSet(address[] receivers, uint256[] proportion);
+    event BoostFeeReceiversSet(address[] receivers, uint256[] proportion);
+    event ClaimFeeReceiversSet(address[] receivers, uint256[] proportion);
+    event RestakeFeeReceiversSet(address[] receivers, uint256[] proportion);
+
     event RestakeFeeSet(uint256 fee);
     event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
 
@@ -81,9 +85,45 @@ contract DiamondManagerFacet {
         if (receivers.length != proportion.length) {
             revert DiamondManagerFacet__Invalid_Input();
         }
-        s.feeReceivers = receivers;
-        s.feeReceiversShares = proportion;
+        s.depositFeeReceivers = receivers;
+        s.depositFeeReceiversShares = proportion;
         emit DepositFeeReceiversSet(receivers, proportion);
+    }
+
+    function setBoostFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
+        if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.boostFeeReceivers = receivers;
+        s.boostFeeReceiversShares = proportion;
+        emit BoostFeeReceiversSet(receivers, proportion);
+    }
+
+    function setClaimFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
+        if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.claimFeeReceivers = receivers;
+        s.claimFeeReceiversShares = proportion;
+        emit ClaimFeeReceiversSet(receivers, proportion);
+    }
+
+    function setRestakeFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
+        if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.restakeFeeReceivers = receivers;
+        s.restakeFeeReceiversShares = proportion;
+        emit RestakeFeeReceiversSet(receivers, proportion);
+    }
+
+    function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
+        if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.unlockFeeReceivers = receivers;
+        s.unlockFeeReceiversShares = proportion;
+        emit UnlockFeeReceiversSet(receivers, proportion);
     }
 
     function setRestakeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner {
@@ -136,8 +176,8 @@ contract DiamondManagerFacet {
         return s.usersData[seasonId][user].depositPoints + s.usersData[seasonId][user].boostPoints;
     }
 
-    function getPendingWithdrawals(address feeReceiver) external view returns (uint256) {
-        return s.pendingWithdrawals[feeReceiver];
+    function getPendingWithdrawals(address feeReceiver, address token) external view returns (uint256) {
+        return s.pendingWithdrawals[feeReceiver][token];
     }
 
     function getDepositAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
