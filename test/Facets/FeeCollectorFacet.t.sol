@@ -8,7 +8,7 @@ import {ClaimFacet} from "src/facets/ClaimFacet.sol";
 import {BoostFacet} from "src/facets/BoostFacet.sol";
 import {UnlockFacet} from "src/facets/UnlockFacet.sol";
 import {RestakeFacet} from "src/facets/RestakeFacet.sol";
-import {FeeCollectorFacet} from "src/facets/FeeCollectorfacet.sol";
+import {FeeCollectorFacet} from "src/facets/FeeCollectorFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
 import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
 import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
