@@ -4,11 +4,12 @@ pragma solidity ^0.8.17;
 import "clouds/diamond/LDiamond.sol";
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../libraries/AppStorage.sol";
-import "forge-std/Test.sol";
+import "../libraries/LPercentages.sol";
 
 error ClaimFacet__NotEnoughPoints();
 error ClaimFacet__InProgressSeason();
 error ClaimFacet__AlreadyClaimed();
+error ClaimFacet__InvalidFeeReceivers();
 
 /// @title ClaimFacet
 /// @notice Facet in charge of claiming VAPE rewards
@@ -47,7 +48,11 @@ contract ClaimFacet {
         userData.amountClaimed = rewardTokenShare;
         s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
         s.seasons[seasonId].totalClaimAmount += rewardTokenShare;
-        IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare);
+
+        uint256 _fee = LPercentages.percentage(rewardTokenShare, s.claimFee);
+        _applyClaimFee(_fee);
+        IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare - _fee);
+
         emit Claim(rewardTokenShare, msg.sender);
     }
 
@@ -65,5 +70,22 @@ contract ClaimFacet {
     /// @notice Calculate VAPE earned by User through share of the totalPoints
     function _vapeToDistribute(uint256 _userShare, uint256 _seasonId) internal view returns (uint256) {
         return (s.seasons[_seasonId].rewardTokensToDistribute * _userShare) / 1e18;
+    }
+
+    function _applyClaimFee(uint256 _fee) internal {
+        address[] storage _receivers = s.claimFeeReceivers;
+        uint256[] storage _shares = s.claimFeeReceiversShares;
+        uint256 _length = _receivers.length;
+
+        if (_length != _shares.length) {
+            revert ClaimFacet__InvalidFeeReceivers();
+        }
+        for (uint256 i; i < _length; ) {
+            uint256 _share = LPercentages.percentage(_fee, _shares[i]);
+            s.pendingWithdrawals[_receivers[i]][s.rewardToken] += _share;
+            unchecked {
+                i++;
+            }
+        }
     }
 }

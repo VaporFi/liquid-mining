@@ -17,6 +17,7 @@ import "src/facets/PausationFacet.sol";
 import "src/facets/RestakeFacet.sol";
 import "src/facets/UnlockFacet.sol";
 import "src/facets/WithdrawFacet.sol";
+import "src/facets/FeeCollectorFacet.sol";
 import "src/upgradeInitializers/DiamondInit.sol";
 import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
 import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
@@ -50,6 +51,7 @@ contract DiamondTest is Test {
         setRestakeFacet();
         setUnlockFacet();
         setWithdrawFacet();
+        setFeeCollectorfacet();
 
         initArgs.depositFee = 500;
         initArgs.claimFee = 500;
@@ -119,6 +121,23 @@ contract DiamondTest is Test {
         );
     }
 
+    function setFeeCollectorfacet() private {
+        FeeCollectorFacet feeCollector = new FeeCollectorFacet();
+        bytes4[] memory functionSelectors = new bytes4[](5);
+        functionSelectors[0] = FeeCollectorFacet.collectBoostFees.selector;
+        functionSelectors[1] = FeeCollectorFacet.collectClaimFees.selector;
+        functionSelectors[2] = FeeCollectorFacet.collectDepositFees.selector;
+        functionSelectors[3] = FeeCollectorFacet.collectRestakeFees.selector;
+        functionSelectors[4] = FeeCollectorFacet.collectUnlockFees.selector;
+        cut.push(
+            IDiamondCut.FacetCut({
+                facetAddress: address(feeCollector),
+                action: IDiamondCut.FacetCutAction.Add,
+                functionSelectors: functionSelectors
+            })
+        );
+    }
+
     function setBoostFacet() private {
         BoostFacet boost = new BoostFacet();
         bytes4[] memory functionSelectors;
@@ -164,7 +183,7 @@ contract DiamondTest is Test {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](33);
+        functionSelectors = new bytes4[](37);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setDepositDiscountForStratosphereMember.selector;
@@ -197,6 +216,11 @@ contract DiamondTest is Test {
         functionSelectors[30] = diamondManager.getUnlockTimestampOfUser.selector;
         functionSelectors[31] = diamondManager.getStratosphereAddress.selector;
         functionSelectors[32] = diamondManager.setUnlockTimestampDiscountForStratosphereMember.selector;
+        functionSelectors[33] = diamondManager.setBoostFeeReceivers.selector;
+        functionSelectors[34] = diamondManager.setClaimFeeReceivers.selector;
+        functionSelectors[35] = diamondManager.setRestakeFeeReceivers.selector;
+        functionSelectors[36] = diamondManager.setUnlockFeeReceivers.selector;
+
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(diamondManager),

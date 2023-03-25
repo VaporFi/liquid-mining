@@ -155,7 +155,7 @@ contract DeployFuji is Script {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](31);
+        functionSelectors = new bytes4[](33);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setDepositDiscountForStratosphereMember.selector;
@@ -186,6 +186,8 @@ contract DeployFuji is Script {
         functionSelectors[28] = diamondManager.getUserPoints.selector;
         functionSelectors[29] = diamondManager.getUnlockAmountOfUser.selector;
         functionSelectors[30] = diamondManager.getUnlockTimestampOfUser.selector;
+        functionSelectors[31] = diamondManager.getStratosphereAddress.selector;
+        functionSelectors[32] = diamondManager.setUnlockTimestampDiscountForStratosphereMember.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(diamondManager),

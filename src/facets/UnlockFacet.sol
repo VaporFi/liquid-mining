@@ -64,13 +64,13 @@ contract UnlockFacet {
     /// @notice Apply deposit fee
     /// @param _fee Fee amount
     function _applyUnlockFee(uint256 _fee) internal {
-        if (s.feeReceivers.length != s.feeReceiversShares.length) {
+        if (s.unlockFeeReceivers.length != s.unlockFeeReceiversShares.length) {
             revert UnlockFacet__InvalidFeeReceivers();
         }
-        uint256 _length = s.feeReceivers.length;
+        uint256 _length = s.unlockFeeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.feeReceiversShares[i]);
-            s.pendingWithdrawals[s.feeReceivers[i]] += _share;
+            uint256 _share = LPercentages.percentage(_fee, s.unlockFeeReceiversShares[i]);
+            s.pendingWithdrawals[s.unlockFeeReceivers[i]][s.depositToken] += _share;
             unchecked {
                 i++;
             }

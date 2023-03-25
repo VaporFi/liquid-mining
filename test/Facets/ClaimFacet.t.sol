@@ -57,9 +57,10 @@ contract ClaimFacetTest is DiamondTest {
         _mintAndDeposit(user, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
         uint256 shareOfUser = _calculateShare(user, 1);
+        uint256 _fee = LPercentages.percentage(shareOfUser, initArgs.claimFee);
         claimFacet.claim();
-        assertEq(rewardToken.balanceOf(user), shareOfUser);
-        assertEq(rewardToken.balanceOf(user), rewardTokenToDistribute);
+        assertEq(rewardToken.balanceOf(user), shareOfUser - _fee);
+        assertEq(rewardToken.balanceOf(user), rewardTokenToDistribute - _fee);
         assertEq(diamondManagerFacet.getSeasonTotalClaimedRewards(1), rewardTokenToDistribute);
         assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), rewardTokenToDistribute);
         vm.stopPrank();
@@ -71,8 +72,9 @@ contract ClaimFacetTest is DiamondTest {
         _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
         uint256 shareOfUser = _calculateShare(stratosphereMemberBasic, 1);
+        uint256 _fee = LPercentages.percentage(shareOfUser, initArgs.claimFee);
         claimFacet.claim();
-        assertEq(rewardToken.balanceOf(stratosphereMemberBasic), rewardTokenToDistribute);
+        assertEq(rewardToken.balanceOf(stratosphereMemberBasic), rewardTokenToDistribute - _fee);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberBasic, 1), rewardTokenToDistribute);
 
         vm.stopPrank();
@@ -83,8 +85,10 @@ contract ClaimFacetTest is DiamondTest {
         vm.startPrank(stratosphereMemberSilver);
         _mintAndDeposit(stratosphereMemberSilver, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
+        uint256 shareOfUser = _calculateShare(stratosphereMemberSilver, 1);
+        uint256 _fee = LPercentages.percentage(shareOfUser, initArgs.claimFee);
         claimFacet.claim();
-        assertEq(rewardToken.balanceOf(stratosphereMemberSilver), rewardTokenToDistribute);
+        assertEq(rewardToken.balanceOf(stratosphereMemberSilver), rewardTokenToDistribute - _fee);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberSilver, 1), rewardTokenToDistribute);
 
         vm.stopPrank();
@@ -95,8 +99,10 @@ contract ClaimFacetTest is DiamondTest {
         vm.startPrank(stratosphereMemberGold);
         _mintAndDeposit(stratosphereMemberGold, testDepositAmount);
         vm.warp(block.timestamp + 31 days);
+        uint256 shareOfUser = _calculateShare(stratosphereMemberGold, 1);
+        uint256 _fee = LPercentages.percentage(shareOfUser, initArgs.claimFee);
         claimFacet.claim();
-        assertEq(rewardToken.balanceOf(stratosphereMemberGold), rewardTokenToDistribute);
+        assertEq(rewardToken.balanceOf(stratosphereMemberGold), rewardTokenToDistribute - _fee);
         assertEq(diamondManagerFacet.getUserClaimedRewards(stratosphereMemberGold, 1), rewardTokenToDistribute);
 
         vm.stopPrank();
