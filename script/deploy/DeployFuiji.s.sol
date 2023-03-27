@@ -17,6 +17,7 @@ import "src/facets/PausationFacet.sol";
 import "src/facets/RestakeFacet.sol";
 import "src/facets/UnlockFacet.sol";
 import "src/facets/WithdrawFacet.sol";
+import "src/facets/FeeCollectorFacet.sol";
 import "src/upgradeInitializers/DiamondInit.sol";
 
 contract DeployFuji is Script {
@@ -26,6 +27,13 @@ contract DeployFuji is Script {
     address public constant STRATOSPHERE = 0x26b794235422e7c6f3ac6c717b10598C2a144203;
     address public constant USDC = 0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E;
     address public constant VAPE = 0x3bD01B76BB969ef2D5103b5Ea84909AD8d345663;
+
+    // Fee Receivers
+    address public constant REPLENISHMENT_POOL = 0x3bD01B76BB969ef2D5103b5Ea84909AD8d345663;
+    address public constant LABS_MULTISIG = 0x3bD01B76BB969ef2D5103b5Ea84909AD8d345663;
+    address public constant BURN_WALLET = 0x000000000000000000000000000000000000dEaD;
+    address public constant xVAPE_ESCROW_MULTISIG = 0x723bc5612cf6Ee5756cbb322719d142e6E23478C;
+    address public constant PASSPORT_ESCROW_MULTISIG = 0xa3b0496e5E7748B3C02752220508c4297B29b99C;
 
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
@@ -46,17 +54,27 @@ contract DeployFuji is Script {
         setRestakeFacet();
         setUnlockFacet();
         setWithdrawFacet();
+        setFeeCollectorfacet();
 
-        initArgs.depositFee = 5;
-        initArgs.claimFee = 5;
-        initArgs.restakeFee = 3;
-        initArgs.unlockFee = 10;
+        initArgs.depositFee = 500; // 5%
+        initArgs.claimFee = 500; // 5%
+        initArgs.restakeFee = 300; // 3%
+        initArgs.unlockFee = 1000; // 10%
         initArgs.depositToken = VPND;
         initArgs.boostFeeToken = USDC;
         initArgs.rewardToken = VAPE;
         initArgs.stratosphere = STRATOSPHERE;
+        initArgs.xVAPE = xVAPE_ESCROW_MULTISIG;
+        initArgs.passport = PASSPORT_ESCROW_MULTISIG;
+        initArgs.replenishmentPool = REPLENISHMENT_POOL;
+        initArgs.labsMultisig = LABS_MULTISIG;
+        initArgs.burnWallet = BURN_WALLET;
         bytes memory data = abi.encodeWithSelector(DiamondInit.init.selector, initArgs);
         DiamondCutFacet(address(diamond)).diamondCut(cut, address(diamondInit), data);
+
+        DiamondManagerFacet diamondManager = DiamondManagerFacet(address(diamond));
+        diamondManager.setCurrentSeasonId(1);
+        diamondManager.setSeasonEndTimestamp(1, block.timestamp + 1 days);
 
         vm.stopBroadcast();
     }
@@ -155,7 +173,7 @@ contract DeployFuji is Script {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](33);
+        functionSelectors = new bytes4[](37);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setDepositDiscountForStratosphereMember.selector;
@@ -188,6 +206,10 @@ contract DeployFuji is Script {
         functionSelectors[30] = diamondManager.getUnlockTimestampOfUser.selector;
         functionSelectors[31] = diamondManager.getStratosphereAddress.selector;
         functionSelectors[32] = diamondManager.setUnlockTimestampDiscountForStratosphereMember.selector;
+        functionSelectors[33] = diamondManager.setBoostFeeReceivers.selector;
+        functionSelectors[34] = diamondManager.setClaimFeeReceivers.selector;
+        functionSelectors[35] = diamondManager.setRestakeFeeReceivers.selector;
+        functionSelectors[36] = diamondManager.setUnlockFeeReceivers.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(diamondManager),
@@ -251,6 +273,23 @@ contract DeployFuji is Script {
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(withdraw),
+                action: IDiamondCut.FacetCutAction.Add,
+                functionSelectors: functionSelectors
+            })
+        );
+    }
+
+    function setFeeCollectorfacet() private {
+        FeeCollectorFacet feeCollector = new FeeCollectorFacet();
+        bytes4[] memory functionSelectors = new bytes4[](5);
+        functionSelectors[0] = FeeCollectorFacet.collectBoostFees.selector;
+        functionSelectors[1] = FeeCollectorFacet.collectClaimFees.selector;
+        functionSelectors[2] = FeeCollectorFacet.collectDepositFees.selector;
+        functionSelectors[3] = FeeCollectorFacet.collectRestakeFees.selector;
+        functionSelectors[4] = FeeCollectorFacet.collectUnlockFees.selector;
+        cut.push(
+            IDiamondCut.FacetCut({
+                facetAddress: address(feeCollector),
                 action: IDiamondCut.FacetCutAction.Add,
                 functionSelectors: functionSelectors
             })

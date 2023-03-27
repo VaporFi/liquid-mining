@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
@@ -140,12 +141,12 @@ contract DiamondManagerFacet {
         s.rewardToken = token;
     }
 
-    function startNewSeason(uint256 _rewardTokenToDistribute) external onlyOwner {
+    function startNewSeason(uint256 _rewardTokenToDistribute, uint8 _durationDays) external onlyOwner {
         s.currentSeasonId = s.currentSeasonId + 1;
         Season storage season = s.seasons[s.currentSeasonId];
         season.id = s.currentSeasonId;
         season.startTimestamp = block.timestamp;
-        season.endTimestamp = block.timestamp + 30 days;
+        season.endTimestamp = block.timestamp + (_durationDays * 1 days);
         season.rewardTokensToDistribute = _rewardTokenToDistribute;
         season.rewardTokenBalance = _rewardTokenToDistribute;
     }
