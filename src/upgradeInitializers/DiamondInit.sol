@@ -79,12 +79,18 @@ contract DiamondInit {
 
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
-        s.unlockDiscountForStratosphereMembers[1] = 500; // 5%
-        s.unlockDiscountForStratosphereMembers[2] = 550; // 5.5%
-        s.unlockDiscountForStratosphereMembers[3] = 650; // 6.5%
-        s.unlockDiscountForStratosphereMembers[4] = 800; // 8%
-        s.unlockDiscountForStratosphereMembers[5] = 1000; // 10%
-        s.unlockDiscountForStratosphereMembers[6] = 1500; // 15%
+        s.unlockFeeDiscountForStratosphereMembers[1] = 500; // 5%
+        s.unlockFeeDiscountForStratosphereMembers[2] = 550; // 5.5%
+        s.unlockFeeDiscountForStratosphereMembers[3] = 650; // 6.5%
+        s.unlockFeeDiscountForStratosphereMembers[4] = 800; // 8%
+        s.unlockFeeDiscountForStratosphereMembers[5] = 1000; // 10%
+        s.unlockFeeDiscountForStratosphereMembers[6] = 1500; // 15%
+        s.unlockTimestampDiscountForStratosphereMembers[1] = 500; // 5%
+        s.unlockTimestampDiscountForStratosphereMembers[2] = 550; // 5.5%
+        s.unlockTimestampDiscountForStratosphereMembers[3] = 650; // 6.5%
+        s.unlockTimestampDiscountForStratosphereMembers[4] = 800; // 8%
+        s.unlockTimestampDiscountForStratosphereMembers[5] = 1000; // 10%
+        s.unlockTimestampDiscountForStratosphereMembers[6] = 1500; // 15%
         s.unlockFeeReceivers.push(_args.replenishmentPool);
         s.unlockFeeReceivers.push(_args.labsMultisig);
         s.unlockFeeReceivers.push(_args.burnWallet);

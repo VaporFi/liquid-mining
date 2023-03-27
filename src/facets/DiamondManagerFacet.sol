@@ -30,6 +30,7 @@ contract DiamondManagerFacet {
     event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
 
     event UnlockTimestampDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
+    event UnlockFeeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
     event UnlockFeeSet(uint256 fee);
     event UnlockFeeReceiversSet(address[] receivers, uint256[] proportion);
 
@@ -203,8 +204,13 @@ contract DiamondManagerFacet {
         uint256 tier,
         uint256 discountBasisPoints
     ) external onlyOwner {
-        s.unlockDiscountForStratosphereMembers[tier] = discountBasisPoints;
+        s.unlockTimestampDiscountForStratosphereMembers[tier] = discountBasisPoints;
         emit UnlockTimestampDiscountForStratosphereMemberSet(tier, discountBasisPoints);
+    }
+
+    function setUnlockFeeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner {
+        s.unlockFeeDiscountForStratosphereMembers[tier] = discountBasisPoints;
+        emit UnlockFeeDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
 
     function setUnlockFee(uint256 fee) external onlyOwner {
