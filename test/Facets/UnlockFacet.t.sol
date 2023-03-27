@@ -157,7 +157,7 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 0);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 0);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 0);
-        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberBasic, 1), 953 - 95);
+        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberBasic, 1), 953 - 90);
         assertEq(
             diamondManagerFacet.getUnlockTimestampOfUser(stratosphereMemberBasic, 1),
             block.timestamp + 3 days - 12960
@@ -165,10 +165,10 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(
             diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
                 diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
-            94 + 46
+            89 + 46
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 71 + 35);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 23 + 11);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 67 + 35);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 22 + 11);
     }
 
     function test_UnlockBeingGoldStratosphereMember() public {
@@ -204,7 +204,7 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberGold, 1), 0);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 0);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 0);
-        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberGold, 1), 954 - 95);
+        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberGold, 1), 954 - 89);
         assertEq(
             diamondManagerFacet.getUnlockTimestampOfUser(stratosphereMemberGold, 1),
             block.timestamp + 3 days - 16848
@@ -212,9 +212,9 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(
             diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
                 diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
-            94 + 45
+            88 + 45
         );
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 71 + 34);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 23 + 11);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 66 + 34);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 22 + 11);
     }
 }
