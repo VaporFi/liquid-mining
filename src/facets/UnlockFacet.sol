@@ -28,15 +28,15 @@ contract UnlockFacet {
         }
         _deductPoints(_amount);
 
-        uint256 _fee = LPercentages.percentage(_amount, s.unlockFee);
-        _applyUnlockFee(_fee);
-
         uint256 _timeDiscount = 0;
+        uint256 _feeDiscount = 0;
         (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
         if (isStratosphereMember) {
-            _timeDiscount = s.unlockDiscountForStratosphereMembers[tier];
+            _timeDiscount = s.unlockTimestampDiscountForStratosphereMembers[tier];
+            _feeDiscount = s.unlockFeeDiscountForStratosphereMembers[tier];
         }
-
+        uint256 _fee = LPercentages.percentage(_amount, s.unlockFee - (_feeDiscount * s.unlockFee) / 10000);
+        _applyUnlockFee(_fee);
         uint256 _unlockTimestamp = block.timestamp + COOLDOWN_PERIOD - (_timeDiscount * COOLDOWN_PERIOD) / 10000;
 
         if (_unlockTimestamp >= s.seasons[s.currentSeasonId].endTimestamp) {
