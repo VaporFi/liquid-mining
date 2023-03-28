@@ -2,13 +2,13 @@
 pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
-import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
-import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidFeeReceivers} from "src/facets/DepositFacet.sol";
-import {ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed} from "src/facets/ClaimFacet.sol";
-import {BoostFacet, BoostFacet__InvalidBoostLevel, BoostFacet__BoostAlreadyClaimed, BoostFacet__UserNotParticipated} from "src/facets/BoostFacet.sol";
-import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
-import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
-import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
+import { DiamondTest, LiquidStakingDiamond } from "../utils/DiamondTest.sol";
+import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidFeeReceivers } from "src/facets/DepositFacet.sol";
+import { ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed } from "src/facets/ClaimFacet.sol";
+import { BoostFacet, BoostFacet__InvalidBoostLevel, BoostFacet__BoostAlreadyClaimed, BoostFacet__UserNotParticipated } from "src/facets/BoostFacet.sol";
+import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
+import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
 import "src/libraries/LPercentages.sol";
 
 contract BoostFacetTest is DiamondTest {

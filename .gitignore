@@ -1,7 +1,9 @@
 # Compiler files
-cache/
 out/
-forge-cache/
+cache/
+artifacts/
+forge_cache/
+typechain-types/
 
 # Ignores development broadcast logs
 !/broadcast

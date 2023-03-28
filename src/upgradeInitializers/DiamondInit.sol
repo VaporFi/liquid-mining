@@ -8,12 +8,12 @@ pragma solidity ^0.8.17;
 * Implementation of a diamond.
 /******************************************************************************/
 
-import {LDiamond} from "clouds/diamond/LDiamond.sol";
-import {IDiamondLoupe} from "clouds/interfaces/IDiamondLoupe.sol";
-import {IDiamondCut} from "clouds/interfaces/IDiamondCut.sol";
-import {IERC173} from "clouds/interfaces/IERC173.sol";
-import {IERC165} from "clouds/interfaces/IERC165.sol";
-import {AppStorage} from "../libraries/AppStorage.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+import { IDiamondLoupe } from "clouds/interfaces/IDiamondLoupe.sol";
+import { IDiamondCut } from "clouds/interfaces/IDiamondCut.sol";
+import { IERC173 } from "clouds/interfaces/IERC173.sol";
+import { IERC165 } from "clouds/interfaces/IERC165.sol";
+import { AppStorage } from "../libraries/AppStorage.sol";
 
 // It is expected that this contract is customized if you want to deploy your diamond
 // with data from a deployment script. Use the init function to initialize state variables

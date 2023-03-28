@@ -9,6 +9,7 @@ import "../libraries/AppStorage.sol";
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
+error DiamondManagerFacet__Season_Not_Finished();
 
 contract DiamondManagerFacet {
     AppStorage s;
@@ -142,8 +143,26 @@ contract DiamondManagerFacet {
         s.rewardToken = token;
     }
 
-    function startNewSeason(uint256 _rewardTokenToDistribute, uint8 _durationDays) external onlyOwner {
+    function startNewSeason(uint256 _rewardTokenToDistribute) external onlyOwner {
+        uint256 _currentSeason = s.currentSeasonId;
+        if (s.seasons[_currentSeason].endTimestamp < block.timestamp) {
+            revert DiamondManagerFacet__Season_Not_Finished();
+        }
         s.currentSeasonId = s.currentSeasonId + 1;
+        Season storage season = s.seasons[s.currentSeasonId];
+        season.id = s.currentSeasonId;
+        season.startTimestamp = block.timestamp;
+        season.endTimestamp = block.timestamp + 25 days;
+        season.rewardTokensToDistribute = _rewardTokenToDistribute;
+        season.rewardTokenBalance = _rewardTokenToDistribute;
+    }
+
+    function startNewSeasonWithDuration(uint256 _rewardTokenToDistribute, uint8 _durationDays) external onlyOwner {
+        uint256 _currentSeason = s.currentSeasonId;
+        if (s.seasons[_currentSeason].endTimestamp < block.timestamp) {
+            revert DiamondManagerFacet__Season_Not_Finished();
+        }
+        s.currentSeasonId = _currentSeason + 1;
         Season storage season = s.seasons[s.currentSeasonId];
         season.id = s.currentSeasonId;
         season.startTimestamp = block.timestamp;
