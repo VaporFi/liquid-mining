@@ -1,5 +1,5 @@
 # BoostFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/5d323fd7888bb01e362cdf4c980f8c20b18b712f/src/facets/BoostFacet.sol)
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/BoostFacet.sol)
 
 Facet in charge of point's boosts
 
@@ -17,29 +17,35 @@ AppStorage s;
 ## Functions
 ### claimBoost
 
-Claim boost
+Claim daily boost points
 
 
 ```solidity
-function claimBoost() external;
+function claimBoost(uint256 boostLevel) external;
 ```
 
 ### _calculatePoints
 
 Calculate boost points
 
-*Utilizes 'LPercentages'.
-_daysSinceSeasonStart is the number of days since the season started starting from 0*
+*Utilizes 'LPercentages'.*
+
+*_daysSinceSeasonStart starts from 0 equal to the first day of the season.*
 
 
 ```solidity
-function _calculatePoints(UserData _useData) internal returns (uint256);
+function _calculatePoints(UserData storage _userData, uint256 _boostLevel, uint256 _tier)
+    internal
+    view
+    returns (uint256);
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
-|`_useData`|`UserData`|User data|
+|`_userData`|`UserData`|User data|
+|`_boostLevel`|`uint256`||
+|`_tier`|`uint256`||
 
 **Returns**
 
@@ -48,10 +54,10 @@ function _calculatePoints(UserData _useData) internal returns (uint256);
 |`<none>`|`uint256`|Boost points|
 
 
-## Errors
-### BoostFacet__BoostAlreadyClaimed
+## Events
+### ClaimBoost
 
 ```solidity
-error BoostFacet__BoostAlreadyClaimed();
+event ClaimBoost(address indexed _user, uint256 _seasonId, uint256 _boostPoints);
 ```
 

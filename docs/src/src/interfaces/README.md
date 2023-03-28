@@ -1,4 +1,4 @@
 
 
 # Contents
-- [IStratosphere](IStratosphere.sol/contract.IStratosphere.md)
+- [IStratosphere](IStratosphere.sol/interface.IStratosphere.md)
