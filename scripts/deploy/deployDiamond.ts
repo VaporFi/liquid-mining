@@ -7,7 +7,7 @@ import getFacets from '../../utils/getFacets'
 import { addresses } from '../../config/addresses'
 import { BURN_WALLET } from '../../config/constants'
 
-const CHAIN_ID = String(network.config.chainId) || '43113'
+const CHAIN_ID = '43113'
 // WARNING: the order here is important, check DiamondInit.sol
 export const defaultArgs: DiamondInit.ArgsStruct = {
   depositFee: '500',
@@ -38,7 +38,7 @@ export default async function deployDiamond(
   const diamond = await deployContract('LiquidStakingDiamond', {
     args: [deployer.address, diamondCutFacet.address],
     log: true,
-    skipIfAlreadyDeployed: true,
+    // skipIfAlreadyDeployed: true,
   })
 
   // Deploy DiamondInit

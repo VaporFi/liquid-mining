@@ -145,7 +145,7 @@ contract DiamondManagerFacet {
 
     function startNewSeason(uint256 _rewardTokenToDistribute) external onlyOwner {
         uint256 _currentSeason = s.currentSeasonId;
-        if (s.seasons[_currentSeason].endTimestamp < block.timestamp) {
+        if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp < block.timestamp) {
             revert DiamondManagerFacet__Season_Not_Finished();
         }
         s.currentSeasonId = s.currentSeasonId + 1;
@@ -159,7 +159,7 @@ contract DiamondManagerFacet {
 
     function startNewSeasonWithDuration(uint256 _rewardTokenToDistribute, uint8 _durationDays) external onlyOwner {
         uint256 _currentSeason = s.currentSeasonId;
-        if (s.seasons[_currentSeason].endTimestamp < block.timestamp) {
+        if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp < block.timestamp) {
             revert DiamondManagerFacet__Season_Not_Finished();
         }
         s.currentSeasonId = _currentSeason + 1;

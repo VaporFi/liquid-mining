@@ -26,7 +26,10 @@ async function main() {
 
   // Start first season
   await (
-    await DiamondManagerFacet.startNewSeasonWithDuration(15_000 ** 18, 2)
+    await DiamondManagerFacet.startNewSeasonWithDuration(
+      ethers.utils.parseEther('15000'),
+      2
+    )
   ).wait()
   console.log('Season started')
 
@@ -34,10 +37,9 @@ async function main() {
   console.log('Current season', currentSeason)
 
   // Transfer ownership to labs multisig
+  if (network.name !== 'avalanche') return
   await (
-    await OwnershipFacet.transferOwnership(
-      addresses.labsMultisig[network.config.chainId || '43113']
-    )
+    await OwnershipFacet.transferOwnership(addresses.teamMultisig['43113'])
   ).wait()
   console.log('Ownership transferred')
 }

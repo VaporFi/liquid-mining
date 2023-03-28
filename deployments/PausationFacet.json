@@ -59,5 +59,66 @@
       "skipIfAlreadyDeployed": true
     },
     "address": "0x7CF5d950528e73F25995e7442Dd01d9457496AB2"
+  },
+  "hardhat": {
+    "artifact": {
+      "_format": "hh-sol-artifact-1",
+      "contractName": "PausationFacet",
+      "sourceName": "src/facets/PausationFacet.sol",
+      "abi": [
+        {
+          "inputs": [],
+          "name": "LDiamond__OnlyOwner",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "LPausable__AlreadyPaused",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "LPausable__AlreadyUnpaused",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "pause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "paused",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "unpause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ],
+      "bytecode": "0x608060405234801561001057600080fd5b506101f9806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c80633f4ba83a146100465780635c975abb146100505780638456cb591461006a575b600080fd5b61004e610072565b005b60015460ff16604051901515815260200160405180910390f35b61004e6100e0565b61007a610151565b60015460ff166100b6576040517f73445b0300000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00169055565b6100e8610151565b60015460ff1615610125576040517f7859166400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001681179055565b7fc8fcad8db84d3cc18b4c41d551ea0ee66dd599cde068d998e57d5e09332c13205473ffffffffffffffffffffffffffffffffffffffff1633146101c1576040517fe1d7449900000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b56fea26469706673582212204e920e2a3535d37b82a9f7665e8fda69a70205f56dce2226d835eae498a450f164736f6c63430008110033",
+      "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c80633f4ba83a146100465780635c975abb146100505780638456cb591461006a575b600080fd5b61004e610072565b005b60015460ff16604051901515815260200160405180910390f35b61004e6100e0565b61007a610151565b60015460ff166100b6576040517f73445b0300000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00169055565b6100e8610151565b60015460ff1615610125576040517f7859166400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001681179055565b7fc8fcad8db84d3cc18b4c41d551ea0ee66dd599cde068d998e57d5e09332c13205473ffffffffffffffffffffffffffffffffffffffff1633146101c1576040517fe1d7449900000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b56fea26469706673582212204e920e2a3535d37b82a9f7665e8fda69a70205f56dce2226d835eae498a450f164736f6c63430008110033",
+      "linkReferences": {},
+      "deployedLinkReferences": {}
+    },
+    "options": {
+      "args": [],
+      "log": true,
+      "skipIfAlreadyDeployed": true
+    },
+    "address": "0xA4899D35897033b927acFCf422bc745916139776"
   }
 }
