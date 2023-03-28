@@ -1,7 +1,9 @@
-# Contents
 
+
+# Contents
 - [facets](/src/facets)
 - [interfaces](/src/interfaces)
 - [libraries](/src/libraries)
-- [StakingDiamond\_\_InvalidFunction](LiquidMiningDiamond.sol/error.StakingDiamond__InvalidFunction.md)
+- [upgradeInitializers](/src/upgradeInitializers)
+- [LiquidMiningDiamond__InvalidFunction](LiquidMiningDiamond.sol/error.LiquidMiningDiamond__InvalidFunction.md)
 - [LiquidMiningDiamond](LiquidMiningDiamond.sol/contract.LiquidMiningDiamond.md)

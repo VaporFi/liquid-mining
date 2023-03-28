@@ -1,11 +1,11 @@
 # DiamondLoupeFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/5d323fd7888bb01e362cdf4c980f8c20b18b712f/src/facets/DiamondLoupeFacet.sol)
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/DiamondLoupeFacet.sol)
 
 **Inherits:**
 IDiamondLoupe, IERC165
 
-**Authors:**
-mektigboy, Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat
+**Author:**
+Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat
 
 Facet in charge of the diamond loupe
 
@@ -14,8 +14,6 @@ Facet in charge of the diamond loupe
 
 ## Functions
 ### facets
-
-LOGIC ///
 
 Get all the facets within the diamond
 

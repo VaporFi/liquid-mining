@@ -1,11 +1,13 @@
 # WithdrawFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/5d323fd7888bb01e362cdf4c980f8c20b18b712f/src/facets/WithdrawFacet.sol)
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/WithdrawFacet.sol)
+
+Facet in charge of withdrawing unlocked VPND
+
+*Utilizes 'LDiamond', 'AppStorage' and 'IERC20'*
 
 
 ## State Variables
 ### s
-STORAGE ///
-
 
 ```solidity
 AppStorage s;
@@ -13,29 +15,59 @@ AppStorage s;
 
 
 ## Functions
+### withdrawUnlocked
+
+EXTERNAL LOGIC ///
+
+Withdraw prematurely unlocked VPND
+
+*User cannot participate in new seasons until they withdraw*
+
+
+```solidity
+function withdrawUnlocked() external;
+```
+
 ### withdraw
 
-LOGIC ///
+Withdraw unlocked VPND
 
-Withdraws the staked amount from previous stake seasons
+*User cannot participate in new seasons until they withdraw*
 
 
 ```solidity
-function withdraw(uint256 _seasonId) external;
+function withdraw() external;
 ```
-**Parameters**
 
-|Name|Type|Description|
-|----|----|-----------|
-|`_seasonId`|`uint256`||
+### withdrawAll
 
+Withdraw all unlocked VPND
 
-## Errors
-### WithdrawFacet__InProgressSeason
-ERRORS ///
+*User cannot participate in new seasons until they withdraw*
 
 
 ```solidity
-error WithdrawFacet__InProgressSeason();
+function withdrawAll() external;
+```
+
+## Events
+### WithdrawUnlockedVPND
+EVENTS ///
+
+
+```solidity
+event WithdrawUnlockedVPND(uint256 amount, address indexed to);
+```
+
+### WithdrawVPND
+
+```solidity
+event WithdrawVPND(uint256 amount, address indexed to);
+```
+
+### WithdrawAll
+
+```solidity
+event WithdrawAll(uint256 amount, address indexed to);
 ```
 

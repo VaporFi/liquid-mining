@@ -1,8 +1,5 @@
 # PausationFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/5d323fd7888bb01e362cdf4c980f8c20b18b712f/src/facets/PausationFacet.sol)
-
-**Author:**
-mektigboy
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/PausationFacet.sol)
 
 Facet in charge of the pausation of certain features
 
@@ -11,8 +8,6 @@ Facet in charge of the pausation of certain features
 
 ## State Variables
 ### s
-APP STORAGE ///
-
 
 ```solidity
 AppStorage s;
@@ -22,14 +17,18 @@ AppStorage s;
 ## Functions
 ### paused
 
-LOGIC ///
-
 Get if features are currently paused
 
 
 ```solidity
 function paused() external view returns (bool);
 ```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`bool`|bool if features are paused|
+
 
 ### pause
 
