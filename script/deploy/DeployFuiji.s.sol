@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 import "forge-std/Script.sol";
 import "clouds/interfaces/IDiamondCut.sol";
 
-import "src/LiquidStakingDiamond.sol";
+import "src/LiquidMiningDiamond.sol";
 import "src/facets/DiamondCutFacet.sol";
 import "src/facets/DiamondLoupeFacet.sol";
 import "src/facets/OwnershipFacet.sol";
@@ -32,7 +32,7 @@ contract DeployFuji is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         DiamondCutFacet diamondCut = new DiamondCutFacet();
-        LiquidStakingDiamond diamond = new LiquidStakingDiamond(vm.addr(deployerPrivateKey), address(diamondCut));
+        LiquidMiningDiamond diamond = new LiquidMiningDiamond(vm.addr(deployerPrivateKey), address(diamondCut));
         DiamondInit diamondInit = new DiamondInit();
 
         setDiamondLoupeFacet();

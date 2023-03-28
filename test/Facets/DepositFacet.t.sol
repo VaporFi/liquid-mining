@@ -2,7 +2,7 @@
 pragma solidity 0.8.17;
 
 import "lib/forge-std/src/Test.sol";
-import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
+import {DiamondTest, LiquidMiningDiamond} from "../utils/DiamondTest.sol";
 import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidFeeReceivers} from "src/facets/DepositFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
 import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
@@ -10,7 +10,7 @@ import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
 
 contract DepositFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
-    LiquidStakingDiamond internal diamond;
+    LiquidMiningDiamond internal diamond;
     DepositFacet internal depositFacet;
     DiamondManagerFacet internal diamondManagerFacet;
     address depositFeeReceiver1 = makeAddr("depositFeeReceiver1");

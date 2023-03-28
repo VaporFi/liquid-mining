@@ -5,13 +5,13 @@ import "clouds/interfaces/IDiamondCut.sol";
 import "clouds/diamond/LDiamond.sol";
 import "./libraries/AppStorage.sol";
 
-error LiquidStakingDiamond__InvalidFunction();
+error LiquidMiningDiamond__InvalidFunction();
 
-/// @title LiquidStaking
+/// @title LiquidMining
 /// @author Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat
 /// @notice Main contract of the diamond
 /// @dev Utilizes 'IDiamondCut', 'LDiamond' and 'AppStorage'
-contract LiquidStakingDiamond {
+contract LiquidMiningDiamond {
     /////////////
     /// LOGIC ///
     /////////////
@@ -44,7 +44,7 @@ contract LiquidStakingDiamond {
 
         address facet = ds.selectorToFacetAndPosition[msg.sig].facetAddress;
 
-        if (facet == address(0)) revert LiquidStakingDiamond__InvalidFunction();
+        if (facet == address(0)) revert LiquidMiningDiamond__InvalidFunction();
 
         assembly {
             calldatacopy(0, 0, calldatasize())
