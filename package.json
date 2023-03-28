@@ -1,11 +1,12 @@
 {
-  "name": "liquid-staking",
+  "name": "liquid-mining",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:VaporFi/liquid-staking.git",
+  "repository": "git@github.com:VaporFi/liquid-mining.git",
   "author": "Jose Mejias <mejiasdev@icloud.com>",
   "license": "MIT",
   "devDependencies": {
+    "lint-staged": "^13.1.2",
     "prettier": "^2.8.2",
     "prettier-plugin-solidity": "^1.1.1"
   },
@@ -15,6 +16,13 @@
   "scripts": {
     "build": "make build",
     "lint": "solhint src/**/*.sol",
-    "format": "prettier --write src/**/*.sol"
+    "format": "prettier --write src/**/*.sol",
+    "format-test": "prettier --write test/**/*.sol"
+  },
+  "lint-staged": {
+    "*.sol": [
+      "prettier --write",
+      "solhint"
+    ]
   }
 }

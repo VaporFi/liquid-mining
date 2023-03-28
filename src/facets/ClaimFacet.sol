@@ -4,19 +4,17 @@ pragma solidity ^0.8.17;
 import "clouds/diamond/LDiamond.sol";
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../libraries/AppStorage.sol";
-
+import "../libraries/LPercentages.sol";
 
 error ClaimFacet__NotEnoughPoints();
 error ClaimFacet__InProgressSeason();
-error ClaimFacet__InvalidSeason();
 error ClaimFacet__AlreadyClaimed();
-
+error ClaimFacet__InvalidFeeReceivers();
 
 /// @title ClaimFacet
 /// @notice Facet in charge of claiming VAPE rewards
 /// @dev Utilizes 'LDiamond' and 'AppStorage'
 contract ClaimFacet {
-
     //////////////
     /// EVENTS ///
     //////////////
@@ -24,39 +22,38 @@ contract ClaimFacet {
 
     AppStorage s;
 
-    /////////////////
-    /// MODIFIERS ///
-    /////////////////
-
-    /// @dev Mark function is given a valid seasonId
-    /// @param _seasonId The ID to check
-    modifier checkSeason(uint256 _seasonId) {
-        if(s.seasons[_seasonId].endTimestamp >= block.timestamp) revert ClaimFacet__InProgressSeason();
-        if(_seasonId > s.currentSeasonId) revert ClaimFacet__InvalidSeason();
-        _;
-    }
-
     //////////////////////
     /// EXTERNAL LOGIC ///
     //////////////////////
 
     /// @notice Claim accrued VAPE reward token
-    /// @param _seasonId The ID of the season
-    function claim(uint256 _seasonId) checkSeason(_seasonId) external {
-        if(s.usersData[_seasonId][msg.sender].depositPoints == 0) {
+    function claim() external {
+        uint256 seasonId = s.addressToLastSeasonId[msg.sender];
+        UserData storage userData = s.usersData[seasonId][msg.sender];
+        if (s.seasons[seasonId].endTimestamp >= block.timestamp) {
+            revert ClaimFacet__InProgressSeason();
+        }
+        if (userData.depositPoints == 0) {
             revert ClaimFacet__NotEnoughPoints();
         }
-        if(s.usersData[_seasonId][msg.sender].hasClaimed == true) {
+        if (userData.amountClaimed > 0) {
             revert ClaimFacet__AlreadyClaimed();
         }
-        UserData storage _userData = s.usersData[_seasonId][msg.sender];
-        uint256 totalPoints = _userData.depositPoints + _userData.boostPoints;
-        uint256 userShare = calculateShare(totalPoints, _seasonId);
-        uint256 rewardTokenShare = vapeToDistribute(userShare, _seasonId);
-        s.usersData[_seasonId][msg.sender].hasClaimed == true;
-        IERC20(s.rewardToken).transferFrom(address(this), msg.sender, rewardTokenShare);
-        emit Claim(rewardTokenShare, msg.sender);
 
+        uint256 totalPoints = userData.depositPoints + userData.boostPoints;
+        uint256 userShare = _calculateShare(totalPoints, seasonId);
+
+        uint256 rewardTokenShare = _vapeToDistribute(userShare, seasonId);
+
+        userData.amountClaimed = rewardTokenShare;
+        s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
+        s.seasons[seasonId].totalClaimAmount += rewardTokenShare;
+
+        uint256 _fee = LPercentages.percentage(rewardTokenShare, s.claimFee);
+        _applyClaimFee(_fee);
+        IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare - _fee);
+
+        emit Claim(rewardTokenShare, msg.sender);
     }
 
     //////////////////////
@@ -64,13 +61,31 @@ contract ClaimFacet {
     //////////////////////
 
     /// @notice Calculate the share of the User based on totalPoints of season
-    function calculateShare(uint256 _totalPoints, uint256 _seasonId) internal view returns(uint256) {
+    function _calculateShare(uint256 _totalPoints, uint256 _seasonId) internal view returns (uint256) {
         uint256 seasonTotalPoints = s.seasons[_seasonId].totalPoints;
         uint256 userShare = (_totalPoints * 1e18) / seasonTotalPoints;
         return userShare;
     }
+
     /// @notice Calculate VAPE earned by User through share of the totalPoints
-    function vapeToDistribute(uint256 _userShare, uint256 _seasonId) internal view returns(uint256) {
-        return (s.seasons[_seasonId].rewardTokenBalance * _userShare) / 1e18;
+    function _vapeToDistribute(uint256 _userShare, uint256 _seasonId) internal view returns (uint256) {
+        return (s.seasons[_seasonId].rewardTokensToDistribute * _userShare) / 1e18;
+    }
+
+    function _applyClaimFee(uint256 _fee) internal {
+        address[] storage _receivers = s.claimFeeReceivers;
+        uint256[] storage _shares = s.claimFeeReceiversShares;
+        uint256 _length = _receivers.length;
+
+        if (_length != _shares.length) {
+            revert ClaimFacet__InvalidFeeReceivers();
+        }
+        for (uint256 i; i < _length; ) {
+            uint256 _share = LPercentages.percentage(_fee, _shares[i]);
+            s.pendingWithdrawals[_receivers[i]][s.rewardToken] += _share;
+            unchecked {
+                i++;
+            }
+        }
     }
 }
