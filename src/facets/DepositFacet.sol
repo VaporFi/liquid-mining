@@ -20,7 +20,7 @@ error DepositFacet__FundsInPrevSeason();
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
 contract DepositFacet {
-    event Deposit(address indexed depositor, uint256 amount);
+    event Deposit(address indexed depositor, uint256 amount, uint256 seasonId);
 
     AppStorage s;
 
@@ -62,7 +62,7 @@ contract DepositFacet {
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyDepositFee(_fee);
-        emit Deposit(msg.sender, _amount);
+        emit Deposit(msg.sender, _amount, s.currentSeasonId);
 
         //interactions
         _token.transferFrom(msg.sender, address(this), _amount);

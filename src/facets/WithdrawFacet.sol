@@ -18,9 +18,9 @@ contract WithdrawFacet {
     //////////////
     /// EVENTS ///
     //////////////
-    event WithdrawUnlockedVPND(uint256 amount, address indexed to);
-    event WithdrawVPND(uint256 amount, address indexed to);
-    event WithdrawAll(uint256 amount, address indexed to);
+    event WithdrawUnlockedVPND(uint256 amount, address indexed to, uint256 seasonId);
+    event WithdrawVPND(uint256 amount, address indexed to, uint256 seasonId);
+    event WithdrawAll(uint256 amount, address indexed to, uint256 seasonId);
 
     AppStorage s;
 
@@ -46,7 +46,7 @@ contract WithdrawFacet {
         s.usersData[seasonId][user].unlockAmount = 0;
         s.usersData[seasonId][user].unlockTimestamp = 0;
         IERC20(s.depositToken).transfer(user, amount);
-        emit WithdrawUnlockedVPND(amount, user);
+        emit WithdrawUnlockedVPND(amount, user, seasonId);
     }
 
     /// @notice Withdraw unlocked VPND
@@ -72,7 +72,7 @@ contract WithdrawFacet {
         //    userData.depositAmount = 0;
         userData.hasWithdrawnOrRestaked = true;
         IERC20(s.depositToken).transfer(user, amount);
-        emit WithdrawVPND(amount, user);
+        emit WithdrawVPND(amount, user, seasonId);
     }
 
     /// @notice Withdraw all unlocked VPND
@@ -114,6 +114,6 @@ contract WithdrawFacet {
         userData.unlockTimestamp = 0;
         userData.hasWithdrawnOrRestaked = true;
         IERC20(s.depositToken).transfer(user, amount);
-        emit WithdrawAll(amount, user);
+        emit WithdrawAll(amount, user, seasonId);
     }
 }
