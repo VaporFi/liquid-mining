@@ -10,6 +10,9 @@ contract StratosphereMock is IStratosphere, Test {
     address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
     address stratosphereMemberSilver = makeAddr("stratosphereMemberSilver");
     address stratosphereMemberGold = makeAddr("stratosphereMemberGold");
+    address stratosphereMemberPlatinum = makeAddr("stratosphereMemberPlatinum");
+    address stratosphereMemberDiamond = makeAddr("stratosphereMemberDiamond");
+    address stratosphereMemberObsidian = makeAddr("stratosphereMemberObsidian");
 
     function tokenIdOf(address account) external view returns (uint256) {
         if (account == stratosphereMemberBasic) {
@@ -18,16 +21,32 @@ contract StratosphereMock is IStratosphere, Test {
             return 2;
         } else if (account == stratosphereMemberGold) {
             return 3;
+        } else if (account == stratosphereMemberPlatinum) {
+            return 4;
+        } else if (account == stratosphereMemberDiamond) {
+            return 5;
+        } else if (account == stratosphereMemberObsidian) {
+            return 6;
         } else {
             return 0;
         }
     }
 
     function tierOf(uint256 tokenId) external pure returns (uint8) {
-        if (tokenId == 0 || tokenId > 3) {
+        if (tokenId == 1) {
             return 0;
+        } else if (tokenId == 2) {
+            return 1;
+        } else if (tokenId == 3) {
+            return 2;
+        } else if (tokenId == 4) {
+            return 3;
+        } else if (tokenId == 5) {
+            return 4;
+        } else if (tokenId == 6) {
+            return 5;
         } else {
-            return uint8(tokenId);
+            return 0;
         }
     }
 }

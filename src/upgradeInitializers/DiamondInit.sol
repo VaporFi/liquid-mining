@@ -64,12 +64,12 @@ contract DiamondInit {
         // DepositFacet
         s.depositFee = _args.depositFee;
         s.depositToken = _args.depositToken;
-        s.depositDiscountForStratosphereMembers[1] = 500; // 5%
-        s.depositDiscountForStratosphereMembers[2] = 550; // 5.5%
-        s.depositDiscountForStratosphereMembers[3] = 650; // 6.5%
-        s.depositDiscountForStratosphereMembers[4] = 800; // 8%
-        s.depositDiscountForStratosphereMembers[5] = 1000; // 10%
-        s.depositDiscountForStratosphereMembers[6] = 1500; // 15%
+        s.depositDiscountForStratosphereMembers[0] = 500; // 5%º
+        s.depositDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.depositDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.depositDiscountForStratosphereMembers[3] = 800; // 8%
+        s.depositDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.depositDiscountForStratosphereMembers[5] = 1500; // 15%
         s.depositFeeReceivers.push(_args.replenishmentPool);
         s.depositFeeReceivers.push(_args.labsMultisig);
         s.depositFeeReceivers.push(_args.burnWallet);
@@ -79,18 +79,18 @@ contract DiamondInit {
 
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
-        s.unlockFeeDiscountForStratosphereMembers[1] = 500; // 5%
-        s.unlockFeeDiscountForStratosphereMembers[2] = 550; // 5.5%
-        s.unlockFeeDiscountForStratosphereMembers[3] = 650; // 6.5%
-        s.unlockFeeDiscountForStratosphereMembers[4] = 800; // 8%
-        s.unlockFeeDiscountForStratosphereMembers[5] = 1000; // 10%
-        s.unlockFeeDiscountForStratosphereMembers[6] = 1500; // 15%
-        s.unlockTimestampDiscountForStratosphereMembers[1] = 500; // 5%
-        s.unlockTimestampDiscountForStratosphereMembers[2] = 550; // 5.5%
-        s.unlockTimestampDiscountForStratosphereMembers[3] = 650; // 6.5%
-        s.unlockTimestampDiscountForStratosphereMembers[4] = 800; // 8%
-        s.unlockTimestampDiscountForStratosphereMembers[5] = 1000; // 10%
-        s.unlockTimestampDiscountForStratosphereMembers[6] = 1500; // 15%
+        s.unlockFeeDiscountForStratosphereMembers[0] = 500; // 5%
+        s.unlockFeeDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.unlockFeeDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.unlockFeeDiscountForStratosphereMembers[3] = 800; // 8%
+        s.unlockFeeDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.unlockFeeDiscountForStratosphereMembers[5] = 1500; // 15%
+        s.unlockTimestampDiscountForStratosphereMembers[0] = 500; // 5%
+        s.unlockTimestampDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.unlockTimestampDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.unlockTimestampDiscountForStratosphereMembers[3] = 800; // 8%
+        s.unlockTimestampDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.unlockTimestampDiscountForStratosphereMembers[5] = 1500; // 15%
         s.unlockFeeReceivers.push(_args.replenishmentPool);
         s.unlockFeeReceivers.push(_args.labsMultisig);
         s.unlockFeeReceivers.push(_args.burnWallet);
@@ -105,24 +105,24 @@ contract DiamondInit {
         s.boostLevelToFee[1] = 2 * 1e6;
         s.boostLevelToFee[2] = 3 * 1e6;
         s.boostLevelToFee[3] = 4 * 1e6;
-        s.boostPercentFromTierToLevel[1][1] = 1000; // 10%
-        s.boostPercentFromTierToLevel[2][1] = 1100; // 11%
-        s.boostPercentFromTierToLevel[3][1] = 1200; // 12%
-        s.boostPercentFromTierToLevel[4][1] = 1300; // 13%
-        s.boostPercentFromTierToLevel[5][1] = 1400; // 14%
-        s.boostPercentFromTierToLevel[6][1] = 1500; // 15%
-        s.boostPercentFromTierToLevel[1][2] = 2000; // 20%
-        s.boostPercentFromTierToLevel[2][2] = 2100; // 21%
-        s.boostPercentFromTierToLevel[3][2] = 2200; // 22%
-        s.boostPercentFromTierToLevel[4][2] = 2300; // 23%
-        s.boostPercentFromTierToLevel[5][2] = 2400; // 24%
-        s.boostPercentFromTierToLevel[6][2] = 2500; // 25%
-        s.boostPercentFromTierToLevel[1][3] = 3000; // 30%
-        s.boostPercentFromTierToLevel[2][3] = 3100; // 31%
-        s.boostPercentFromTierToLevel[3][3] = 3200; // 32%
-        s.boostPercentFromTierToLevel[4][3] = 3300; // 33%
-        s.boostPercentFromTierToLevel[5][3] = 3400; // 34%
-        s.boostPercentFromTierToLevel[6][3] = 3500; // 35%
+        s.boostPercentFromTierToLevel[0][1] = 1000; // 10%
+        s.boostPercentFromTierToLevel[1][1] = 1100; // 11%
+        s.boostPercentFromTierToLevel[2][1] = 1200; // 12%
+        s.boostPercentFromTierToLevel[3][1] = 1300; // 13%
+        s.boostPercentFromTierToLevel[4][1] = 1400; // 14%
+        s.boostPercentFromTierToLevel[5][1] = 1500; // 15%
+        s.boostPercentFromTierToLevel[0][2] = 2000; // 20%
+        s.boostPercentFromTierToLevel[1][2] = 2100; // 21%
+        s.boostPercentFromTierToLevel[2][2] = 2200; // 22%
+        s.boostPercentFromTierToLevel[3][2] = 2300; // 23%
+        s.boostPercentFromTierToLevel[4][2] = 2400; // 24%
+        s.boostPercentFromTierToLevel[5][2] = 2500; // 25%
+        s.boostPercentFromTierToLevel[0][3] = 3000; // 30%
+        s.boostPercentFromTierToLevel[1][3] = 3100; // 31%
+        s.boostPercentFromTierToLevel[2][3] = 3200; // 32%
+        s.boostPercentFromTierToLevel[3][3] = 3300; // 33%
+        s.boostPercentFromTierToLevel[4][3] = 3400; // 34%
+        s.boostPercentFromTierToLevel[5][3] = 3500; // 35%
         s.boostFeeReceivers.push(_args.labsMultisig);
         s.boostFeeReceivers.push(_args.xVAPE);
         s.boostFeeReceivers.push(_args.passport);
@@ -142,12 +142,12 @@ contract DiamondInit {
         // RestakeFacet
         s.restakeFee = _args.restakeFee;
         s.rewardToken = _args.rewardToken;
-        s.restakeDiscountForStratosphereMembers[1] = 500; // 5%
-        s.restakeDiscountForStratosphereMembers[2] = 550; // 5.5%
-        s.restakeDiscountForStratosphereMembers[3] = 650; // 6.5%
-        s.restakeDiscountForStratosphereMembers[4] = 800; // 8%
-        s.restakeDiscountForStratosphereMembers[5] = 1000; // 10%
-        s.restakeDiscountForStratosphereMembers[6] = 1500; // 15%
+        s.restakeDiscountForStratosphereMembers[0] = 500; // 5%
+        s.restakeDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.restakeDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.restakeDiscountForStratosphereMembers[3] = 800; // 8%
+        s.restakeDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.restakeDiscountForStratosphereMembers[5] = 1500; // 15%
         s.restakeFeeReceivers.push(_args.replenishmentPool);
         s.restakeFeeReceivers.push(_args.labsMultisig);
         s.restakeFeeReceivers.push(_args.burnWallet);
