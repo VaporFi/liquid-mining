@@ -18,7 +18,7 @@ contract ClaimFacet {
     //////////////
     /// EVENTS ///
     //////////////
-    event Claim(uint256 amount, address indexed claimer);
+    event Claim(uint256 amount, address indexed claimer, uint256 seasonId);
 
     AppStorage s;
 
@@ -53,7 +53,7 @@ contract ClaimFacet {
         _applyClaimFee(_fee);
         IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare - _fee);
 
-        emit Claim(rewardTokenShare, msg.sender);
+        emit Claim(rewardTokenShare, msg.sender, seasonId);
     }
 
     //////////////////////
