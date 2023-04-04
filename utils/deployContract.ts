@@ -41,7 +41,7 @@ export async function deployContract(
     { artifact, options, address: contract.address },
     network.name
   )
-  generateFullABI()
+  generateFullABI(network.name)
   if (options.log) {
     console.log(`${contractName} deployed to:`, contract.address)
   }
