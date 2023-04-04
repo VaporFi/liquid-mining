@@ -35,7 +35,7 @@ export default async function deployDiamond(
   const diamondCutFacet = await deployContract('DiamondCutFacet')
 
   // Deploy Diamond
-  const diamond = await deployContract('LiquidStakingDiamond', {
+  const diamond = await deployContract('LiquidMiningDiamond', {
     args: [deployer.address, diamondCutFacet.address],
     log: true,
     // skipIfAlreadyDeployed: true,

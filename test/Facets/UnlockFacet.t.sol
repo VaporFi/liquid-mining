@@ -2,7 +2,7 @@
 pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
-import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
+import {DiamondTest, LiquidMiningDiamond} from "../utils/DiamondTest.sol";
 import {UnlockFacet, UnlockFacet__InvalidAmount, UnlockFacet__AlreadyUnlocked, UnlockFacet__InvalidFeeReceivers, UnlockFacet__InvalidUnlock} from "src/facets/UnlockFacet.sol";
 import {DepositFacet} from "src/facets/DepositFacet.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
@@ -11,7 +11,7 @@ import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
 
 contract UnlockFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
-    LiquidStakingDiamond internal diamond;
+    LiquidMiningDiamond internal diamond;
     UnlockFacet internal unlockFacet;
     DepositFacet internal depositFacet;
     DiamondManagerFacet internal diamondManagerFacet;

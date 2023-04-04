@@ -2,7 +2,7 @@
 pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
-import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
+import {DiamondTest, LiquidMiningDiamond} from "../utils/DiamondTest.sol";
 import {DepositFacet} from "src/facets/DepositFacet.sol";
 import {ClaimFacet} from "src/facets/ClaimFacet.sol";
 import {BoostFacet} from "src/facets/BoostFacet.sol";
@@ -16,7 +16,7 @@ import "src/libraries/LPercentages.sol";
 
 contract FeeCollectorFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
-    LiquidStakingDiamond internal diamond;
+    LiquidMiningDiamond internal diamond;
     UnlockFacet internal unlockFacet;
     DepositFacet internal depositFacet;
     RestakeFacet internal restakeFacet;

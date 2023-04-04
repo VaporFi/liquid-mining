@@ -10,9 +10,9 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src/LiquidStakingDiamond.sol
-FN:37,LiquidStakingDiamond.
-FNDA:92,LiquidStakingDiamond.
+SF:src/LiquidMiningDiamond.sol
+FN:37,LiquidMiningDiamond.
+FNDA:92,LiquidMiningDiamond.
 DA:38,92
 DA:40,92
 DA:43,92

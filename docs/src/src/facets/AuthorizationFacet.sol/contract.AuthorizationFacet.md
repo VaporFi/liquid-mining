@@ -1,8 +1,5 @@
 # AuthorizationFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/5d323fd7888bb01e362cdf4c980f8c20b18b712f/src/facets/AuthorizationFacet.sol)
-
-**Author:**
-mektigboy
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/AuthorizationFacet.sol)
 
 Facet in charge of displaying and setting the authorization variables
 
@@ -11,8 +8,6 @@ Facet in charge of displaying and setting the authorization variables
 
 ## State Variables
 ### s
-APP STORAGE ///
-
 
 ```solidity
 AppStorage s;
@@ -21,8 +16,6 @@ AppStorage s;
 
 ## Functions
 ### authorized
-
-LOGIC ///
 
 Get if address is authorized
 

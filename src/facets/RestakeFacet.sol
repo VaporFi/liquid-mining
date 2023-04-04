@@ -15,7 +15,7 @@ error RestakeFacet__HasWithdrawnOrRestaked();
 error RestakeFacet__FundsInPrevSeason();
 
 contract RestakeFacet {
-    event Restake(address indexed depositor, uint256 amount);
+    event Restake(address indexed depositor, uint256 amount, uint256 seasonId);
 
     AppStorage s;
 
@@ -52,7 +52,7 @@ contract RestakeFacet {
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyRestakeFee(_fee);
-        emit Restake(msg.sender, _amount);
+        emit Restake(msg.sender, _amount, s.currentSeasonId);
     }
 
     /// @notice Apply points

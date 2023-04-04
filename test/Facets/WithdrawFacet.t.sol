@@ -2,7 +2,7 @@
 pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
-import {DiamondTest, LiquidStakingDiamond} from "../utils/DiamondTest.sol";
+import {DiamondTest, LiquidMiningDiamond} from "../utils/DiamondTest.sol";
 import {WithdrawFacet, WithdrawFacet__InProgressSeason, WithdrawFacet__InsufficientBalance, WithdrawFacet__UnlockNotMatured, WithdrawFacet__UserNotParticipated, WithdrawFacet__AlreadyWithdrawn} from "src/facets/WithdrawFacet.sol";
 import {DepositFacet} from "src/facets/DepositFacet.sol";
 import {UnlockFacet} from "src/facets/UnlockFacet.sol";
@@ -12,7 +12,7 @@ import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
 
 contract WithdrawFacetTest is DiamondTest {
     StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
-    LiquidStakingDiamond internal diamond;
+    LiquidMiningDiamond internal diamond;
     UnlockFacet internal unlockFacet;
     DepositFacet internal depositFacet;
     WithdrawFacet internal withdrawFacet;

@@ -4,7 +4,7 @@ pragma solidity 0.8.17;
 import "forge-std/Test.sol";
 import "clouds/interfaces/IDiamondCut.sol";
 
-import "src/LiquidStakingDiamond.sol";
+import "src/LiquidMiningDiamond.sol";
 import "src/facets/DiamondCutFacet.sol";
 import "src/facets/DiamondLoupeFacet.sol";
 import "src/facets/OwnershipFacet.sol";
@@ -30,14 +30,14 @@ contract DiamondTest is Test {
     ERC20Mock internal boostFeeToken;
     StratosphereMock internal stratosphereMock;
 
-    function createDiamond() internal returns (LiquidStakingDiamond) {
+    function createDiamond() internal returns (LiquidMiningDiamond) {
         depositToken = new ERC20Mock("VaporNodes", "VPND", 18);
         rewardToken = new ERC20Mock("VAPE Token", "VAPE", 18);
         boostFeeToken = new ERC20Mock("USDC", "USDC", 6);
         stratosphereMock = new StratosphereMock();
 
         DiamondCutFacet diamondCut = new DiamondCutFacet();
-        LiquidStakingDiamond diamond = new LiquidStakingDiamond(makeAddr("diamondOwner"), address(diamondCut));
+        LiquidMiningDiamond diamond = new LiquidMiningDiamond(makeAddr("diamondOwner"), address(diamondCut));
         DiamondInit diamondInit = new DiamondInit();
 
         setDiamondLoupeFacet();
