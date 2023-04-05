@@ -75,6 +75,7 @@ struct AppStorage {
     mapping(uint256 => uint256) boostLevelToFee;
     // nested mapping: tier => boostlevel => boost enhance points
     mapping(uint256 => mapping(uint256 => uint256)) boostPercentFromTierToLevel;
+    uint256 boostForNonStratMembers;
     address[] boostFeeReceivers;
     uint256[] boostFeeReceiversShares;
     /////////////

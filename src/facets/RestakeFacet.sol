@@ -13,6 +13,7 @@ import "../libraries/LStratosphere.sol";
 error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
 error RestakeFacet__FundsInPrevSeason();
+error RestakeFacet__NoOngoingSeason();
 
 contract RestakeFacet {
     event Restake(address indexed depositor, uint256 amount, uint256 seasonId);
@@ -59,6 +60,9 @@ contract RestakeFacet {
     /// @param _amount Amount of token to apply points
     function _applyPoints(uint256 _amount) internal {
         uint256 _seasonId = s.currentSeasonId;
+        if (block.timestamp > s.seasons[_seasonId].endTimestamp) {
+            revert RestakeFacet__NoOngoingSeason();
+        }
         uint256 _daysUntilSeasonEnd = (s.seasons[_seasonId].endTimestamp - block.timestamp) / 1 days;
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
         _userData.depositAmount += _amount;
