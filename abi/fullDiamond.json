@@ -136,6 +136,12 @@
                 "internalType": "address",
                 "name": "claimer",
                 "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
             }
         ],
         "name": "Claim",
@@ -186,6 +192,12 @@
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
                 "type": "uint256"
             }
         ],
@@ -1984,6 +1996,92 @@
     },
     {
         "inputs": [],
+        "name": "LiquidMiningDiamond__InvalidFunction",
+        "type": "error"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_diamondCutFacet",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__AddressMustBeZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__FunctionAlreadyExists",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__ImmutableFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__IncorrectAction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFacetCode",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "init",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "LDiamond__InitializationFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidAddressZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidReplacementWithSameFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__NoSelectors",
+        "type": "error"
+    },
+    {
+        "inputs": [],
         "name": "LiquidStakingDiamond__InvalidFunction",
         "type": "error"
     },
@@ -2112,6 +2210,12 @@
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
             }
         ],
         "name": "Restake",
@@ -2157,6 +2261,12 @@
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
                 "type": "uint256"
             }
         ],
@@ -2228,6 +2338,12 @@
                 "internalType": "address",
                 "name": "to",
                 "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
             }
         ],
         "name": "WithdrawAll",
@@ -2247,6 +2363,12 @@
                 "internalType": "address",
                 "name": "to",
                 "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
             }
         ],
         "name": "WithdrawUnlockedVPND",
@@ -2266,6 +2388,12 @@
                 "internalType": "address",
                 "name": "to",
                 "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
             }
         ],
         "name": "WithdrawVPND",

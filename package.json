@@ -46,7 +46,8 @@
     "build": "make build",
     "lint": "solhint src/**/*.sol",
     "format": "prettier --write src/**/*.sol",
-    "format-test": "prettier --write test/**/*.sol"
+    "format-test": "prettier --write test/**/*.sol",
+    "deploy:fuji": "hardhat run --network fuji scripts/deploy/index.ts"
   },
   "lint-staged": {
     "*.sol": [
