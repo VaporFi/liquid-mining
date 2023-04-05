@@ -20,6 +20,7 @@ struct UserData {
     uint256 depositPoints;
     uint256 boostPoints;
     uint256 lastBoostClaimTimestamp;
+    uint256 lastBoostPoints;
     uint256 unlockAmount;
     uint256 unlockTimestamp;
     uint256 amountClaimed;
