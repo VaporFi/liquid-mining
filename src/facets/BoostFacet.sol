@@ -44,7 +44,6 @@ contract BoostFacet {
         uint256 _boostPointsAmount;
         if (isStratosphereMember) {
             _boostPointsAmount = s.boostPercentFromTierToLevel[tier][boostLevel];
-            console.log("------------------------", _boostPointsAmount);
         } else {
             _boostPointsAmount = s.boostForNonStratMembers;
         }
