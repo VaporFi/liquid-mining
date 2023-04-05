@@ -41,13 +41,13 @@ contract BoostFacet {
             _boostFee = s.boostLevelToFee[boostLevel];
         }
         _userData.lastBoostClaimTimestamp = block.timestamp;
-        uint256 _boostPointsAmount;
+        uint256 _boostPercent;
         if (isStratosphereMember) {
-            _boostPointsAmount = s.boostPercentFromTierToLevel[tier][boostLevel];
+            _boostPercent = s.boostPercentFromTierToLevel[tier][boostLevel];
         } else {
-            _boostPointsAmount = s.boostForNonStratMembers;
+            _boostPercent = s.boostForNonStratMembers;
         }
-        _userData.boostPoints += _calculatePoints(_userData, _boostPointsAmount);
+        _userData.boostPoints += _calculatePoints(_userData, _boostPercent);
         if (_boostFee > 0) {
             _applyBoostFee(_boostFee);
             IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);
