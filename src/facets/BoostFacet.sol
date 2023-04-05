@@ -43,8 +43,9 @@ contract BoostFacet {
             IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);
         }
         _userData.lastBoostClaimTimestamp = block.timestamp;
-        _userData.lastBoostPoints = _calculatePoints(_userData, boostLevel, tier);
-        _userData.boostPoints += _calculatePoints(_userData, boostLevel, tier);
+        uint256 calculatedPoints = _calculatePoints(_userData, boostLevel, tier);
+        _userData.lastBoostPoints = calculatedPoints
+        _userData.boostPoints += calculatedPoints
         emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints);
     }
 
