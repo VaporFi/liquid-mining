@@ -44,8 +44,8 @@ contract BoostFacet {
         }
         _userData.lastBoostClaimTimestamp = block.timestamp;
         uint256 calculatedPoints = _calculatePoints(_userData, boostLevel, tier);
-        _userData.lastBoostPoints = calculatedPoints
-        _userData.boostPoints += calculatedPoints
+        _userData.lastBoostPoints = calculatedPoints;
+        _userData.boostPoints += calculatedPoints;
         emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints);
     }
 
