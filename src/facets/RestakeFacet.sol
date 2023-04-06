@@ -13,9 +13,10 @@ import "../libraries/LStratosphere.sol";
 error RestakeFacet__InProgressSeason();
 error RestakeFacet__HasWithdrawnOrRestaked();
 error RestakeFacet__FundsInPrevSeason();
+error RestakeFacet__NoOngoingSeason();
 
 contract RestakeFacet {
-    event Restake(address indexed depositor, uint256 amount, uint256 seasonId);
+    event Restake(address indexed depositor, uint256 amount, uint256 seasonId, uint256 restakeFee);
 
     AppStorage s;
 
@@ -26,11 +27,11 @@ contract RestakeFacet {
             revert RestakeFacet__InProgressSeason();
         }
 
-        if (s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == true) {
+        if (userData.hasWithdrawnOrRestaked == true) {
             revert RestakeFacet__HasWithdrawnOrRestaked();
         }
 
-        if (s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0) {
+        if (userData.unlockAmount > 0) {
             revert RestakeFacet__FundsInPrevSeason();
         }
 
@@ -52,13 +53,16 @@ contract RestakeFacet {
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyRestakeFee(_fee);
-        emit Restake(msg.sender, _amount, s.currentSeasonId);
+        emit Restake(msg.sender, _amount, s.currentSeasonId, _fee);
     }
 
     /// @notice Apply points
     /// @param _amount Amount of token to apply points
     function _applyPoints(uint256 _amount) internal {
         uint256 _seasonId = s.currentSeasonId;
+        if (block.timestamp > s.seasons[_seasonId].endTimestamp) {
+            revert RestakeFacet__NoOngoingSeason();
+        }
         uint256 _daysUntilSeasonEnd = (s.seasons[_seasonId].endTimestamp - block.timestamp) / 1 days;
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
         _userData.depositAmount += _amount;

@@ -62,18 +62,18 @@ contract DiamondInit {
 
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
-        s.unlockTimestampDiscountForStratosphereMembers[1] = 500;
-        s.unlockTimestampDiscountForStratosphereMembers[2] = 550;
-        s.unlockTimestampDiscountForStratosphereMembers[3] = 650;
-        s.unlockFeeDiscountForStratosphereMembers[1] = 500;
-        s.unlockFeeDiscountForStratosphereMembers[2] = 550;
-        s.unlockFeeDiscountForStratosphereMembers[3] = 650;
-        s.depositDiscountForStratosphereMembers[1] = 500;
-        s.depositDiscountForStratosphereMembers[2] = 550;
-        s.depositDiscountForStratosphereMembers[3] = 650;
-        s.restakeDiscountForStratosphereMembers[1] = 500;
-        s.restakeDiscountForStratosphereMembers[2] = 550;
-        s.restakeDiscountForStratosphereMembers[3] = 650;
+        s.unlockTimestampDiscountForStratosphereMembers[0] = 500;
+        s.unlockTimestampDiscountForStratosphereMembers[1] = 550;
+        s.unlockTimestampDiscountForStratosphereMembers[2] = 650;
+        s.unlockFeeDiscountForStratosphereMembers[0] = 500;
+        s.unlockFeeDiscountForStratosphereMembers[1] = 550;
+        s.unlockFeeDiscountForStratosphereMembers[2] = 650;
+        s.depositDiscountForStratosphereMembers[0] = 500;
+        s.depositDiscountForStratosphereMembers[1] = 550;
+        s.depositDiscountForStratosphereMembers[2] = 650;
+        s.restakeDiscountForStratosphereMembers[0] = 500;
+        s.restakeDiscountForStratosphereMembers[1] = 550;
+        s.restakeDiscountForStratosphereMembers[2] = 650;
 
         // BoostFacet
         s.boostFeeToken = _args.boostFeeToken;
@@ -82,24 +82,31 @@ contract DiamondInit {
         s.boostLevelToFee[1] = 2 * 1e6;
         s.boostLevelToFee[2] = 3 * 1e6;
         s.boostLevelToFee[3] = 4 * 1e6;
-        s.boostPercentFromTierToLevel[1][1] = 1000;
-        s.boostPercentFromTierToLevel[2][1] = 1100;
-        s.boostPercentFromTierToLevel[3][1] = 1200;
-        s.boostPercentFromTierToLevel[4][1] = 1300;
-        s.boostPercentFromTierToLevel[5][1] = 1400;
-        s.boostPercentFromTierToLevel[6][1] = 1500;
-        s.boostPercentFromTierToLevel[1][2] = 2000;
-        s.boostPercentFromTierToLevel[2][2] = 2100;
-        s.boostPercentFromTierToLevel[3][2] = 2200;
-        s.boostPercentFromTierToLevel[4][2] = 2300;
-        s.boostPercentFromTierToLevel[5][2] = 2400;
-        s.boostPercentFromTierToLevel[6][2] = 2500;
-        s.boostPercentFromTierToLevel[1][3] = 4000;
-        s.boostPercentFromTierToLevel[2][3] = 4100;
-        s.boostPercentFromTierToLevel[3][3] = 4200;
-        s.boostPercentFromTierToLevel[4][3] = 4300;
-        s.boostPercentFromTierToLevel[5][3] = 4400;
-        s.boostPercentFromTierToLevel[6][3] = 4500;
+        s.boostForNonStratMembers = 10;
+        s.boostPercentFromTierToLevel[0][0] = 20;
+        s.boostPercentFromTierToLevel[1][0] = 25;
+        s.boostPercentFromTierToLevel[2][0] = 33;
+        s.boostPercentFromTierToLevel[3][0] = 45;
+        s.boostPercentFromTierToLevel[4][0] = 65;
+        s.boostPercentFromTierToLevel[5][0] = 100;
+        s.boostPercentFromTierToLevel[0][1] = 22;
+        s.boostPercentFromTierToLevel[1][1] = 28;
+        s.boostPercentFromTierToLevel[2][1] = 37;
+        s.boostPercentFromTierToLevel[3][1] = 51;
+        s.boostPercentFromTierToLevel[4][1] = 74;
+        s.boostPercentFromTierToLevel[5][1] = 115;
+        s.boostPercentFromTierToLevel[0][2] = 24;
+        s.boostPercentFromTierToLevel[1][2] = 30;
+        s.boostPercentFromTierToLevel[2][2] = 40;
+        s.boostPercentFromTierToLevel[3][2] = 55;
+        s.boostPercentFromTierToLevel[4][2] = 81;
+        s.boostPercentFromTierToLevel[5][2] = 125;
+        s.boostPercentFromTierToLevel[0][3] = 26;
+        s.boostPercentFromTierToLevel[1][3] = 33;
+        s.boostPercentFromTierToLevel[2][3] = 44;
+        s.boostPercentFromTierToLevel[3][3] = 60;
+        s.boostPercentFromTierToLevel[4][3] = 87;
+        s.boostPercentFromTierToLevel[5][3] = 135;
 
         // ClaimFacet
         s.claimFee = _args.claimFee;
