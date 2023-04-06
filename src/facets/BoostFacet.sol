@@ -18,7 +18,7 @@ error BoostFacet__InvalidFeeReceivers();
 /// @notice Facet in charge of point's boosts
 /// @dev Utilizes 'LDiamond', 'AppStorage'
 contract BoostFacet {
-    event ClaimBoost(address indexed _user, uint256 _seasonId, uint256 _boostPoints);
+    event ClaimBoost(address indexed _user, uint256 _seasonId, uint256 _boostPoints, uint256 boostFee);
 
     AppStorage s;
 
@@ -52,7 +52,7 @@ contract BoostFacet {
             _applyBoostFee(_boostFee);
             IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);
         }
-        emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints);
+        emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints, _boostFee);
     }
 
     /// @notice Calculate boost points
