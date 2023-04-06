@@ -63,7 +63,7 @@ contract DiamondInit {
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
         s.unlockTimestampDiscountForStratosphereMembers[0] = 500;
-        s.unlockTimestampDiscountForStratosphereMembers[2] = 550;
+        s.unlockTimestampDiscountForStratosphereMembers[1] = 550;
         s.unlockTimestampDiscountForStratosphereMembers[2] = 650;
         s.unlockFeeDiscountForStratosphereMembers[0] = 500;
         s.unlockFeeDiscountForStratosphereMembers[1] = 550;

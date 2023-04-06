@@ -27,11 +27,11 @@ contract RestakeFacet {
             revert RestakeFacet__InProgressSeason();
         }
 
-        if (s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == true) {
+        if (userData.hasWithdrawnOrRestaked == true) {
             revert RestakeFacet__HasWithdrawnOrRestaked();
         }
 
-        if (s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0) {
+        if (userData.unlockAmount > 0) {
             revert RestakeFacet__FundsInPrevSeason();
         }
 
