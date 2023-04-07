@@ -61,6 +61,11 @@
     },
     {
         "inputs": [],
+        "name": "BoostFacet__InvalidFeeReceivers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
         "name": "BoostFacet__UserNotParticipated",
         "type": "error"
     },
@@ -83,6 +88,24 @@
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "_boostPoints",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "boostFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "boostLevel",
                 "type": "uint256"
             }
         ],
@@ -142,6 +165,12 @@
                 "internalType": "uint256",
                 "name": "seasonId",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimFee",
+                "type": "uint256"
             }
         ],
         "name": "Claim",
@@ -198,6 +227,12 @@
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "depositFee",
                 "type": "uint256"
             }
         ],
@@ -862,6 +897,19 @@
     },
     {
         "inputs": [],
+        "name": "TOTAL_SHARES",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "getCurrentSeasonData",
         "outputs": [
             {
@@ -1009,6 +1057,25 @@
             }
         ],
         "name": "getRewardTokenBalancePool",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRewardTokensToDistribute",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -1299,6 +1366,11 @@
                     },
                     {
                         "internalType": "uint256",
+                        "name": "lastBoostClaimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
                         "name": "unlockAmount",
                         "type": "uint256"
                     },
@@ -1366,6 +1438,11 @@
                     {
                         "internalType": "uint256",
                         "name": "lastBoostClaimTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lastBoostClaimAmount",
                         "type": "uint256"
                     },
                     {
@@ -2197,6 +2274,11 @@
         "type": "error"
     },
     {
+        "inputs": [],
+        "name": "RestakeFacet__NoOngoingSeason",
+        "type": "error"
+    },
+    {
         "anonymous": false,
         "inputs": [
             {
@@ -2215,6 +2297,12 @@
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "restakeFee",
                 "type": "uint256"
             }
         ],
@@ -2267,6 +2355,12 @@
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "unlockFee",
                 "type": "uint256"
             }
         ],

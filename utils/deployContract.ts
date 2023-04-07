@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import hre from 'hardhat'
+import { network, ethers, artifacts } from 'hardhat'
 import { Artifact } from 'hardhat/types'
 import { generateFullABI } from './generateFullAbi'
 import { saveDeployment } from './saveDeployment'

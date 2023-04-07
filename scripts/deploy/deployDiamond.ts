@@ -7,7 +7,9 @@ import getFacets from '../../utils/getFacets'
 import { addresses } from '../../config/addresses'
 import { BURN_WALLET } from '../../config/constants'
 
-const CHAIN_ID = '43113'
+const CHAIN_ID = ['avalanche', 'fuji'].includes(network.name)
+  ? network.config?.chainId || '43113'
+  : '43113'
 // WARNING: the order here is important, check DiamondInit.sol
 export const defaultArgs: DiamondInit.ArgsStruct = {
   depositFee: '500',

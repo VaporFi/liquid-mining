@@ -7,6 +7,8 @@ import '@nomiclabs/hardhat-solhint'
 import '@nomicfoundation/hardhat-toolbox'
 import 'dotenv/config'
 
+import './tasks/verify'
+
 const AVALANCHE_RPC_URL = getEnvValSafe('AVALANCHE_RPC_URL')
 const FUJI_RPC_URL = getEnvValSafe('FUJI_RPC_URL')
 
