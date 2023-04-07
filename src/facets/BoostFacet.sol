@@ -18,7 +18,14 @@ error BoostFacet__InvalidFeeReceivers();
 /// @notice Facet in charge of point's boosts
 /// @dev Utilizes 'LDiamond', 'AppStorage'
 contract BoostFacet {
-    event ClaimBoost(address indexed _user, uint256 _seasonId, uint256 _boostPoints, uint256 boostFee, uint256 tier, uint256 boostLevel);
+    event ClaimBoost(
+        address indexed _user,
+        uint256 _seasonId,
+        uint256 _boostPoints,
+        uint256 boostFee,
+        uint256 tier,
+        uint256 boostLevel
+    );
 
     AppStorage s;
 
@@ -48,7 +55,7 @@ contract BoostFacet {
             _boostPercent = s.boostForNonStratMembers;
         }
         uint256 _boostPointsAmount = _calculatePoints(_userData, _boostPercent);
-        _userData.boostPoints += _boostPointsAmount
+        _userData.boostPoints += _boostPointsAmount;
         _userData.lastBoostClaimAmount = _boostPointsAmount;
         if (_boostFee > 0) {
             _applyBoostFee(_boostFee);

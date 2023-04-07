@@ -9,7 +9,7 @@ import "../libraries/AppStorage.sol";
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
-error DiamondManagerFacet__OngoingSeason();
+error DiamondManagerFacet__Season_Not_Finished();
 
 contract DiamondManagerFacet {
     AppStorage s;
@@ -193,7 +193,7 @@ contract DiamondManagerFacet {
         s.currentSeasonId = s.currentSeasonId + 1;
         Season storage season = s.seasons[s.currentSeasonId];
         if (s.currentSeasonId != 1 && season.endTimestamp <= block.timestamp) {
-            revert DiamondManagerFacet__OngoingSeason();
+            revert DiamondManagerFacet__Season_Not_Finished();
         }
         season.id = s.currentSeasonId;
         season.startTimestamp = block.timestamp;
