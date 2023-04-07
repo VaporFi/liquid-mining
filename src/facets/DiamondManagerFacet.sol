@@ -296,4 +296,8 @@ contract DiamondManagerFacet {
     function getStratosphereAddress() external view returns (address) {
         return s.stratosphereAddress;
     }
+
+    function getRewardTokensToDistribute(uint256 seasonId) external view returns (uint256) {
+        return s.seasons[seasonId].rewardTokensToDistribute;
+    }
 }
