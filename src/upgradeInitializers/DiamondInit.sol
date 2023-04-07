@@ -105,30 +105,31 @@ contract DiamondInit {
         s.boostLevelToFee[1] = 2 * 1e6;
         s.boostLevelToFee[2] = 3 * 1e6;
         s.boostLevelToFee[3] = 4 * 1e6;
-        s.boostPercentFromTierToLevel[0][1] = 1000; // 10%
-        s.boostPercentFromTierToLevel[1][1] = 1100; // 11%
-        s.boostPercentFromTierToLevel[2][1] = 1200; // 12%
-        s.boostPercentFromTierToLevel[3][1] = 1300; // 13%
-        s.boostPercentFromTierToLevel[4][1] = 1400; // 14%
-        s.boostPercentFromTierToLevel[5][1] = 1500; // 15%
-        s.boostPercentFromTierToLevel[0][2] = 2000; // 20%
-        s.boostPercentFromTierToLevel[1][2] = 2100; // 21%
-        s.boostPercentFromTierToLevel[2][2] = 2200; // 22%
-        s.boostPercentFromTierToLevel[3][2] = 2300; // 23%
-        s.boostPercentFromTierToLevel[4][2] = 2400; // 24%
-        s.boostPercentFromTierToLevel[5][2] = 2500; // 25%
-        s.boostPercentFromTierToLevel[0][3] = 3000; // 30%
-        s.boostPercentFromTierToLevel[1][3] = 3100; // 31%
-        s.boostPercentFromTierToLevel[2][3] = 3200; // 32%
-        s.boostPercentFromTierToLevel[3][3] = 3300; // 33%
-        s.boostPercentFromTierToLevel[4][3] = 3400; // 34%
-        s.boostPercentFromTierToLevel[5][3] = 3500; // 35%
-        s.boostFeeReceivers.push(_args.labsMultisig);
-        s.boostFeeReceivers.push(_args.xVAPE);
-        s.boostFeeReceivers.push(_args.passport);
-        s.boostFeeReceiversShares.push(5000); // 50%
-        s.boostFeeReceiversShares.push(4000); // 40%
-        s.boostFeeReceiversShares.push(1000); // 10%
+        s.boostForNonStratMembers = 10;
+        s.boostPercentFromTierToLevel[0][0] = 20; // 0.20%
+        s.boostPercentFromTierToLevel[1][0] = 25; // 0.25%
+        s.boostPercentFromTierToLevel[2][0] = 33; // 0.33%
+        s.boostPercentFromTierToLevel[3][0] = 45; // 0.45%
+        s.boostPercentFromTierToLevel[4][0] = 65; // 0.65%
+        s.boostPercentFromTierToLevel[5][0] = 100; // 1.00%
+        s.boostPercentFromTierToLevel[0][1] = 22; // 0.22%
+        s.boostPercentFromTierToLevel[1][1] = 28; // 0.28%
+        s.boostPercentFromTierToLevel[2][1] = 37; // 0.37%
+        s.boostPercentFromTierToLevel[3][1] = 51; // 0.51%
+        s.boostPercentFromTierToLevel[4][1] = 74; // 0.74%
+        s.boostPercentFromTierToLevel[5][1] = 115; // 1.15%
+        s.boostPercentFromTierToLevel[0][2] = 24; // 0.24%
+        s.boostPercentFromTierToLevel[1][2] = 30; // 0.30%
+        s.boostPercentFromTierToLevel[2][2] = 40; // 0.40%
+        s.boostPercentFromTierToLevel[3][2] = 55; // 0.55%
+        s.boostPercentFromTierToLevel[4][2] = 81; // 0.81%
+        s.boostPercentFromTierToLevel[5][2] = 125; // 1.25%
+        s.boostPercentFromTierToLevel[0][3] = 26; // 0.26%
+        s.boostPercentFromTierToLevel[1][3] = 33; // 0.33%
+        s.boostPercentFromTierToLevel[2][3] = 44; // 0.44%
+        s.boostPercentFromTierToLevel[3][3] = 60; // 0.60%
+        s.boostPercentFromTierToLevel[4][3] = 87; // 0.87%
+        s.boostPercentFromTierToLevel[5][3] = 135; // 1.35%
 
         // ClaimFacet
         s.claimFee = _args.claimFee;

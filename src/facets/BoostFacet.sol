@@ -12,12 +12,13 @@ import "../libraries/LStratosphere.sol";
 error BoostFacet__InvalidBoostLevel();
 error BoostFacet__BoostAlreadyClaimed();
 error BoostFacet__UserNotParticipated();
+error BoostFacet__InvalidFeeReceivers();
 
 /// @title BoostFacet
 /// @notice Facet in charge of point's boosts
 /// @dev Utilizes 'LDiamond', 'AppStorage'
 contract BoostFacet {
-    event ClaimBoost(address indexed _user, uint256 _seasonId, uint256 _boostPoints);
+    event ClaimBoost(address indexed _user, uint256 _seasonId, uint256 _boostPoints, uint256 boostFee, uint256 tier, uint256 boostLevel);
 
     AppStorage s;
 
@@ -39,14 +40,21 @@ contract BoostFacet {
         if (isStratosphereMember) {
             _boostFee = s.boostLevelToFee[boostLevel];
         }
+        _userData.lastBoostClaimTimestamp = block.timestamp;
+        uint256 _boostPercent;
+        if (isStratosphereMember) {
+            _boostPercent = s.boostPercentFromTierToLevel[tier][boostLevel];
+        } else {
+            _boostPercent = s.boostForNonStratMembers;
+        }
+        uint256 _boostPointsAmount = _calculatePoints(_userData, _boostPercent);
+        _userData.boostPoints += _boostPointsAmount
+        _userData.lastBoostClaimAmount = _boostPointsAmount;
         if (_boostFee > 0) {
+            _applyBoostFee(_boostFee);
             IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);
         }
-        _userData.lastBoostClaimTimestamp = block.timestamp;
-        uint256 _points = _calculatePoints(_userData, boostLevel, tier);
-        _userData.boostPoints += _points;
-        _userData.lastBoostClaimAmount = _points;
-        emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints);
+        emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints, _boostFee, tier, boostLevel);
     }
 
     /// @notice Calculate boost points
@@ -54,15 +62,29 @@ contract BoostFacet {
     /// @return Boost points
     /// @dev Utilizes 'LPercentages'.
     /// @dev _daysSinceSeasonStart starts from 0 equal to the first day of the season.
-    function _calculatePoints(
-        UserData storage _userData,
-        uint256 _boostLevel,
-        uint256 _tier
-    ) internal view returns (uint256) {
-        uint256 _boostPointsAmount = s.boostPercentFromTierToLevel[_tier][_boostLevel];
+    function _calculatePoints(UserData storage _userData, uint256 _boostPointsAmount) internal view returns (uint256) {
         if (_boostPointsAmount == 0) {
             return 0;
         }
         return LPercentages.percentage(_userData.depositAmount, _boostPointsAmount);
+    }
+
+    /// @notice Apply boost fee
+    /// @param _fee Fee amount
+    function _applyBoostFee(uint256 _fee) internal {
+        address[] storage _receivers = s.boostFeeReceivers;
+        uint256[] storage _shares = s.boostFeeReceiversShares;
+        uint256 _length = _receivers.length;
+
+        if (_length != _shares.length) {
+            revert BoostFacet__InvalidFeeReceivers();
+        }
+        for (uint256 i; i < _length; ) {
+            uint256 _share = LPercentages.percentage(_fee, _shares[i]);
+            s.pendingWithdrawals[_receivers[i]][s.boostFeeToken] += _share;
+            unchecked {
+                i++;
+            }
+        }
     }
 }

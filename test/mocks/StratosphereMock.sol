@@ -46,7 +46,7 @@ contract StratosphereMock is IStratosphere, Test {
         } else if (tokenId == 6) {
             return 5;
         } else {
-            return 0;
+            return uint8(tokenId - 1);
         }
     }
 }

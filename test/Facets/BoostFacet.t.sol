@@ -39,24 +39,24 @@ contract BoostFacetTest is DiamondTest {
     uint256 boostFeeLvl2 = 3 * 1e6;
     uint256 boostFeeLvl3 = 4 * 1e6;
     // boost data setup
-    uint256 boostLvl1Tier1 = 1000;
-    uint256 boostLvl1Tier2 = 1100;
-    uint256 boostLvl1Tier3 = 1200;
-    uint256 boostLvl1Tier4 = 1300;
-    uint256 boostLvl1Tier5 = 1400;
-    uint256 boostLvl1Tier6 = 1500;
-    uint256 boostLvl2Tier1 = 2000;
-    uint256 boostLvl2Tier2 = 2100;
-    uint256 boostLvl2Tier3 = 2200;
-    uint256 boostLvl2Tier4 = 2300;
-    uint256 boostLvl2Tier5 = 2400;
-    uint256 boostLvl2Tier6 = 2500;
-    uint256 boostLvl3Tier1 = 1200;
-    uint256 boostLvl3Tier2 = 4100;
-    uint256 boostLvl3Tier3 = 4200;
-    uint256 boostLvl3Tier4 = 4300;
-    uint256 boostLvl3Tier5 = 4400;
-    uint256 boostLvl3Tier6 = 4500;
+    uint256 boostLvl1Tier1 = 22;
+    uint256 boostLvl1Tier2 = 28;
+    uint256 boostLvl1Tier3 = 37;
+    uint256 boostLvl1Tier4 = 51;
+    uint256 boostLvl1Tier5 = 74;
+    uint256 boostLvl1Tier6 = 115;
+    uint256 boostLvl2Tier1 = 24;
+    uint256 boostLvl2Tier2 = 30;
+    uint256 boostLvl2Tier3 = 40;
+    uint256 boostLvl2Tier4 = 55;
+    uint256 boostLvl2Tier5 = 81;
+    uint256 boostLvl2Tier6 = 125;
+    uint256 boostLvl3Tier1 = 26;
+    uint256 boostLvl3Tier2 = 33;
+    uint256 boostLvl3Tier3 = 44;
+    uint256 boostLvl3Tier4 = 60;
+    uint256 boostLvl3Tier5 = 87;
+    uint256 boostLvl3Tier6 = 135;
 
     function setUp() public {
         vm.startPrank(diamondOwner);

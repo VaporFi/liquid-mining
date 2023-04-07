@@ -9,10 +9,11 @@ import "../libraries/AppStorage.sol";
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
-error DiamondManagerFacet__Season_Not_Finished();
+error DiamondManagerFacet__OngoingSeason();
 
 contract DiamondManagerFacet {
     AppStorage s;
+    uint256 public constant TOTAL_SHARES = 10_000;
 
     event BoostFeeWithdrawn(address indexed to, uint256 amount);
     event DepositTokenSet(address indexed token);
@@ -70,6 +71,9 @@ contract DiamondManagerFacet {
     }
 
     function setDepositFee(uint256 fee) external onlyOwner {
+        if (fee > TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
         s.depositFee = fee;
         emit DepositFeeSet(fee);
     }
@@ -88,6 +92,13 @@ contract DiamondManagerFacet {
         if (receivers.length != proportion.length) {
             revert DiamondManagerFacet__Invalid_Input();
         }
+        uint256 totalShares = 0;
+        for (uint256 i; i < proportion.length; i++) {
+            totalShares += proportion[i];
+        }
+        if (totalShares != TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
         s.depositFeeReceivers = receivers;
         s.depositFeeReceiversShares = proportion;
         emit DepositFeeReceiversSet(receivers, proportion);
@@ -95,6 +106,13 @@ contract DiamondManagerFacet {
 
     function setBoostFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
         if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        uint256 totalShares = 0;
+        for (uint256 i; i < proportion.length; i++) {
+            totalShares += proportion[i];
+        }
+        if (totalShares != TOTAL_SHARES) {
             revert DiamondManagerFacet__Invalid_Input();
         }
         s.boostFeeReceivers = receivers;
@@ -106,6 +124,13 @@ contract DiamondManagerFacet {
         if (receivers.length != proportion.length) {
             revert DiamondManagerFacet__Invalid_Input();
         }
+        uint256 totalShares = 0;
+        for (uint256 i; i < proportion.length; i++) {
+            totalShares += proportion[i];
+        }
+        if (totalShares != TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
         s.claimFeeReceivers = receivers;
         s.claimFeeReceiversShares = proportion;
         emit ClaimFeeReceiversSet(receivers, proportion);
@@ -115,6 +140,13 @@ contract DiamondManagerFacet {
         if (receivers.length != proportion.length) {
             revert DiamondManagerFacet__Invalid_Input();
         }
+        uint256 totalShares = 0;
+        for (uint256 i; i < proportion.length; i++) {
+            totalShares += proportion[i];
+        }
+        if (totalShares != TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
         s.restakeFeeReceivers = receivers;
         s.restakeFeeReceiversShares = proportion;
         emit RestakeFeeReceiversSet(receivers, proportion);
@@ -122,6 +154,13 @@ contract DiamondManagerFacet {
 
     function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
         if (receivers.length != proportion.length) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        uint256 totalShares = 0;
+        for (uint256 i; i < proportion.length; i++) {
+            totalShares += proportion[i];
+        }
+        if (totalShares != TOTAL_SHARES) {
             revert DiamondManagerFacet__Invalid_Input();
         }
         s.unlockFeeReceivers = receivers;
@@ -135,6 +174,9 @@ contract DiamondManagerFacet {
     }
 
     function setRestakeFee(uint256 fee) external onlyOwner {
+        if (fee > TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
         s.restakeFee = fee;
         emit RestakeFeeSet(fee);
     }
@@ -150,6 +192,9 @@ contract DiamondManagerFacet {
         }
         s.currentSeasonId = s.currentSeasonId + 1;
         Season storage season = s.seasons[s.currentSeasonId];
+        if (s.currentSeasonId != 1 && season.endTimestamp <= block.timestamp) {
+            revert DiamondManagerFacet__OngoingSeason();
+        }
         season.id = s.currentSeasonId;
         season.startTimestamp = block.timestamp;
         season.endTimestamp = block.timestamp + 25 days;
@@ -233,11 +278,17 @@ contract DiamondManagerFacet {
     }
 
     function setUnlockFee(uint256 fee) external onlyOwner {
+        if (fee > TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
         s.unlockFee = fee;
         emit UnlockFeeSet(fee);
     }
 
     function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
+        if (boostFee > TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
         s.boostLevelToFee[boostLevel] = boostFee;
     }
 
