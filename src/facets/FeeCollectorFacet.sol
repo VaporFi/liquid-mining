@@ -2,8 +2,9 @@
 pragma solidity ^0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
-import "../libraries/AppStorage.sol";
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+import "../libraries/AppStorage.sol";
 
 /// @title FeeCollectorFacet
 /// @notice Facet in charge of collecting fees

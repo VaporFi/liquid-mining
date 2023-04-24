@@ -1,0 +1,2517 @@
+[
+    {
+        "inputs": [],
+        "name": "LDiamond__OnlyOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "authorize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "authorized",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "unAuthorize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "BoostFacet__BoostAlreadyClaimed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BoostFacet__InvalidBoostLevel",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BoostFacet__InvalidFeeReceivers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BoostFacet__UserNotParticipated",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_boostPoints",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "boostFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "boostLevel",
+                "type": "uint256"
+            }
+        ],
+        "name": "ClaimBoost",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "boostLevel",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimBoost",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ClaimFacet__AlreadyClaimed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ClaimFacet__InProgressSeason",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ClaimFacet__InvalidFeeReceivers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ClaimFacet__NotEnoughPoints",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "claimer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "Claim",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "claim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "DepositFacet__FundsInPrevSeason",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DepositFacet__InvalidFeeReceivers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DepositFacet__NotEnoughTokenBalance",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DepositFacet__ReentrancyGuard__ReentrantCall",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DepositFacet__SeasonEnded",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "depositor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "depositFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "Deposit",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__AddressMustBeZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__FunctionAlreadyExists",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__ImmutableFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__IncorrectAction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFacetCode",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "init",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "LDiamond__InitializationFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidAddressZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidReplacementWithSameFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__NoSelectors",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__OnlyOwner",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "facetAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum IDiamondCut.FacetCutAction",
+                        "name": "action",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bytes4[]",
+                        "name": "functionSelectors",
+                        "type": "bytes4[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct IDiamondCut.FacetCut[]",
+                "name": "cut",
+                "type": "tuple[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "init",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "DiamondCut",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "facetAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum IDiamondCut.FacetCutAction",
+                        "name": "action",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bytes4[]",
+                        "name": "functionSelectors",
+                        "type": "bytes4[]"
+                    }
+                ],
+                "internalType": "struct IDiamondCut.FacetCut[]",
+                "name": "_cut",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "address",
+                "name": "_init",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "name": "diamondCut",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "depositFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "claimFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "restakeFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "unlockFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "depositToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "boostFeeToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewardToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stratosphere",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "xVAPE",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "passport",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "replenishmentPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "labsMultisig",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "burnWallet",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct DiamondInit.Args",
+                "name": "_args",
+                "type": "tuple"
+            }
+        ],
+        "name": "init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "_functionSelector",
+                "type": "bytes4"
+            }
+        ],
+        "name": "facetAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "facetAddress_",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "facetAddresses",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "facetAddresses_",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_facet",
+                "type": "address"
+            }
+        ],
+        "name": "facetFunctionSelectors",
+        "outputs": [
+            {
+                "internalType": "bytes4[]",
+                "name": "facetFunctionSelectors_",
+                "type": "bytes4[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "facets",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "facetAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes4[]",
+                        "name": "functionSelectors",
+                        "type": "bytes4[]"
+                    }
+                ],
+                "internalType": "struct IDiamondLoupe.Facet[]",
+                "name": "facets_",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "_id",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "DiamondManagerFacet__Invalid_Address",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DiamondManagerFacet__Invalid_Input",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DiamondManagerFacet__Not_Owner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DiamondManagerFacet__Season_Not_Finished",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "BoostFeeReceiversSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "BoostFeeWithdrawn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "ClaimFeeReceiversSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "discountPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "DepositDiscountForStratosphereMemberSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "DepositFeeReceiversSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "DepositFeeSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "DepositTokenSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "discountPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "RestakeDiscountForStratosphereMemberSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "RestakeFeeReceiversSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "RestakeFeeSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "rewardsControllerAddress",
+                "type": "address"
+            }
+        ],
+        "name": "RewardsControllerAddressSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "season",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "endTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "SeasonEndTimestampSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "SeasonIdSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "stratosphereAddress",
+                "type": "address"
+            }
+        ],
+        "name": "StratosphereAddressSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "discountPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "UnlockFeeDiscountForStratosphereMemberSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "UnlockFeeReceiversSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "UnlockFeeSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "discountPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "UnlockTimestampDiscountForStratosphereMemberSet",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "TOTAL_SHARES",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCurrentSeasonData",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "startTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "endTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rewardTokensToDistribute",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rewardTokenBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalDepositAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalClaimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPoints",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Season",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCurrentSeasonId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDepositAmountOfUser",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDepositPointsOfUser",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "feeReceiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "getPendingWithdrawals",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRewardTokenBalancePool",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRewardTokensToDistribute",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSeasonData",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "startTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "endTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rewardTokensToDistribute",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rewardTokenBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalDepositAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalClaimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPoints",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Season",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSeasonEndTimestamp",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSeasonTotalClaimedRewards",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSeasonTotalPoints",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getStratosphereAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTotalDepositAmountOfSeason",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTotalPointsOfSeason",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUnlockAmountOfUser",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUnlockTimestampOfUser",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUserClaimedRewards",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "getUserDataForCurrentSeason",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "depositAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "claimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "depositPoints",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "boostPoints",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lastBoostClaimTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lastBoostClaimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "unlockAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "unlockTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountClaimed",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "hasWithdrawnOrRestaked",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct UserData",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUserDataForSeason",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "depositAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "claimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "depositPoints",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "boostPoints",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lastBoostClaimTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lastBoostClaimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "unlockAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "unlockTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountClaimed",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "hasWithdrawnOrRestaked",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct UserData",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUserDepositAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUserPoints",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "getUserTotalPoints",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getWithdrawRestakeStatus",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "boostLevel",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "boostFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setBoostFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "setBoostFeeReceivers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "boostFeeToken",
+                "type": "address"
+            }
+        ],
+        "name": "setBoostFeeToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "level",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "percent",
+                "type": "uint256"
+            }
+        ],
+        "name": "setBoostPercentTierLevel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "setClaimFeeReceivers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "setCurrentSeasonId",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "discountBasisPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "setDepositDiscountForStratosphereMember",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setDepositFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "setDepositFeeReceivers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "setDepositToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "discountBasisPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "setRestakeDiscountForStratosphereMember",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setRestakeFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "setRestakeFeeReceivers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "setRewardToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "setSeasonEndTimestamp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "stratosphereAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setStratosphereAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setUnlockFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "discountBasisPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "setUnlockFeeDiscountForStratosphereMember",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "proportion",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "setUnlockFeeReceivers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "discountBasisPoints",
+                "type": "uint256"
+            }
+        ],
+        "name": "setUnlockTimestampDiscountForStratosphereMember",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_rewardTokenToDistribute",
+                "type": "uint256"
+            }
+        ],
+        "name": "startNewSeason",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_rewardTokenToDistribute",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint8",
+                "name": "_durationDays",
+                "type": "uint8"
+            }
+        ],
+        "name": "startNewSeasonWithDuration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawBoostFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "FeeCollectorFacet__Only_Owner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "collectBoostFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collectClaimFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collectDepositFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collectRestakeFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collectUnlockFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_diamondCutFacet",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__AddressMustBeZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__FunctionAlreadyExists",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__ImmutableFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__IncorrectAction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFacetCode",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "init",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "LDiamond__InitializationFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidAddressZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidReplacementWithSameFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__NoSelectors",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LiquidMiningDiamond__InvalidFunction",
+        "type": "error"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_diamondCutFacet",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__AddressMustBeZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__FunctionAlreadyExists",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__ImmutableFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__IncorrectAction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFacetCode",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InexistentFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "init",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "LDiamond__InitializationFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidAddressZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__InvalidReplacementWithSameFunction",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__NoSelectors",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LiquidStakingDiamond__InvalidFunction",
+        "type": "error"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__OnlyOwner",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "owner_",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "LDiamond__OnlyOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LPausable__AlreadyPaused",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LPausable__AlreadyUnpaused",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "RestakeFacet__FundsInPrevSeason",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RestakeFacet__HasWithdrawnOrRestaked",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RestakeFacet__InProgressSeason",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RestakeFacet__NoOngoingSeason",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "depositor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "restakeFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "Restake",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "restake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "UnlockFacet__AlreadyUnlocked",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UnlockFacet__InvalidAmount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UnlockFacet__InvalidFeeReceivers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UnlockFacet__InvalidUnlock",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "unlockFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "Unlocked",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "COOLDOWN_PERIOD",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "unlock",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "WithdrawFacet__AlreadyWithdrawn",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WithdrawFacet__InProgressSeason",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WithdrawFacet__InsufficientBalance",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WithdrawFacet__UnlockNotMatured",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WithdrawFacet__UserNotParticipated",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "WithdrawAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "WithdrawUnlockedVPND",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            }
+        ],
+        "name": "WithdrawVPND",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawUnlocked",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

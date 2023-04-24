@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
@@ -8,7 +9,7 @@ import "../libraries/AppStorage.sol";
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
-error DiamondManagerFacet__OngoingSeason();
+error DiamondManagerFacet__Season_Not_Finished();
 
 contract DiamondManagerFacet {
     AppStorage s;
@@ -185,14 +186,32 @@ contract DiamondManagerFacet {
     }
 
     function startNewSeason(uint256 _rewardTokenToDistribute) external onlyOwner {
+        uint256 _currentSeason = s.currentSeasonId;
+        if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp < block.timestamp) {
+            revert DiamondManagerFacet__Season_Not_Finished();
+        }
         s.currentSeasonId = s.currentSeasonId + 1;
         Season storage season = s.seasons[s.currentSeasonId];
         if (s.currentSeasonId != 1 && season.endTimestamp <= block.timestamp) {
-            revert DiamondManagerFacet__OngoingSeason();
+            revert DiamondManagerFacet__Season_Not_Finished();
         }
         season.id = s.currentSeasonId;
         season.startTimestamp = block.timestamp;
-        season.endTimestamp = block.timestamp + 30 days;
+        season.endTimestamp = block.timestamp + 25 days;
+        season.rewardTokensToDistribute = _rewardTokenToDistribute;
+        season.rewardTokenBalance = _rewardTokenToDistribute;
+    }
+
+    function startNewSeasonWithDuration(uint256 _rewardTokenToDistribute, uint8 _durationDays) external onlyOwner {
+        uint256 _currentSeason = s.currentSeasonId;
+        if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp < block.timestamp) {
+            revert DiamondManagerFacet__Season_Not_Finished();
+        }
+        s.currentSeasonId = _currentSeason + 1;
+        Season storage season = s.seasons[s.currentSeasonId];
+        season.id = s.currentSeasonId;
+        season.startTimestamp = block.timestamp;
+        season.endTimestamp = block.timestamp + (_durationDays * 1 days);
         season.rewardTokensToDistribute = _rewardTokenToDistribute;
         season.rewardTokenBalance = _rewardTokenToDistribute;
     }
@@ -327,5 +346,9 @@ contract DiamondManagerFacet {
 
     function getStratosphereAddress() external view returns (address) {
         return s.stratosphereAddress;
+    }
+
+    function getRewardTokensToDistribute(uint256 seasonId) external view returns (uint256) {
+        return s.seasons[seasonId].rewardTokensToDistribute;
     }
 }

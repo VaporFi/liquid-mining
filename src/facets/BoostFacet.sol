@@ -2,8 +2,8 @@
 pragma solidity ^0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
-
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
 import "../interfaces/IStratosphere.sol";
@@ -18,7 +18,14 @@ error BoostFacet__InvalidFeeReceivers();
 /// @notice Facet in charge of point's boosts
 /// @dev Utilizes 'LDiamond', 'AppStorage'
 contract BoostFacet {
-    event ClaimBoost(address indexed _user, uint256 _seasonId, uint256 _boostPoints, uint256 boostFee, uint256 tier, uint256 boostLevel);
+    event ClaimBoost(
+        address indexed _user,
+        uint256 _seasonId,
+        uint256 _boostPoints,
+        uint256 boostFee,
+        uint256 tier,
+        uint256 boostLevel
+    );
 
     AppStorage s;
 
@@ -47,7 +54,9 @@ contract BoostFacet {
         } else {
             _boostPercent = s.boostForNonStratMembers;
         }
-        _userData.boostPoints += _calculatePoints(_userData, _boostPercent);
+        uint256 _boostPointsAmount = _calculatePoints(_userData, _boostPercent);
+        _userData.boostPoints += _boostPointsAmount;
+        _userData.lastBoostClaimAmount = _boostPointsAmount;
         if (_boostFee > 0) {
             _applyBoostFee(_boostFee);
             IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);

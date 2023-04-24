@@ -8,12 +8,12 @@ pragma solidity ^0.8.17;
 * Implementation of a diamond.
 /******************************************************************************/
 
-import {LDiamond} from "clouds/diamond/LDiamond.sol";
-import {IDiamondLoupe} from "clouds/interfaces/IDiamondLoupe.sol";
-import {IDiamondCut} from "clouds/interfaces/IDiamondCut.sol";
-import {IERC173} from "clouds/interfaces/IERC173.sol";
-import {IERC165} from "clouds/interfaces/IERC165.sol";
-import {AppStorage} from "../libraries/AppStorage.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+import { IDiamondLoupe } from "clouds/interfaces/IDiamondLoupe.sol";
+import { IDiamondCut } from "clouds/interfaces/IDiamondCut.sol";
+import { IERC173 } from "clouds/interfaces/IERC173.sol";
+import { IERC165 } from "clouds/interfaces/IERC165.sol";
+import { AppStorage } from "../libraries/AppStorage.sol";
 
 // It is expected that this contract is customized if you want to deploy your diamond
 // with data from a deployment script. Use the init function to initialize state variables
@@ -34,6 +34,11 @@ contract DiamondInit {
         address boostFeeToken;
         address rewardToken;
         address stratosphere;
+        address xVAPE;
+        address passport;
+        address replenishmentPool;
+        address labsMultisig;
+        address burnWallet;
     }
 
     // You can add parameters to this function in order to pass in
@@ -59,21 +64,39 @@ contract DiamondInit {
         // DepositFacet
         s.depositFee = _args.depositFee;
         s.depositToken = _args.depositToken;
+        s.depositDiscountForStratosphereMembers[0] = 500; // 5%º
+        s.depositDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.depositDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.depositDiscountForStratosphereMembers[3] = 800; // 8%
+        s.depositDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.depositDiscountForStratosphereMembers[5] = 1500; // 15%
+        s.depositFeeReceivers.push(_args.replenishmentPool);
+        s.depositFeeReceivers.push(_args.labsMultisig);
+        s.depositFeeReceivers.push(_args.burnWallet);
+        s.depositFeeReceiversShares.push(8500); // 85%
+        s.depositFeeReceiversShares.push(1000); // 10%
+        s.depositFeeReceiversShares.push(500); // 5%
 
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
-        s.unlockTimestampDiscountForStratosphereMembers[0] = 500;
-        s.unlockTimestampDiscountForStratosphereMembers[1] = 550;
-        s.unlockTimestampDiscountForStratosphereMembers[2] = 650;
-        s.unlockFeeDiscountForStratosphereMembers[0] = 500;
-        s.unlockFeeDiscountForStratosphereMembers[1] = 550;
-        s.unlockFeeDiscountForStratosphereMembers[2] = 650;
-        s.depositDiscountForStratosphereMembers[0] = 500;
-        s.depositDiscountForStratosphereMembers[1] = 550;
-        s.depositDiscountForStratosphereMembers[2] = 650;
-        s.restakeDiscountForStratosphereMembers[0] = 500;
-        s.restakeDiscountForStratosphereMembers[1] = 550;
-        s.restakeDiscountForStratosphereMembers[2] = 650;
+        s.unlockFeeDiscountForStratosphereMembers[0] = 500; // 5%
+        s.unlockFeeDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.unlockFeeDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.unlockFeeDiscountForStratosphereMembers[3] = 800; // 8%
+        s.unlockFeeDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.unlockFeeDiscountForStratosphereMembers[5] = 1500; // 15%
+        s.unlockTimestampDiscountForStratosphereMembers[0] = 500; // 5%
+        s.unlockTimestampDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.unlockTimestampDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.unlockTimestampDiscountForStratosphereMembers[3] = 800; // 8%
+        s.unlockTimestampDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.unlockTimestampDiscountForStratosphereMembers[5] = 1500; // 15%
+        s.unlockFeeReceivers.push(_args.replenishmentPool);
+        s.unlockFeeReceivers.push(_args.labsMultisig);
+        s.unlockFeeReceivers.push(_args.burnWallet);
+        s.unlockFeeReceiversShares.push(8000); // 80%
+        s.unlockFeeReceiversShares.push(1000); // 10%
+        s.unlockFeeReceiversShares.push(1000); // 10%
 
         // BoostFacet
         s.boostFeeToken = _args.boostFeeToken;
@@ -83,36 +106,54 @@ contract DiamondInit {
         s.boostLevelToFee[2] = 3 * 1e6;
         s.boostLevelToFee[3] = 4 * 1e6;
         s.boostForNonStratMembers = 10;
-        s.boostPercentFromTierToLevel[0][0] = 20;
-        s.boostPercentFromTierToLevel[1][0] = 25;
-        s.boostPercentFromTierToLevel[2][0] = 33;
-        s.boostPercentFromTierToLevel[3][0] = 45;
-        s.boostPercentFromTierToLevel[4][0] = 65;
-        s.boostPercentFromTierToLevel[5][0] = 100;
-        s.boostPercentFromTierToLevel[0][1] = 22;
-        s.boostPercentFromTierToLevel[1][1] = 28;
-        s.boostPercentFromTierToLevel[2][1] = 37;
-        s.boostPercentFromTierToLevel[3][1] = 51;
-        s.boostPercentFromTierToLevel[4][1] = 74;
-        s.boostPercentFromTierToLevel[5][1] = 115;
-        s.boostPercentFromTierToLevel[0][2] = 24;
-        s.boostPercentFromTierToLevel[1][2] = 30;
-        s.boostPercentFromTierToLevel[2][2] = 40;
-        s.boostPercentFromTierToLevel[3][2] = 55;
-        s.boostPercentFromTierToLevel[4][2] = 81;
-        s.boostPercentFromTierToLevel[5][2] = 125;
-        s.boostPercentFromTierToLevel[0][3] = 26;
-        s.boostPercentFromTierToLevel[1][3] = 33;
-        s.boostPercentFromTierToLevel[2][3] = 44;
-        s.boostPercentFromTierToLevel[3][3] = 60;
-        s.boostPercentFromTierToLevel[4][3] = 87;
-        s.boostPercentFromTierToLevel[5][3] = 135;
+        s.boostPercentFromTierToLevel[0][0] = 20; // 0.20%
+        s.boostPercentFromTierToLevel[1][0] = 25; // 0.25%
+        s.boostPercentFromTierToLevel[2][0] = 33; // 0.33%
+        s.boostPercentFromTierToLevel[3][0] = 45; // 0.45%
+        s.boostPercentFromTierToLevel[4][0] = 65; // 0.65%
+        s.boostPercentFromTierToLevel[5][0] = 100; // 1.00%
+        s.boostPercentFromTierToLevel[0][1] = 22; // 0.22%
+        s.boostPercentFromTierToLevel[1][1] = 28; // 0.28%
+        s.boostPercentFromTierToLevel[2][1] = 37; // 0.37%
+        s.boostPercentFromTierToLevel[3][1] = 51; // 0.51%
+        s.boostPercentFromTierToLevel[4][1] = 74; // 0.74%
+        s.boostPercentFromTierToLevel[5][1] = 115; // 1.15%
+        s.boostPercentFromTierToLevel[0][2] = 24; // 0.24%
+        s.boostPercentFromTierToLevel[1][2] = 30; // 0.30%
+        s.boostPercentFromTierToLevel[2][2] = 40; // 0.40%
+        s.boostPercentFromTierToLevel[3][2] = 55; // 0.55%
+        s.boostPercentFromTierToLevel[4][2] = 81; // 0.81%
+        s.boostPercentFromTierToLevel[5][2] = 125; // 1.25%
+        s.boostPercentFromTierToLevel[0][3] = 26; // 0.26%
+        s.boostPercentFromTierToLevel[1][3] = 33; // 0.33%
+        s.boostPercentFromTierToLevel[2][3] = 44; // 0.44%
+        s.boostPercentFromTierToLevel[3][3] = 60; // 0.60%
+        s.boostPercentFromTierToLevel[4][3] = 87; // 0.87%
+        s.boostPercentFromTierToLevel[5][3] = 135; // 1.35%
 
         // ClaimFacet
         s.claimFee = _args.claimFee;
+        s.claimFeeReceivers.push(_args.labsMultisig);
+        s.claimFeeReceivers.push(_args.xVAPE);
+        s.claimFeeReceivers.push(_args.passport);
+        s.claimFeeReceiversShares.push(5000); // 50%
+        s.claimFeeReceiversShares.push(4000); // 40%
+        s.claimFeeReceiversShares.push(1000); // 10%
 
         // RestakeFacet
         s.restakeFee = _args.restakeFee;
         s.rewardToken = _args.rewardToken;
+        s.restakeDiscountForStratosphereMembers[0] = 500; // 5%
+        s.restakeDiscountForStratosphereMembers[1] = 550; // 5.5%
+        s.restakeDiscountForStratosphereMembers[2] = 650; // 6.5%
+        s.restakeDiscountForStratosphereMembers[3] = 800; // 8%
+        s.restakeDiscountForStratosphereMembers[4] = 1000; // 10%
+        s.restakeDiscountForStratosphereMembers[5] = 1500; // 15%
+        s.restakeFeeReceivers.push(_args.replenishmentPool);
+        s.restakeFeeReceivers.push(_args.labsMultisig);
+        s.restakeFeeReceivers.push(_args.burnWallet);
+        s.restakeFeeReceiversShares.push(8500); // 85%
+        s.restakeFeeReceiversShares.push(1000); // 10%
+        s.restakeFeeReceiversShares.push(500); // 5%
     }
 }
