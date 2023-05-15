@@ -3,16 +3,18 @@ pragma solidity 0.8.17;
 
 import "lib/forge-std/src/Test.sol";
 import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
-import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded } from "src/facets/DepositFacet.sol";
+import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidMiningPass } from "src/facets/DepositFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
 import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
 import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
+import { MiningPassFacet } from "src/facets/MiningPassFacet.sol";
 
 contract DepositFacetTest is DiamondTest {
     // StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     LiquidMiningDiamond internal diamond;
     DepositFacet internal depositFacet;
     DiamondManagerFacet internal diamondManagerFacet;
+    MiningPassFacet internal miningPassFacet;
     address depositFeeReceiver1 = makeAddr("depositFeeReceiver1");
     address depositFeeReceiver2 = makeAddr("depositFeeReceiver2");
 
@@ -22,6 +24,11 @@ contract DepositFacetTest is DiamondTest {
         diamond = createDiamond();
         depositFacet = DepositFacet(address(diamond));
         diamondManagerFacet = DiamondManagerFacet(address(diamond));
+        miningPassFacet = MiningPassFacet(address(diamond));
+
+        diamondManagerFacet.setCurrentSeasonId(1);
+        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
+        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
 
         vm.stopPrank();
     }
@@ -34,16 +41,7 @@ contract DepositFacetTest is DiamondTest {
     }
 
     function test_DepositWithoutBeingStratosphereMember() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-
-        vm.stopPrank();
-
         address user = makeAddr("user");
-
         vm.startPrank(user);
         depositToken.increaseAllowance(address(depositFacet), 1000000);
         depositToken.mint(user, 1000);
@@ -56,14 +54,6 @@ contract DepositFacetTest is DiamondTest {
     }
 
     function test_DepositBeingBasicStratosphereMember() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-        diamondManagerFacet.setStratosphereAddress(address(stratosphereMock));
-
-        vm.stopPrank();
-
         address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
 
         vm.startPrank(stratosphereMemberBasic);
@@ -81,13 +71,6 @@ contract DepositFacetTest is DiamondTest {
     }
 
     function test_DepositBeingGoldStratosphereMember() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-
-        vm.stopPrank();
-
         address stratosphereMemberGold = makeAddr("stratosphereMemberGold");
 
         vm.startPrank(stratosphereMemberGold);
@@ -105,13 +88,6 @@ contract DepositFacetTest is DiamondTest {
     }
 
     function test_RevertsIfDepositAfterSeasonEnd() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-
-        vm.stopPrank();
-
         address stratosphereMemberGold = makeAddr("stratosphereMemberGold");
 
         vm.startPrank(stratosphereMemberGold);
@@ -124,13 +100,6 @@ contract DepositFacetTest is DiamondTest {
     }
 
     function test_DepositMultipleDeposits() public {
-        vm.startPrank(makeAddr("diamondOwner"));
-
-        diamondManagerFacet.setCurrentSeasonId(1);
-        diamondManagerFacet.setSeasonEndTimestamp(1, block.timestamp + 30 days);
-
-        vm.stopPrank();
-
         address stratosphereMemberBasic = makeAddr("user");
 
         vm.startPrank(stratosphereMemberBasic);
@@ -161,5 +130,57 @@ contract DepositFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 29 * 1000);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 2000);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 29 * 1000 + 30 * 1000);
+    }
+
+    function test_SecondDepositAfterUpgradingMiningPass() public {
+        address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
+
+        vm.startPrank(stratosphereMemberBasic);
+        depositToken.increaseAllowance(address(depositFacet), 5000 * 1e18);
+        depositToken.mint(stratosphereMemberBasic, 5000 * 1e18);
+
+        depositFacet.deposit(5000 * 1e18);
+
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 1), 5000000000000000000000);
+        assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 150000000000000000000000);
+        assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 5000000000000000000000);
+        assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 150000000000000000000000);
+
+        depositToken.mint(stratosphereMemberBasic, 20_000 * 1e18);
+        depositToken.increaseAllowance(address(depositFacet), 20_000 * 1e18);
+        feeToken.mint(stratosphereMemberBasic, 2 * 1e6);
+        feeToken.increaseAllowance(address(depositFacet), 2 * 1e6);
+
+        vm.warp(block.timestamp + 5 days);
+
+        miningPassFacet.purchase(1);
+        depositFacet.deposit(20_000 * 1e18);
+
+        vm.stopPrank();
+
+        assertEq(diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, 1), 25000000000000000000000);
+        assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 650000000000000000000000);
+        assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 25000000000000000000000);
+        assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 650000000000000000000000);
+    }
+
+    function test_RevertIf_UserTriesToDepositMoreThanFreeTierMiningPass() public {
+        address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
+
+        vm.startPrank(stratosphereMemberBasic);
+
+        depositToken.mint(stratosphereMemberBasic, 25_000 * 1e18);
+        depositToken.increaseAllowance(address(depositFacet), 25_000 * 1e18);
+        feeToken.mint(stratosphereMemberBasic, 2 * 1e6);
+        feeToken.increaseAllowance(address(depositFacet), 2 * 1e6);
+
+        depositFacet.deposit(5000 * 1e18);
+
+        vm.warp(block.timestamp + 5 days);
+
+        vm.expectRevert(DepositFacet__InvalidMiningPass.selector);
+        depositFacet.deposit(20_000 * 1e18);
+
+        vm.stopPrank();
     }
 }

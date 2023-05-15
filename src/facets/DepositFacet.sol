@@ -13,7 +13,7 @@ error DepositFacet__NotEnoughTokenBalance();
 error DepositFacet__ReentrancyGuard__ReentrantCall();
 error DepositFacet__SeasonEnded();
 error DepositFacet__FundsInPrevSeason();
-error DepositFacet__InvalidMiningPass(uint256 tier);
+error DepositFacet__InvalidMiningPass();
 
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
@@ -45,7 +45,7 @@ contract DepositFacet {
             _currentSeasonUserData.depositAmount + _amount >
             s.miningPassTierToDepositLimit[_currentSeasonUserData.miningPassTier]
         ) {
-            revert DepositFacet__InvalidMiningPass(_currentSeasonUserData.miningPassTier);
+            revert DepositFacet__InvalidMiningPass();
         }
 
         uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
