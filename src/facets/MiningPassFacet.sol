@@ -29,12 +29,8 @@ contract MiningPassFacet {
         uint256 _currentSeasonId = s.currentSeasonId;
         UserData storage _userData = s.usersData[_currentSeasonId][msg.sender];
         // check _tier is not 0
-        if (_tier == 0) {
+        if (_tier == 0 || _tier <= _userData.miningPassTier) {
             revert MiningPassFacet__InvalidTier();
-        }
-        // check user is not already at _tier
-        if (_userData.miningPassTier != 0) {
-            revert MiningPassFacet__AlreadyPurchased();
         }
         // check if user have enough USDC to purchase
         if (_feeToken.balanceOf(msg.sender) < _fee) {
@@ -51,38 +47,6 @@ contract MiningPassFacet {
         _userData.miningPassTier = _tier;
 
         emit MiningPassPurchased(msg.sender, _tier, _fee);
-    }
-
-    /// @notice Upgrade a mining pass
-    /// @param _tier Tier of mining pass to upgrade to
-    function upgrade(uint256 _tier) external {
-        uint256 _fee = s.miningPassTierToFee[_tier];
-        IERC20 _feeToken = IERC20(s.feeToken);
-        uint256 _currentSeasonId = s.currentSeasonId;
-        UserData storage _userData = s.usersData[_currentSeasonId][msg.sender];
-        // check _tier is not 0
-        if (_tier == 0) {
-            revert MiningPassFacet__InvalidTier();
-        }
-        // check user is not already at _tier
-        if (_userData.miningPassTier >= _tier) {
-            revert MiningPassFacet__AlreadyPurchased();
-        }
-        // check if user have enough USDC to purchase
-        if (_feeToken.balanceOf(msg.sender) < _fee) {
-            revert MiningPassFacet__InsufficientBalance();
-        }
-        // check current season is not ended
-        if (s.seasons[_currentSeasonId].endTimestamp < block.timestamp) {
-            revert MiningPassFacet__SeasonEnded();
-        }
-
-        // transfer USDC from user to contract
-        _feeToken.transferFrom(msg.sender, address(this), _fee);
-        // update user's mining pass tier
-        _userData.miningPassTier = _tier;
-
-        emit MiningPassUpgraded(msg.sender, _tier, _fee);
     }
 
     /// @notice Get user's mining pass tier and deposit limit

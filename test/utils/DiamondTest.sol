@@ -268,10 +268,9 @@ contract DiamondTest is Test {
     function setMiningPassFacet() private {
         MiningPassFacet miningPass = new MiningPassFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](3);
+        functionSelectors = new bytes4[](2);
         functionSelectors[0] = MiningPassFacet.purchase.selector;
-        functionSelectors[1] = MiningPassFacet.upgrade.selector;
-        functionSelectors[2] = MiningPassFacet.miningPassOf.selector;
+        functionSelectors[1] = MiningPassFacet.miningPassOf.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(miningPass),

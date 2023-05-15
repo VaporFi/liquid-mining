@@ -43,7 +43,7 @@ contract DepositFacet {
         UserData memory _currentSeasonUserData = s.usersData[_currentSeasonId][msg.sender];
         if (
             _currentSeasonUserData.depositAmount + _amount >
-            s.miningPassTierToDepositLimit[_currentSeasonUserData.miningPassTier] * 1e18
+            s.miningPassTierToDepositLimit[_currentSeasonUserData.miningPassTier]
         ) {
             revert DepositFacet__InvalidMiningPass(_currentSeasonUserData.miningPassTier);
         }
