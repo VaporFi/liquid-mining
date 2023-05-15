@@ -22,60 +22,28 @@ contract FeeCollectorFacet {
     function collectBoostFees() external onlyOwner {
         address[] storage _receivers = s.boostFeeReceivers;
         uint256 _length = _receivers.length;
+        address _feeToken = s.feeToken;
 
         for (uint256 i = 0; i < _length; i++) {
-            uint256 amount = s.pendingWithdrawals[_receivers[i]][s.boostFeeToken];
-            s.pendingWithdrawals[_receivers[i]][s.boostFeeToken] = 0;
+            uint256 amount = s.pendingWithdrawals[_receivers[i]][_feeToken];
+            s.pendingWithdrawals[_receivers[i]][_feeToken] = 0;
 
-            IERC20(s.boostFeeToken).transfer(_receivers[i], amount);
-        }
-    }
-
-    function collectClaimFees() external onlyOwner {
-        address[] storage _receivers = s.claimFeeReceivers;
-        uint256 _length = _receivers.length;
-
-        for (uint256 i = 0; i < _length; i++) {
-            uint256 amount = s.pendingWithdrawals[_receivers[i]][s.rewardToken];
-            s.pendingWithdrawals[_receivers[i]][s.rewardToken] = 0;
-
-            IERC20(s.rewardToken).transfer(_receivers[i], amount);
-        }
-    }
-
-    function collectDepositFees() external onlyOwner {
-        address[] storage _receivers = s.depositFeeReceivers;
-        uint256 _length = _receivers.length;
-
-        for (uint256 i = 0; i < _length; i++) {
-            uint256 amount = s.pendingWithdrawals[_receivers[i]][s.depositToken];
-            s.pendingWithdrawals[_receivers[i]][s.depositToken] = 0;
-
-            IERC20(s.depositToken).transfer(_receivers[i], amount);
-        }
-    }
-
-    function collectRestakeFees() external onlyOwner {
-        address[] storage _receivers = s.restakeFeeReceivers;
-        uint256 _length = _receivers.length;
-
-        for (uint256 i = 0; i < _length; i++) {
-            uint256 amount = s.pendingWithdrawals[_receivers[i]][s.depositToken];
-            s.pendingWithdrawals[_receivers[i]][s.depositToken] = 0;
-
-            IERC20(s.depositToken).transfer(_receivers[i], amount);
+            IERC20(_feeToken).transfer(_receivers[i], amount);
         }
     }
 
     function collectUnlockFees() external onlyOwner {
         address[] storage _receivers = s.unlockFeeReceivers;
         uint256 _length = _receivers.length;
+        address _depositToken = s.depositToken;
 
         for (uint256 i = 0; i < _length; i++) {
-            uint256 amount = s.pendingWithdrawals[_receivers[i]][s.depositToken];
-            s.pendingWithdrawals[_receivers[i]][s.depositToken] = 0;
+            uint256 amount = s.pendingWithdrawals[_receivers[i]][_depositToken];
+            s.pendingWithdrawals[_receivers[i]][_depositToken] = 0;
 
-            IERC20(s.depositToken).transfer(_receivers[i], amount);
+            IERC20(_depositToken).transfer(_receivers[i], amount);
         }
     }
+
+    // TODO: add minig pass fees
 }

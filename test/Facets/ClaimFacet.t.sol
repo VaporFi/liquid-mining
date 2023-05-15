@@ -2,16 +2,16 @@
 pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
-import {DiamondTest, LiquidMiningDiamond} from "../utils/DiamondTest.sol";
-import {DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidFeeReceivers} from "src/facets/DepositFacet.sol";
-import {ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed} from "src/facets/ClaimFacet.sol";
-import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
-import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
-import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
+import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
+import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded } from "src/facets/DepositFacet.sol";
+import { ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed } from "src/facets/ClaimFacet.sol";
+import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
+import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
 import "../../src/libraries/LPercentages.sol";
 
 contract ClaimFacetTest is DiamondTest {
-    StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    // StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     LiquidMiningDiamond internal diamond;
     DepositFacet internal depositFacet;
     ClaimFacet internal claimFacet;
@@ -41,13 +41,6 @@ contract ClaimFacetTest is DiamondTest {
         rewardToken.mint(address(diamond), rewardTokenToDistribute);
         diamondManagerFacet.setRewardToken(address(rewardToken));
         diamondManagerFacet.startNewSeason(rewardTokenToDistribute);
-        address[] memory depositFeeReceivers = new address[](2);
-        uint256[] memory depositFeeProportions = new uint256[](2);
-        depositFeeReceivers[0] = feeReceiver1;
-        depositFeeReceivers[1] = feeReceiver2;
-        depositFeeProportions[0] = 7500;
-        depositFeeProportions[1] = 2500;
-        diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
 
         vm.stopPrank();
     }
