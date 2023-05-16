@@ -33,6 +33,7 @@ contract MiningPassFacetTest is DiamondTest {
 
         (uint256 _passTier, ) = miningPassFacet.miningPassOf(makeAddr("user"));
         assertEq(_passTier, 1);
+        assertEq(feeToken.balanceOf(address(diamond)), 1 * 1e6);
 
         vm.stopPrank();
     }
@@ -47,6 +48,7 @@ contract MiningPassFacetTest is DiamondTest {
 
         (uint256 _passTier, ) = miningPassFacet.miningPassOf(makeAddr("user"));
         assertEq(_passTier, 2);
+        assertEq(feeToken.balanceOf(address(diamond)), 2 * 1e6);
 
         vm.stopPrank();
     }
