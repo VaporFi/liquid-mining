@@ -149,8 +149,9 @@ contract DiamondTest is Test {
     function setClaimFacet() private {
         ClaimFacet claim = new ClaimFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](1);
+        functionSelectors = new bytes4[](2);
         functionSelectors[0] = ClaimFacet.claim.selector;
+        functionSelectors[1] = ClaimFacet.automatedClaim.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(claim),

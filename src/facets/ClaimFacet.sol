@@ -6,6 +6,7 @@ import "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
+import "../libraries/LAuthorizable.sol";
 
 error ClaimFacet__NotEnoughPoints();
 error ClaimFacet__InProgressSeason();
@@ -53,6 +54,54 @@ contract ClaimFacet {
         IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare);
 
         emit Claim(rewardTokenShare, msg.sender, seasonId);
+    }
+
+    /// @notice Claim accrued VAPE rewards during the current season and withdraw unlocked VPND
+    function automatedClaim(address[] memory _users) external {
+        LAuthorizable.enforceIsAuthorized(s, msg.sender);
+        uint256 _length = _users.length;
+        for (uint256 i; i < _length; ) {
+            address user = _users[i];
+            uint256 seasonId = s.addressToLastSeasonId[user];
+            UserData storage userData = s.usersData[seasonId][user];
+            Season storage season = s.seasons[seasonId];
+            uint256 _depositPoints = userData.depositPoints;
+
+            // If user has not participated in the season, skip
+            if (_depositPoints == 0) {
+                continue;
+            }
+
+            // If user has already claimed, skip
+            if (userData.amountClaimed > 0) {
+                continue;
+            }
+
+            // If season is still in progress, skip
+            if (season.endTimestamp >= block.timestamp) {
+                continue;
+            }
+
+            uint256 totalPoints = _depositPoints + userData.boostPoints;
+            uint256 userShare = _calculateShare(totalPoints, seasonId);
+
+            uint256 rewardTokenShare = _vapeToDistribute(userShare, seasonId);
+
+            userData.amountClaimed = rewardTokenShare;
+            userData.hasWithdrawnOrRestaked = true;
+            season.rewardTokenBalance -= rewardTokenShare;
+            season.totalClaimAmount += rewardTokenShare;
+
+            IERC20(s.rewardToken).transfer(user, rewardTokenShare);
+            // Withdraw unlocked VPND
+            IERC20(s.depositToken).transfer(user, userData.depositAmount);
+
+            emit Claim(rewardTokenShare, user, seasonId);
+
+            unchecked {
+                i++;
+            }
+        }
     }
 
     //////////////////////
