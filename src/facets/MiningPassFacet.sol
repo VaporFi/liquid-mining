@@ -18,8 +18,14 @@ error MiningPassFacet__SeasonEnded();
 contract MiningPassFacet {
     AppStorage s;
 
-    event MiningPassPurchased(address indexed user, uint256 indexed tier, uint256 fee);
-    event MiningPassUpgraded(address indexed user, uint256 indexed tier, uint256 fee);
+    //////////////
+    /// EVENTS ///
+    //////////////
+    event MiningPassPurchase(address indexed user, uint256 indexed tier, uint256 fee);
+
+    //////////////////////
+    /// EXTERNAL LOGIC ///
+    //////////////////////
 
     /// notice Purchase a mining pass
     /// @param _tier Tier of mining pass to purchase
@@ -46,7 +52,7 @@ contract MiningPassFacet {
         // update user's mining pass tier
         _userData.miningPassTier = _tier;
 
-        emit MiningPassPurchased(msg.sender, _tier, _fee);
+        emit MiningPassPurchase(msg.sender, _tier, _fee);
     }
 
     /// @notice Get user's mining pass tier and deposit limit

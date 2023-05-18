@@ -190,7 +190,7 @@ contract ClaimFacetTest is DiamondTest {
         vm.startPrank(oracle);
         address[] memory users = new address[](1);
         users[0] = user;
-        claimFacet.automatedClaim(users);
+        claimFacet.automatedClaim(1, users);
         assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), rewardTokenToDistribute);
         vm.stopPrank();
     }
