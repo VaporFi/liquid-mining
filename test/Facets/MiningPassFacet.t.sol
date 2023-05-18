@@ -33,7 +33,7 @@ contract MiningPassFacetTest is DiamondTest {
 
         (uint256 _passTier, ) = miningPassFacet.miningPassOf(makeAddr("user"));
         assertEq(_passTier, 1);
-        assertEq(feeToken.balanceOf(address(diamond)), 1 * 1e6);
+        assertEq(feeToken.balanceOf(address(diamond)), 0.5 * 1e6);
 
         vm.stopPrank();
     }
@@ -48,7 +48,7 @@ contract MiningPassFacetTest is DiamondTest {
 
         (uint256 _passTier, ) = miningPassFacet.miningPassOf(makeAddr("user"));
         assertEq(_passTier, 2);
-        assertEq(feeToken.balanceOf(address(diamond)), 2 * 1e6);
+        assertEq(feeToken.balanceOf(address(diamond)), 1 * 1e6);
 
         vm.stopPrank();
     }
@@ -80,7 +80,7 @@ contract MiningPassFacetTest is DiamondTest {
     function test_Purchase_RevertIf_NotEnoughBalance() public {
         vm.startPrank(makeAddr("user"));
 
-        _approveAndMintFeeToken(100 * 1e6);
+        _approveAndMintFeeToken(50 * 1e6);
 
         vm.expectRevert(MiningPassFacet__InsufficientBalance.selector);
         miningPassFacet.purchase(9);

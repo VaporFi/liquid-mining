@@ -126,26 +126,27 @@ contract DiamondInit {
         // MiningPassFacet
         /// @dev fee is paid in USDC
         s.miningPassTierToFee[0] = 0;
-        s.miningPassTierToFee[1] = 1 * 1e6;
-        s.miningPassTierToFee[2] = 2 * 1e6;
-        s.miningPassTierToFee[3] = 4 * 1e6;
-        s.miningPassTierToFee[4] = 8 * 1e6;
-        s.miningPassTierToFee[5] = 16 * 1e6;
-        s.miningPassTierToFee[6] = 32 * 1e6;
-        s.miningPassTierToFee[7] = 64 * 1e6;
-        s.miningPassTierToFee[8] = 128 * 1e6;
-        s.miningPassTierToFee[9] = 256 * 1e6;
+        s.miningPassTierToFee[1] = 0.5 * 1e6;
+        s.miningPassTierToFee[2] = 1 * 1e6;
+        s.miningPassTierToFee[3] = 2 * 1e6;
+        s.miningPassTierToFee[4] = 4 * 1e6;
+        s.miningPassTierToFee[5] = 8 * 1e6;
+        s.miningPassTierToFee[6] = 15 * 1e6;
+        s.miningPassTierToFee[7] = 30 * 1e6;
+        s.miningPassTierToFee[8] = 50 * 1e6;
+        s.miningPassTierToFee[9] = 70 * 1e6;
+        s.miningPassTierToFee[9] = 100 * 1e6;
         /// @dev deposit limit is in VPND
         s.miningPassTierToDepositLimit[0] = 5_000 * 1e18;
-        s.miningPassTierToDepositLimit[1] = 25_000 * 1e18;
-        s.miningPassTierToDepositLimit[2] = 75_000 * 1e18;
-        s.miningPassTierToDepositLimit[3] = 200_000 * 1e18;
-        s.miningPassTierToDepositLimit[4] = 500_000 * 1e18;
-        s.miningPassTierToDepositLimit[5] = 1_000_000 * 1e18;
-        s.miningPassTierToDepositLimit[6] = 2_000_000 * 1e18;
-        s.miningPassTierToDepositLimit[7] = 5_000_000 * 1e18;
-        s.miningPassTierToDepositLimit[8] = 10_000_000 * 1e18;
-        s.miningPassTierToDepositLimit[9] = 20_000_000 * 1e18;
+        s.miningPassTierToDepositLimit[1] = 10_000 * 1e18;
+        s.miningPassTierToDepositLimit[2] = 25_000 * 1e18;
+        s.miningPassTierToDepositLimit[3] = 60_000 * 1e18;
+        s.miningPassTierToDepositLimit[4] = 150_000 * 1e18;
+        s.miningPassTierToDepositLimit[5] = 350_000 * 1e18;
+        s.miningPassTierToDepositLimit[6] = 800_000 * 1e18;
+        s.miningPassTierToDepositLimit[7] = 1_800_000 * 1e18;
+        s.miningPassTierToDepositLimit[8] = 4_500_000 * 1e18;
+        s.miningPassTierToDepositLimit[9] = 12_000_000 * 1e18;
         s.miningPassTierToDepositLimit[10] = type(uint256).max;
     }
 }
