@@ -153,7 +153,7 @@ contract DepositFacetTest is DiamondTest {
 
         vm.warp(block.timestamp + 5 days);
 
-        miningPassFacet.purchase(1);
+        miningPassFacet.purchase(2);
         depositFacet.deposit(20_000 * 1e18);
 
         vm.stopPrank();
