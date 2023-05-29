@@ -196,7 +196,7 @@ contract BoostFacetTest is DiamondTest {
 
     function _calculatePoints(
         uint256 totalPointsByUserInSeason,
-        uint256 _boostPercent,
+        uint256 _boostPercent
     ) internal view returns (uint256) {
         if (_boostPercent == 0) {
             return 0;
