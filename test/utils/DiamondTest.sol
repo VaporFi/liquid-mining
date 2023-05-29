@@ -19,8 +19,8 @@ import "src/facets/UnlockFacet.sol";
 import "src/facets/WithdrawFacet.sol";
 import "src/facets/FeeCollectorFacet.sol";
 import "src/upgradeInitializers/DiamondInit.sol";
-import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
-import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
+import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
 
 contract DiamondTest is Test {
     IDiamondCut.FacetCut[] internal cut;
@@ -220,6 +220,7 @@ contract DiamondTest is Test {
         functionSelectors[34] = diamondManager.setClaimFeeReceivers.selector;
         functionSelectors[35] = diamondManager.setRestakeFeeReceivers.selector;
         functionSelectors[36] = diamondManager.setUnlockFeeReceivers.selector;
+        functionSelectors[37] = diamondManager.getUserLastBoostClaimedAmount.selector;
 
         cut.push(
             IDiamondCut.FacetCut({
