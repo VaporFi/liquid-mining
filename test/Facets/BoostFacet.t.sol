@@ -109,7 +109,7 @@ contract BoostFacetTest is DiamondTest {
         uint256 pointsObtainedTillNow = depositPointsTillNow + boostPointsTillNow;
         uint256 expectedTotalPoints = pointsObtainedTillNow + _calculatePoints(boostLvl1Tier1, pointsObtainedTillNow);
         boostFacet.claimBoost(1);
-        uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmounts(stratosphereMemberBasic, 1);
+        uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmount(stratosphereMemberBasic, 1);
         assertEq(pointsObtainedTillNow + lastBoostClaimedAmount, expectedTotalPoints);
         assertEq(boostFeeToken.balanceOf(stratosphereMemberBasic), 0);
         assertEq(boostFeeToken.balanceOf(address(boostFacet)), boostFeeLvl1);
