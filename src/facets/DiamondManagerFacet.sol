@@ -305,6 +305,11 @@ contract DiamondManagerFacet {
         return (_userData.depositPoints, _userData.boostPoints);
     }
 
+    function getUserLastBoostClaimedAmount(address user, uint256 seasonId) external view returns (uint256) {
+        UserData storage _userData = s.usersData[seasonId][user];
+        return _userData.lastBoostClaimAmount;
+    }
+
     function getUnlockAmountOfUser(address user, uint256 seasonId) external view returns (uint256) {
         UserData storage _userData = s.usersData[seasonId][user];
         return _userData.unlockAmount;
