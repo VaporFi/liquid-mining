@@ -39,9 +39,9 @@ contract BoostFacetTest is DiamondTest {
     uint256 boostFeeLvl2 = 3 * 1e6;
     uint256 boostFeeLvl3 = 4 * 1e6;
     // boost data setup
-    uint256 boostLvl1Tier1 = 22;
-    uint256 boostLvl1Tier2 = 28;
-    uint256 boostLvl1Tier3 = 37;
+    uint256 boostLvl1Tier1 = 28;
+    uint256 boostLvl1Tier2 = 30;
+    uint256 boostLvl1Tier3 = 33;
     uint256 boostLvl1Tier4 = 51;
     uint256 boostLvl1Tier5 = 74;
     uint256 boostLvl1Tier6 = 115;
@@ -173,6 +173,7 @@ contract BoostFacetTest is DiamondTest {
             1
         );
         uint256 totalPointsOfUser = depositPointsTillNow + boostPointsTillNow;
+        vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = totalPointsOfUser + _calculatePoints(totalPointsOfUser, boostLvl2Tier1);
         boostFacet.claimBoost(2);
         uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmount(stratosphereMemberBasic, 1);
