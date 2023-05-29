@@ -89,6 +89,10 @@ contract BoostFacet {
 
         uint256 _pointsObtainedTillNow = (_userData.boostPoints + _userData.depositPoints) -
             (_userData.depositAmount * _daysUntilSeasonEnd);
+
+        if (_pointsObtainedTillNow == 0) {
+            return 0;
+        }
         return LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
     }
 

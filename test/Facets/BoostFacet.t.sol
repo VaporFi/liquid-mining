@@ -203,6 +203,7 @@ contract BoostFacetTest is DiamondTest {
         }
 
         uint256 seasonEndTimestamp = diamondManagerFacet.getSeasonEndTimestamp(1);
+        vm.warp(block.timestamp + 3 days);
         uint256 blockTimestamp = block.timestamp;
         if (blockTimestamp > seasonEndTimestamp) {
             return 0;
@@ -214,6 +215,10 @@ contract BoostFacetTest is DiamondTest {
         }
 
         uint256 _pointsObtainedTillNow = totalPointsByUserInSeason - (testDepositAmount * _daysUntilSeasonEnd);
+
+        if (_pointsObtainedTillNow == 0) {
+            return 0;
+        }
         return LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
     }
 }
