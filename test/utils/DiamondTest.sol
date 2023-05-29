@@ -183,7 +183,7 @@ contract DiamondTest is Test {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](37);
+        functionSelectors = new bytes4[](38);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setDepositDiscountForStratosphereMember.selector;
