@@ -107,6 +107,7 @@ contract BoostFacetTest is DiamondTest {
             1
         );
         uint256 totalPointsOfUser = depositPointsTillNow + boostPointsTillNow;
+        vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = totalPointsOfUser + _calculatePoints(totalPointsOfUser, boostLvl1Tier1);
         boostFacet.claimBoost(1);
         uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmount(stratosphereMemberBasic, 1);
@@ -127,7 +128,9 @@ contract BoostFacetTest is DiamondTest {
             1
         );
         uint256 totalPointsOfUser = depositPointsTillNow + boostPointsTillNow;
+        vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = totalPointsOfUser + _calculatePoints(totalPointsOfUser, boostLvl1Tier2);
+
         boostFacet.claimBoost(1);
 
         uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmount(stratosphereMemberSilver, 1);
@@ -148,7 +151,9 @@ contract BoostFacetTest is DiamondTest {
             1
         );
         uint256 totalPointsOfUser = depositPointsTillNow + boostPointsTillNow;
+        vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = totalPointsOfUser + _calculatePoints(totalPointsOfUser, boostLvl1Tier3);
+
         boostFacet.claimBoost(1);
         uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmount(stratosphereMemberGold, 1);
         assertEq(totalPointsOfUser + lastBoostClaimedAmount, expectedTotalPoints);
@@ -203,7 +208,7 @@ contract BoostFacetTest is DiamondTest {
         }
 
         uint256 seasonEndTimestamp = diamondManagerFacet.getSeasonEndTimestamp(1);
-        vm.warp(block.timestamp + 3 days);
+
         uint256 blockTimestamp = block.timestamp;
         if (blockTimestamp > seasonEndTimestamp) {
             return 0;
