@@ -190,12 +190,13 @@ contract DiamondManagerFacet {
         if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp < block.timestamp) {
             revert DiamondManagerFacet__Season_Not_Finished();
         }
-        s.currentSeasonId = s.currentSeasonId + 1;
-        Season storage season = s.seasons[s.currentSeasonId];
-        if (s.currentSeasonId != 1 && season.endTimestamp <= block.timestamp) {
+        uint256 newSeasonId = _currentSeason + 1;
+        s.currentSeasonId = newSeasonId;
+        Season storage season = s.seasons[newSeasonId];
+        if (newSeasonId != 1 && season.endTimestamp <= block.timestamp) {
             revert DiamondManagerFacet__Season_Not_Finished();
         }
-        season.id = s.currentSeasonId;
+        season.id = newSeasonId;
         season.startTimestamp = block.timestamp;
         season.endTimestamp = block.timestamp + 25 days;
         season.rewardTokensToDistribute = _rewardTokenToDistribute;
