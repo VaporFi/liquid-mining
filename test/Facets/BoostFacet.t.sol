@@ -207,7 +207,12 @@ contract BoostFacetTest is DiamondTest {
         if (blockTimestamp > seasonEndTimestamp) {
             return 0;
         }
-        uint256 _daysUntilSeasonEnd = (seasonEndTimestamp - block.timestamp) / 1 days;
+        uint256 _daysUntilSeasonEnd = (seasonEndTimestamp - blockTimestamp) / 1 days;
+
+        if (_daysUntilSeasonEnd == 0) {
+            return 0;
+        }
+
         uint256 _pointsObtainedTillNow = totalPointsByUserInSeason - (testDepositAmount * _daysUntilSeasonEnd);
         return LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
     }

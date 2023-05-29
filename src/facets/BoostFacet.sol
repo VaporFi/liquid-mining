@@ -82,6 +82,11 @@ contract BoostFacet {
 
         Season storage _season = s.seasons[_seasonId];
         uint256 _daysUntilSeasonEnd = (_season.endTimestamp - block.timestamp) / 1 days;
+
+        if (_daysUntilSeasonEnd == 0) {
+            return 0;
+        }
+
         uint256 _pointsObtainedTillNow = (_userData.boostPoints + _userData.depositPoints) -
             (_userData.depositAmount * _daysUntilSeasonEnd);
         return LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
