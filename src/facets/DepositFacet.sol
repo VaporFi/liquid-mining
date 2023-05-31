@@ -57,7 +57,11 @@ contract DepositFacet {
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
-        uint256 _fee = LPercentages.percentage(_amount, s.depositFee - (_discount * s.depositFee) / 10000);
+        uint256 _depositFeeFromState = s.depositFee;
+        uint256 _fee = LPercentages.percentage(
+            _amount,
+            _depositFeeFromState - (_discount * _depositFeeFromState) / 10000
+        );
         uint256 _amountMinusFee = _amount - _fee;
         _applyPoints(_amountMinusFee);
         _applyDepositFee(_fee);
