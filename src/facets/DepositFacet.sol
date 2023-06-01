@@ -80,7 +80,7 @@ contract DepositFacet {
 
     /// @notice Apply points
     /// @param _amount Amount of token to apply points
-    function _applyPoints(uint256 _amount, uint256 storage _seasonId, UserData storage _userData) internal {
+    function _applyPoints(uint256 _amount, uint256 _seasonId, UserData storage _userData) internal {
         Season storage _season = s.seasons[_seasonId];
         if (block.timestamp > _season.endTimestamp) {
             revert DepositFacet__SeasonEnded();
