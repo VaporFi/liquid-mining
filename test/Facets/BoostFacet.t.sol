@@ -39,10 +39,10 @@ contract BoostFacetTest is DiamondTest {
     uint256 boostFeeLvl2 = 3 * 1e6;
     uint256 boostFeeLvl3 = 4 * 1e6;
     // boost data setup
-    uint256 boostLvl1Tier1 = 28;
-    uint256 boostLvl1Tier2 = 37;
-    uint256 boostLvl1Tier3 = 51;
-    uint256 boostLvl1Tier4 = 74;
+    uint256 boostLvl1Tier1 = 22;
+    uint256 boostLvl1Tier2 = 28;
+    uint256 boostLvl1Tier3 = 37;
+    uint256 boostLvl1Tier4 = 51;
     uint256 boostLvl1Tier5 = 74;
     uint256 boostLvl1Tier6 = 115;
     uint256 boostLvl2Tier1 = 24;
