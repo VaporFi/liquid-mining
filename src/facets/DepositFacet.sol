@@ -45,7 +45,8 @@ contract DepositFacet {
             msg.sender
         ];
 
-        bool isNewSeasonForUser = lastSeasonParticipated != 0 && _userDataForCurrentSeason.depositAmount == 0;
+        bool isNewSeasonForUser = s.addressToLastSeasonId[msg.sender] != 0 &&
+            _userDataForCurrentSeason.depositAmount == 0;
 
         bool isFundsInPrevSeason = isNewSeasonForUser &&
             (_userDataForLastSeasonParticipated.unlockAmount > 0 ||
