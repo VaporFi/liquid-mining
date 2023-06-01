@@ -39,10 +39,11 @@ contract DepositFacet {
         if (_amount > IERC20(_token).balanceOf(msg.sender)) {
             revert DepositFacet__NotEnoughTokenBalance();
         }
-        uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
 
         UserData storage _userDataForCurrentSeason = s.usersData[_currentSeasonId][msg.sender];
-        UserData storage _userDataForLastSeasonParticipated = s.usersData[lastSeasonParticipated][msg.sender];
+        UserData storage _userDataForLastSeasonParticipated = s.usersData[s.addressToLastSeasonId[msg.sender]][
+            msg.sender
+        ];
 
         bool isNewSeasonForUser = lastSeasonParticipated != 0 && _userDataForCurrentSeason.depositAmount == 0;
 
