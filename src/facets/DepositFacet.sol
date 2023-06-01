@@ -84,7 +84,8 @@ contract DepositFacet {
         if (block.timestamp > _season.endTimestamp) {
             revert DepositFacet__SeasonEnded();
         }
-        uint256 _daysUntilSeasonEnd = (s.seasons[_seasonId].endTimestamp - block.timestamp) / 1 days;
+        Season storage _season = s.seasons[_seasonId];
+        uint256 _daysUntilSeasonEnd = (_season.endTimestamp - block.timestamp) / 1 days;
         _userData.depositAmount += _amount;
         _userData.depositPoints += _amount * _daysUntilSeasonEnd;
         _season.totalDepositAmount += _amount;
