@@ -54,7 +54,7 @@ contract DepositFacet {
             revert DepositFacet__FundsInPrevSeason();
         }
         if (isNewSeasonForUser) {
-            _userData.lastBoostClaimTimestamp = block.timestamp; //BoostFacet#_calculatePoints over/underflow fix
+            _userDataForCurrentSeason.lastBoostClaimTimestamp = block.timestamp; //BoostFacet#_calculatePoints over/underflow fix
         }
 
         //effects
