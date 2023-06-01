@@ -58,10 +58,25 @@ contract DepositFacet {
         if (isNewSeasonForUser) {
             _userDataForCurrentSeason.lastBoostClaimTimestamp = block.timestamp; //BoostFacet#_calculatePoints over/underflow fix
         }
-
         //effects
-        uint256 _discount = 0;
         s.addressToLastSeasonId[msg.sender] = _currentSeasonId;
+
+        uint256 _fee = _getDepositFee(_amount);
+        uint256 _amountMinusFee = _amount - _fee;
+
+        _applyPoints(_amountMinusFee, _currentSeasonId, _userDataForCurrentSeason);
+        _applyDepositFee(_fee);
+
+        emit Deposit(msg.sender, _amount, _currentSeasonId, _fee);
+
+        //interactions
+        _token.transferFrom(msg.sender, address(this), _amount);
+    }
+
+    ///@dev self-explainatory
+    function _getDepositFee(uint256 _amount) internal view returns (uint256) {
+        uint256 _discount = 0;
+
         (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
@@ -71,13 +86,7 @@ contract DepositFacet {
             _amount,
             _depositFeeFromState - (_discount * _depositFeeFromState) / 10000
         );
-        uint256 _amountMinusFee = _amount - _fee;
-        _applyPoints(_amountMinusFee, _currentSeasonId, _userDataForCurrentSeason);
-        _applyDepositFee(_fee);
-        emit Deposit(msg.sender, _amount, _currentSeasonId, _fee);
-
-        //interactions
-        _token.transferFrom(msg.sender, address(this), _amount);
+        return _fee;
     }
 
     /// @notice Apply points
