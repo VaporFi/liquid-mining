@@ -149,8 +149,9 @@ contract DiamondTest is Test {
     function setClaimFacet() private {
         ClaimFacet claim = new ClaimFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](1);
+        functionSelectors = new bytes4[](2);
         functionSelectors[0] = ClaimFacet.claim.selector;
+        functionSelectors[1] = ClaimFacet.automatedClaim.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(claim),
@@ -252,10 +253,8 @@ contract DiamondTest is Test {
     function setWithdrawFacet() private {
         WithdrawFacet withdraw = new WithdrawFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](3);
-        functionSelectors[0] = WithdrawFacet.withdraw.selector;
-        functionSelectors[1] = WithdrawFacet.withdrawAll.selector;
-        functionSelectors[2] = WithdrawFacet.withdrawUnlocked.selector;
+        functionSelectors = new bytes4[](1);
+        functionSelectors[0] = WithdrawFacet.withdrawUnlocked.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(withdraw),
