@@ -52,8 +52,8 @@ contract DepositFacet {
             (_userDataForLastSeasonParticipated.unlockAmount > 0 ||
                 _userDataForLastSeasonParticipated.hasWithdrawnOrRestaked == false);
         if (
-            _currentSeasonUserData.depositAmount + _amount >
-            s.miningPassTierToDepositLimit[_currentSeasonUserData.miningPassTier]
+            _userDataForCurrentSeason.depositAmount + _amount >
+            s.miningPassTierToDepositLimit[_userDataForCurrentSeason.miningPassTier]
         ) {
             revert DepositFacet__InvalidMiningPass();
         }
