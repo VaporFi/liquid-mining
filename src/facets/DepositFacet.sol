@@ -35,7 +35,6 @@ contract DepositFacet {
     function deposit(uint256 _amount) external nonReentrant {
         IERC20 _depositToken = IERC20(s.depositToken);
         uint256 _currentSeasonId = s.currentSeasonId;
-        IERC20 _token = IERC20(s.depositToken);
         // checks
         if (_amount > _depositToken.balanceOf(msg.sender)) {
             revert DepositFacet__NotEnoughTokenBalance();
@@ -52,6 +51,12 @@ contract DepositFacet {
         bool isFundsInPrevSeason = isNewSeasonForUser &&
             (_userDataForLastSeasonParticipated.unlockAmount > 0 ||
                 _userDataForLastSeasonParticipated.hasWithdrawnOrRestaked == false);
+        if (
+            _currentSeasonUserData.depositAmount + _amount >
+            s.miningPassTierToDepositLimit[_currentSeasonUserData.miningPassTier]
+        ) {
+            revert DepositFacet__InvalidMiningPass();
+        }
 
         if (isFundsInPrevSeason) {
             revert DepositFacet__FundsInPrevSeason();
@@ -60,34 +65,20 @@ contract DepositFacet {
             _userDataForCurrentSeason.lastBoostClaimTimestamp = block.timestamp; //BoostFacet#_calculatePoints over/underflow fix
         }
         //effects
-        s.addressToLastSeasonId[msg.sender] = _currentSeasonId;
-
-        uint256 _fee = _getDepositFee(_amount);
-        uint256 _amountMinusFee = _amount - _fee;
-
-        _applyPoints(_amountMinusFee, _currentSeasonId, _userDataForCurrentSeason);
-        _applyDepositFee(_fee);
-
-        emit Deposit(msg.sender, _amount, _currentSeasonId, _fee);
-
-        //interactions
-        _token.transferFrom(msg.sender, address(this), _amount);
-    }
-
-    ///@dev self-explainatory
-    function _getDepositFee(uint256 _amount) internal view returns (uint256) {
         uint256 _discount = 0;
+        s.addressToLastSeasonId[msg.sender] = _currentSeasonId;
 
         (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
-        uint256 _depositFeeFromState = s.depositFee;
-        uint256 _fee = LPercentages.percentage(
-            _amount,
-            _depositFeeFromState - (_discount * _depositFeeFromState) / 10000
-        );
-        return _fee;
+
+        _applyPoints(_amount);
+
+        // interactions
+        _depositToken.transferFrom(msg.sender, address(this), _amount);
+
+        emit Deposit(_currentSeasonId, msg.sender, _amount);
     }
 
     /// @notice Apply points
@@ -102,24 +93,5 @@ contract DepositFacet {
         _userData.depositPoints += _amount * _daysUntilSeasonEnd;
         _season.totalDepositAmount += _amount;
         _season.totalPoints += _amount * _daysUntilSeasonEnd;
-    }
-
-    /// @notice Apply deposit fee
-    /// @param _fee Fee amount
-    function _applyDepositFee(uint256 _fee) internal {
-        address[] storage _receivers = s.depositFeeReceivers;
-        uint256[] storage _shares = s.depositFeeReceiversShares;
-        uint256 _length = _receivers.length;
-
-        if (_length != _shares.length) {
-            revert DepositFacet__InvalidFeeReceivers();
-        }
-        for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, _shares[i]);
-            s.pendingWithdrawals[_receivers[i]][s.depositToken] += _share;
-            unchecked {
-                i++;
-            }
-        }
     }
 }
