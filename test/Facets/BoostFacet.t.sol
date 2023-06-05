@@ -92,7 +92,7 @@ contract BoostFacetTest is DiamondTest {
     function test_BoostWithStratBasicLvl1() public {
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
-        _fundUserWithfeeToken(stratosphereMemberBasic, boostFeeLvl1);
+        _fundUserWithBoostFeeToken(stratosphereMemberBasic, boostFeeLvl1);
         assertEq(feeToken.balanceOf(stratosphereMemberBasic), boostFeeLvl1);
 
         (uint256 depositPointsTillNow, uint256 boostPointsTillNow) = diamondManagerFacet.getUserPoints(
