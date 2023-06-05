@@ -10,16 +10,16 @@ import "../interfaces/IStratosphere.sol";
 import "../libraries/LStratosphere.sol";
 
 error DepositFacet__NotEnoughTokenBalance();
-error DepositFacet__InvalidFeeReceivers();
 error DepositFacet__ReentrancyGuard__ReentrantCall();
 error DepositFacet__SeasonEnded();
 error DepositFacet__FundsInPrevSeason();
+error DepositFacet__InvalidMiningPass();
 
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
 contract DepositFacet {
-    event Deposit(address indexed depositor, uint256 amount, uint256 seasonId, uint256 depositFee);
+    event Deposit(uint256 indexed seasonId, address indexed user, uint256 amount);
 
     AppStorage s;
 
@@ -33,15 +33,23 @@ contract DepositFacet {
     /// @notice Deposit token to the contract
     /// @param _amount Amount of token to deposit
     function deposit(uint256 _amount) external nonReentrant {
-        IERC20 _token = IERC20(s.depositToken);
+        IERC20 _depositToken = IERC20(s.depositToken);
         // checks
-        if (_amount > IERC20(_token).balanceOf(msg.sender)) {
+        if (_amount > _depositToken.balanceOf(msg.sender)) {
             revert DepositFacet__NotEnoughTokenBalance();
         }
-        uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
+        // check depositAmount + deposit is not greater than MiningPass's deposit limit
+        uint256 _currentSeasonId = s.currentSeasonId;
+        UserData memory _currentSeasonUserData = s.usersData[_currentSeasonId][msg.sender];
+        if (
+            _currentSeasonUserData.depositAmount + _amount >
+            s.miningPassTierToDepositLimit[_currentSeasonUserData.miningPassTier]
+        ) {
+            revert DepositFacet__InvalidMiningPass();
+        }
 
-        bool isNewSeasonForUser = lastSeasonParticipated != 0 &&
-            s.usersData[s.currentSeasonId][msg.sender].depositAmount == 0;
+        uint256 lastSeasonParticipated = s.addressToLastSeasonId[msg.sender];
+        bool isNewSeasonForUser = lastSeasonParticipated != 0 && _currentSeasonUserData.depositAmount == 0;
         bool isFundsInPrevSeason = isNewSeasonForUser &&
             (s.usersData[lastSeasonParticipated][msg.sender].unlockAmount > 0 ||
                 s.usersData[lastSeasonParticipated][msg.sender].hasWithdrawnOrRestaked == false);
@@ -50,54 +58,36 @@ contract DepositFacet {
             revert DepositFacet__FundsInPrevSeason();
         }
 
-        //effects
+        // effects
         uint256 _discount = 0;
-        s.addressToLastSeasonId[msg.sender] = s.currentSeasonId;
+        s.addressToLastSeasonId[msg.sender] = _currentSeasonId;
         (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
         if (isStratosphereMember) {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
-        uint256 _fee = LPercentages.percentage(_amount, s.depositFee - (_discount * s.depositFee) / 10000);
-        uint256 _amountMinusFee = _amount - _fee;
-        _applyPoints(_amountMinusFee);
-        _applyDepositFee(_fee);
-        emit Deposit(msg.sender, _amount, s.currentSeasonId, _fee);
+        _applyPoints(_amount);
 
-        //interactions
-        _token.transferFrom(msg.sender, address(this), _amount);
+        // interactions
+        _depositToken.transferFrom(msg.sender, address(this), _amount);
+
+        emit Deposit(_currentSeasonId, msg.sender, _amount);
     }
 
     /// @notice Apply points
     /// @param _amount Amount of token to apply points
     function _applyPoints(uint256 _amount) internal {
         uint256 _seasonId = s.currentSeasonId;
-        if (block.timestamp > s.seasons[_seasonId].endTimestamp) {
+        Season storage _season = s.seasons[_seasonId];
+
+        if (block.timestamp > _season.endTimestamp) {
             revert DepositFacet__SeasonEnded();
         }
-        uint256 _daysUntilSeasonEnd = (s.seasons[_seasonId].endTimestamp - block.timestamp) / 1 days;
+
+        uint256 _daysUntilSeasonEnd = (_season.endTimestamp - block.timestamp) / 1 days;
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
         _userData.depositAmount += _amount;
         _userData.depositPoints += _amount * _daysUntilSeasonEnd;
-        s.seasons[_seasonId].totalDepositAmount += _amount;
-        s.seasons[_seasonId].totalPoints += _amount * _daysUntilSeasonEnd;
-    }
-
-    /// @notice Apply deposit fee
-    /// @param _fee Fee amount
-    function _applyDepositFee(uint256 _fee) internal {
-        address[] storage _receivers = s.depositFeeReceivers;
-        uint256[] storage _shares = s.depositFeeReceiversShares;
-        uint256 _length = _receivers.length;
-
-        if (_length != _shares.length) {
-            revert DepositFacet__InvalidFeeReceivers();
-        }
-        for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, _shares[i]);
-            s.pendingWithdrawals[_receivers[i]][s.depositToken] += _share;
-            unchecked {
-                i++;
-            }
-        }
+        _season.totalDepositAmount += _amount;
+        _season.totalPoints += _amount * _daysUntilSeasonEnd;
     }
 }

@@ -6,7 +6,7 @@ import "forge-std/Test.sol";
 import "src/interfaces/IStratosphere.sol";
 
 contract StratosphereMock is IStratosphere, Test {
-    StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    // StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
     address stratosphereMemberSilver = makeAddr("stratosphereMemberSilver");
     address stratosphereMemberGold = makeAddr("stratosphereMemberGold");

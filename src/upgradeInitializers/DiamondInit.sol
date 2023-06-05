@@ -28,10 +28,9 @@ contract DiamondInit {
     struct Args {
         uint256 depositFee;
         uint256 claimFee;
-        uint256 restakeFee;
         uint256 unlockFee;
         address depositToken;
-        address boostFeeToken;
+        address feeToken;
         address rewardToken;
         address stratosphere;
         address xVAPE;
@@ -60,9 +59,9 @@ contract DiamondInit {
 
         // General
         s.stratosphereAddress = _args.stratosphere;
+        s.feeToken = _args.feeToken;
 
         // DepositFacet
-        s.depositFee = _args.depositFee;
         s.depositToken = _args.depositToken;
         s.depositDiscountForStratosphereMembers[0] = 500; // 5%º
         s.depositDiscountForStratosphereMembers[1] = 550; // 5.5%
@@ -70,12 +69,6 @@ contract DiamondInit {
         s.depositDiscountForStratosphereMembers[3] = 800; // 8%
         s.depositDiscountForStratosphereMembers[4] = 1000; // 10%
         s.depositDiscountForStratosphereMembers[5] = 1500; // 15%
-        s.depositFeeReceivers.push(_args.replenishmentPool);
-        s.depositFeeReceivers.push(_args.labsMultisig);
-        s.depositFeeReceivers.push(_args.burnWallet);
-        s.depositFeeReceiversShares.push(8500); // 85%
-        s.depositFeeReceiversShares.push(1000); // 10%
-        s.depositFeeReceiversShares.push(500); // 5%
 
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
@@ -99,7 +92,6 @@ contract DiamondInit {
         s.unlockFeeReceiversShares.push(1000); // 10%
 
         // BoostFacet
-        s.boostFeeToken = _args.boostFeeToken;
         s.boostLevelToFee[0] = 0;
         /// @dev using 1e6 because USDC has 6 decimals
         s.boostLevelToFee[1] = 2 * 1e6;
@@ -131,29 +123,30 @@ contract DiamondInit {
         s.boostPercentFromTierToLevel[4][3] = 87; // 0.87%
         s.boostPercentFromTierToLevel[5][3] = 135; // 1.35%
 
-        // ClaimFacet
-        s.claimFee = _args.claimFee;
-        s.claimFeeReceivers.push(_args.labsMultisig);
-        s.claimFeeReceivers.push(_args.xVAPE);
-        s.claimFeeReceivers.push(_args.passport);
-        s.claimFeeReceiversShares.push(5000); // 50%
-        s.claimFeeReceiversShares.push(4000); // 40%
-        s.claimFeeReceiversShares.push(1000); // 10%
-
-        // RestakeFacet
-        s.restakeFee = _args.restakeFee;
-        s.rewardToken = _args.rewardToken;
-        s.restakeDiscountForStratosphereMembers[0] = 500; // 5%
-        s.restakeDiscountForStratosphereMembers[1] = 550; // 5.5%
-        s.restakeDiscountForStratosphereMembers[2] = 650; // 6.5%
-        s.restakeDiscountForStratosphereMembers[3] = 800; // 8%
-        s.restakeDiscountForStratosphereMembers[4] = 1000; // 10%
-        s.restakeDiscountForStratosphereMembers[5] = 1500; // 15%
-        s.restakeFeeReceivers.push(_args.replenishmentPool);
-        s.restakeFeeReceivers.push(_args.labsMultisig);
-        s.restakeFeeReceivers.push(_args.burnWallet);
-        s.restakeFeeReceiversShares.push(8500); // 85%
-        s.restakeFeeReceiversShares.push(1000); // 10%
-        s.restakeFeeReceiversShares.push(500); // 5%
+        // MiningPassFacet
+        /// @dev fee is paid in USDC
+        s.miningPassTierToFee[0] = 0;
+        s.miningPassTierToFee[1] = 0.5 * 1e6;
+        s.miningPassTierToFee[2] = 1 * 1e6;
+        s.miningPassTierToFee[3] = 2 * 1e6;
+        s.miningPassTierToFee[4] = 4 * 1e6;
+        s.miningPassTierToFee[5] = 8 * 1e6;
+        s.miningPassTierToFee[6] = 15 * 1e6;
+        s.miningPassTierToFee[7] = 30 * 1e6;
+        s.miningPassTierToFee[8] = 50 * 1e6;
+        s.miningPassTierToFee[9] = 70 * 1e6;
+        s.miningPassTierToFee[9] = 100 * 1e6;
+        /// @dev deposit limit is in VPND
+        s.miningPassTierToDepositLimit[0] = 5_000 * 1e18;
+        s.miningPassTierToDepositLimit[1] = 10_000 * 1e18;
+        s.miningPassTierToDepositLimit[2] = 25_000 * 1e18;
+        s.miningPassTierToDepositLimit[3] = 60_000 * 1e18;
+        s.miningPassTierToDepositLimit[4] = 150_000 * 1e18;
+        s.miningPassTierToDepositLimit[5] = 350_000 * 1e18;
+        s.miningPassTierToDepositLimit[6] = 800_000 * 1e18;
+        s.miningPassTierToDepositLimit[7] = 1_800_000 * 1e18;
+        s.miningPassTierToDepositLimit[8] = 4_500_000 * 1e18;
+        s.miningPassTierToDepositLimit[9] = 12_000_000 * 1e18;
+        s.miningPassTierToDepositLimit[10] = type(uint256).max;
     }
 }

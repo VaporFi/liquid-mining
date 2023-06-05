@@ -2,24 +2,22 @@
 pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
-import {DiamondTest, LiquidMiningDiamond} from "../utils/DiamondTest.sol";
-import {DepositFacet} from "src/facets/DepositFacet.sol";
-import {ClaimFacet} from "src/facets/ClaimFacet.sol";
-import {BoostFacet} from "src/facets/BoostFacet.sol";
-import {UnlockFacet} from "src/facets/UnlockFacet.sol";
-import {RestakeFacet} from "src/facets/RestakeFacet.sol";
-import {FeeCollectorFacet} from "src/facets/FeeCollectorFacet.sol";
-import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
-import {ERC20Mock} from "test/mocks/ERC20Mock.sol";
-import {StratosphereMock} from "test/mocks/StratosphereMock.sol";
+import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
+import { DepositFacet } from "src/facets/DepositFacet.sol";
+import { ClaimFacet } from "src/facets/ClaimFacet.sol";
+import { BoostFacet } from "src/facets/BoostFacet.sol";
+import { UnlockFacet } from "src/facets/UnlockFacet.sol";
+import { FeeCollectorFacet } from "src/facets/FeeCollectorFacet.sol";
+import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
+import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
 import "src/libraries/LPercentages.sol";
 
 contract FeeCollectorFacetTest is DiamondTest {
-    StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    // StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     LiquidMiningDiamond internal diamond;
     UnlockFacet internal unlockFacet;
     DepositFacet internal depositFacet;
-    RestakeFacet internal restakeFacet;
     DiamondManagerFacet internal diamondManagerFacet;
     FeeCollectorFacet internal feeCollectorFacet;
     ClaimFacet internal claimFacet;
@@ -37,7 +35,6 @@ contract FeeCollectorFacetTest is DiamondTest {
         unlockFacet = UnlockFacet(address(diamond));
         depositFacet = DepositFacet(address(diamond));
         feeCollectorFacet = FeeCollectorFacet(address(diamond));
-        restakeFacet = RestakeFacet(address(diamond));
         claimFacet = ClaimFacet(address(diamond));
         boostFacet = BoostFacet(address(diamond));
 
@@ -52,32 +49,10 @@ contract FeeCollectorFacetTest is DiamondTest {
         depositFeeReceivers[1] = depositFeeReceiver2;
         depositFeeProportions[0] = 7500;
         depositFeeProportions[1] = 2500;
-        diamondManagerFacet.setDepositFeeReceivers(depositFeeReceivers, depositFeeProportions);
         diamondManagerFacet.setUnlockFeeReceivers(depositFeeReceivers, depositFeeProportions);
-        diamondManagerFacet.setRestakeFeeReceivers(depositFeeReceivers, depositFeeProportions);
-        diamondManagerFacet.setClaimFeeReceivers(depositFeeReceivers, depositFeeProportions);
         diamondManagerFacet.setBoostFeeReceivers(depositFeeReceivers, depositFeeProportions);
 
         vm.stopPrank();
-    }
-
-    function test_collectDepositFee() public {
-        address user = makeAddr("user");
-
-        vm.startPrank(user);
-        _mintAndDeposit(user, 1000);
-        vm.stopPrank();
-
-        assertEq(
-            diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)) +
-                diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)),
-            49
-        );
-
-        vm.startPrank(makeAddr("diamondOwner"));
-        feeCollectorFacet.collectDepositFees();
-        assertEq(depositToken.balanceOf(depositFeeReceiver1), 37);
-        assertEq(depositToken.balanceOf(depositFeeReceiver2), 12);
     }
 
     function test_collectUnlockFee() public {
@@ -88,56 +63,13 @@ contract FeeCollectorFacetTest is DiamondTest {
         unlockFacet.unlock(950);
         vm.stopPrank();
 
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 71 + 37);
-        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 23 + 12);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver1, address(depositToken)), 71);
+        assertEq(diamondManagerFacet.getPendingWithdrawals(depositFeeReceiver2, address(depositToken)), 23);
 
         vm.startPrank(makeAddr("diamondOwner"));
         feeCollectorFacet.collectUnlockFees();
-        assertEq(depositToken.balanceOf(depositFeeReceiver1), 71 + 37);
-        assertEq(depositToken.balanceOf(depositFeeReceiver2), 23 + 12);
-    }
-
-    function test_collectRestakeFee() public {
-        address user = makeAddr("user");
-
-        vm.startPrank(user);
-        _mintAndDeposit(user, 1000);
-        vm.stopPrank();
-
-        // Set up season for restake
-        vm.startPrank(makeAddr("diamondOwner"));
-        _startNewSeason();
-        vm.stopPrank();
-
-        vm.startPrank(user);
-        restakeFacet.restake();
-        vm.stopPrank();
-
-        uint256 restakeFee = ((diamondManagerFacet.getDepositAmountOfUser(user, 1) * initArgs.restakeFee) / 10000);
-
-        vm.startPrank(makeAddr("diamondOwner"));
-        feeCollectorFacet.collectRestakeFees();
-        assertEq(
-            depositToken.balanceOf(depositFeeReceiver1) + depositToken.balanceOf(depositFeeReceiver2),
-            49 + restakeFee
-        );
-    }
-
-    function test_collectClaimFee() public {
-        address user = makeAddr("user");
-
-        vm.startPrank(user);
-        _mintAndDeposit(user, 1000);
-        vm.warp(block.timestamp + 31 days);
-        uint256 shareOfUser = _calculateShare(user, 1);
-        uint256 _fee = LPercentages.percentage(shareOfUser, initArgs.claimFee);
-        claimFacet.claim();
-        vm.stopPrank();
-
-        vm.startPrank(makeAddr("diamondOwner"));
-        feeCollectorFacet.collectClaimFees();
-
-        assertEq(rewardToken.balanceOf(depositFeeReceiver1) + rewardToken.balanceOf(depositFeeReceiver2), _fee);
+        assertEq(depositToken.balanceOf(depositFeeReceiver1), 71);
+        assertEq(depositToken.balanceOf(depositFeeReceiver2), 23);
     }
 
     function test_collectBoostFee() public {
@@ -145,18 +77,14 @@ contract FeeCollectorFacetTest is DiamondTest {
 
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, 1000);
-        _fundUserWithBoostFeeToken(stratosphereMemberBasic, boostFeeLvl1);
+        _fundUserWithfeeToken(stratosphereMemberBasic, boostFeeLvl1);
         boostFacet.claimBoost(1);
-        // uint256 _fee = LPercentages.percentage(_amount, boostFeeLvl1 - (_discount * boostFeeLvl1) / 10000);
         vm.stopPrank();
 
         vm.startPrank(makeAddr("diamondOwner"));
         feeCollectorFacet.collectBoostFees();
 
-        assertEq(
-            boostFeeToken.balanceOf(depositFeeReceiver1) + boostFeeToken.balanceOf(depositFeeReceiver2),
-            boostFeeLvl1
-        );
+        assertEq(feeToken.balanceOf(depositFeeReceiver1) + feeToken.balanceOf(depositFeeReceiver2), boostFeeLvl1);
     }
 
     // Helper functions
@@ -171,9 +99,9 @@ contract FeeCollectorFacetTest is DiamondTest {
         depositFacet.deposit(_amount);
     }
 
-    function _fundUserWithBoostFeeToken(address _addr, uint256 _amount) internal {
-        boostFeeToken.mint(_addr, _amount);
-        boostFeeToken.increaseAllowance(address(boostFacet), _amount);
+    function _fundUserWithfeeToken(address _addr, uint256 _amount) internal {
+        feeToken.mint(_addr, _amount);
+        feeToken.increaseAllowance(address(boostFacet), _amount);
     }
 
     function _startNewSeason() internal {
