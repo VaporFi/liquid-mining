@@ -10,16 +10,16 @@ import "../interfaces/IStratosphere.sol";
 import "../libraries/LStratosphere.sol";
 
 error DepositFacet__NotEnoughTokenBalance();
-error DepositFacet__InvalidFeeReceivers();
 error DepositFacet__ReentrancyGuard__ReentrantCall();
 error DepositFacet__SeasonEnded();
 error DepositFacet__FundsInPrevSeason();
+error DepositFacet__InvalidMiningPass();
 
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
 contract DepositFacet {
-    event Deposit(address indexed depositor, uint256 amount, uint256 seasonId, uint256 depositFee);
+    event Deposit(uint256 indexed seasonId, address indexed user, uint256 amount);
 
     AppStorage s;
 
@@ -33,10 +33,11 @@ contract DepositFacet {
     /// @notice Deposit token to the contract
     /// @param _amount Amount of token to deposit
     function deposit(uint256 _amount) external nonReentrant {
+        IERC20 _depositToken = IERC20(s.depositToken);
         uint256 _currentSeasonId = s.currentSeasonId;
         IERC20 _token = IERC20(s.depositToken);
         // checks
-        if (_amount > IERC20(_token).balanceOf(msg.sender)) {
+        if (_amount > _depositToken.balanceOf(msg.sender)) {
             revert DepositFacet__NotEnoughTokenBalance();
         }
 

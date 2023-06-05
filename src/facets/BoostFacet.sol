@@ -59,7 +59,7 @@ contract BoostFacet {
         _userData.lastBoostClaimAmount = _boostPointsAmount;
         if (_boostFee > 0) {
             _applyBoostFee(_boostFee);
-            IERC20(s.boostFeeToken).transferFrom(msg.sender, address(this), _boostFee);
+            IERC20(s.feeToken).transferFrom(msg.sender, address(this), _boostFee);
         }
         emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints, _boostFee, tier, boostLevel);
     }
@@ -107,7 +107,7 @@ contract BoostFacet {
         }
         for (uint256 i; i < _length; ) {
             uint256 _share = LPercentages.percentage(_fee, _shares[i]);
-            s.pendingWithdrawals[_receivers[i]][s.boostFeeToken] += _share;
+            s.pendingWithdrawals[_receivers[i]][s.feeToken] += _share;
             unchecked {
                 i++;
             }

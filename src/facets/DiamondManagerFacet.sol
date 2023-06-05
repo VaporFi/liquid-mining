@@ -50,11 +50,6 @@ contract DiamondManagerFacet {
         _;
     }
 
-    function withdrawBoostFee(address to, uint256 amount) external onlyOwner {
-        IERC20(s.boostFeeToken).transfer(to, amount);
-        emit BoostFeeWithdrawn(to, amount);
-    }
-
     function setDepositToken(address token) external validAddress(token) onlyOwner {
         s.depositToken = token;
         emit DepositTokenSet(token);
@@ -70,14 +65,6 @@ contract DiamondManagerFacet {
         emit DepositDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
 
-    function setDepositFee(uint256 fee) external onlyOwner {
-        if (fee > TOTAL_SHARES) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.depositFee = fee;
-        emit DepositFeeSet(fee);
-    }
-
     function setStratosphereAddress(address stratosphereAddress) external validAddress(stratosphereAddress) onlyOwner {
         s.stratosphereAddress = stratosphereAddress;
         emit StratosphereAddressSet(stratosphereAddress);
@@ -86,22 +73,6 @@ contract DiamondManagerFacet {
     function setSeasonEndTimestamp(uint256 seasonId, uint256 timestamp) external onlyOwner {
         s.seasons[seasonId].endTimestamp = timestamp;
         emit SeasonEndTimestampSet(seasonId, timestamp);
-    }
-
-    function setDepositFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
-        if (receivers.length != proportion.length) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        uint256 totalShares = 0;
-        for (uint256 i; i < proportion.length; i++) {
-            totalShares += proportion[i];
-        }
-        if (totalShares != TOTAL_SHARES) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.depositFeeReceivers = receivers;
-        s.depositFeeReceiversShares = proportion;
-        emit DepositFeeReceiversSet(receivers, proportion);
     }
 
     function setBoostFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
@@ -118,38 +89,6 @@ contract DiamondManagerFacet {
         s.boostFeeReceivers = receivers;
         s.boostFeeReceiversShares = proportion;
         emit BoostFeeReceiversSet(receivers, proportion);
-    }
-
-    function setClaimFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
-        if (receivers.length != proportion.length) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        uint256 totalShares = 0;
-        for (uint256 i; i < proportion.length; i++) {
-            totalShares += proportion[i];
-        }
-        if (totalShares != TOTAL_SHARES) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.claimFeeReceivers = receivers;
-        s.claimFeeReceiversShares = proportion;
-        emit ClaimFeeReceiversSet(receivers, proportion);
-    }
-
-    function setRestakeFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
-        if (receivers.length != proportion.length) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        uint256 totalShares = 0;
-        for (uint256 i; i < proportion.length; i++) {
-            totalShares += proportion[i];
-        }
-        if (totalShares != TOTAL_SHARES) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.restakeFeeReceivers = receivers;
-        s.restakeFeeReceiversShares = proportion;
-        emit RestakeFeeReceiversSet(receivers, proportion);
     }
 
     function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner {
@@ -291,10 +230,6 @@ contract DiamondManagerFacet {
             revert DiamondManagerFacet__Invalid_Input();
         }
         s.boostLevelToFee[boostLevel] = boostFee;
-    }
-
-    function setBoostFeeToken(address boostFeeToken) external onlyOwner {
-        s.boostFeeToken = boostFeeToken;
     }
 
     function setBoostPercentTierLevel(uint256 tier, uint256 level, uint256 percent) external onlyOwner {

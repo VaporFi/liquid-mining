@@ -24,6 +24,7 @@ struct UserData {
     uint256 unlockAmount;
     uint256 unlockTimestamp;
     uint256 amountClaimed;
+    uint256 miningPassTier;
     bool hasWithdrawnOrRestaked;
 }
 
@@ -45,12 +46,6 @@ struct AppStorage {
     // nested mapping: seasonId => userAddress => UserData
     mapping(uint256 => mapping(address => UserData)) usersData;
     ///////////////
-    /// DEPOSIT ///
-    ///////////////
-    uint256 depositFee;
-    address[] depositFeeReceivers;
-    uint256[] depositFeeReceiversShares;
-    ///////////////
     /// UNLOCK ///
     ///////////////
     uint256 unlockFee;
@@ -64,26 +59,15 @@ struct AppStorage {
     address[] unlockFeeReceivers;
     uint256[] unlockFeeReceiversShares;
     ////////////////
-    /// WITHDRAW ///
-    ////////////////
-    // TODO: Add withdraw state variables
-
-    ////////////////
     /// BOOST ///
     ////////////////
-    address boostFeeToken;
+    uint256 boostForNonStratMembers;
     //mapping: level => USDC fee
     mapping(uint256 => uint256) boostLevelToFee;
     // nested mapping: tier => boostlevel => boost enhance points
     mapping(uint256 => mapping(uint256 => uint256)) boostPercentFromTierToLevel;
     address[] boostFeeReceivers;
     uint256[] boostFeeReceiversShares;
-    /////////////
-    /// CLAIM ///
-    /////////////
-    uint256 claimFee;
-    address[] claimFeeReceivers;
-    uint256[] claimFeeReceiversShares;
     ///////////////
     /// RESTAKE ///
     ///////////////
@@ -92,17 +76,22 @@ struct AppStorage {
     mapping(uint256 => mapping(address => uint256)) claimAmounts;
     // total amount claimed for each season: seasonId => amount
     mapping(uint256 => uint256) totalClaimAmounts;
-    address[] restakeFeeReceivers;
-    uint256[] restakeFeeReceiversShares;
+    ////////////////
+    /// WITHDRAW ///
+    ////////////////
+    // nested mapping: userAddress => tokenAddress => amount
+    mapping(address => mapping(address => uint256)) pendingWithdrawals;
+    ///////////////////
+    /// MINING PASS ///
+    ///////////////////
+    mapping(uint256 => uint256) miningPassTierToFee;
+    mapping(uint256 => uint256) miningPassTierToDepositLimit;
     ///////////////
     /// GENERAL ///
     ///////////////
     address depositToken;
     address rewardToken;
+    address feeToken;
     address stratosphereAddress;
     uint256 reentrancyGuardStatus;
-    // nested mapping: userAddress => tokenAddress => amount
-    mapping(address => mapping(address => uint256)) pendingWithdrawals;
-    // Upgrade
-    uint256 boostForNonStratMembers;
 }
