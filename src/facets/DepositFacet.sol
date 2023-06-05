@@ -73,7 +73,7 @@ contract DepositFacet {
             _discount = s.depositDiscountForStratosphereMembers[tier];
         }
 
-        _applyPoints(_amount);
+        _applyPoints(_amount, _currentSeasonId, _userDataForCurrentSeason);
 
         // interactions
         _depositToken.transferFrom(msg.sender, address(this), _amount);

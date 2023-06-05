@@ -90,7 +90,7 @@ contract ClaimFacet {
             uint256 totalPoints = _depositPoints + userData.boostPoints;
             uint256 userShare = _calculateShare(totalPoints, season);
 
-            uint256 rewardTokenShare = _vapeToDistribute(userShare, _seasonId);
+            uint256 rewardTokenShare = _vapeToDistribute(userShare, season);
 
             userData.amountClaimed = rewardTokenShare;
             userData.hasWithdrawnOrRestaked = true;
