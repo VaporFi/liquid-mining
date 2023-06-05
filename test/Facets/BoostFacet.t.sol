@@ -187,7 +187,7 @@ contract BoostFacetTest is DiamondTest {
         depositFacet.deposit(_amount);
     }
 
-    function _fundUserWithfeeToken(address _addr, uint256 _amount) internal {
+    function _fundUserWithBoostFeeToken(address _addr, uint256 _amount) internal {
         feeToken.mint(_addr, _amount);
         feeToken.increaseAllowance(address(boostFacet), _amount);
     }
