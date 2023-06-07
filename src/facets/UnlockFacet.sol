@@ -20,13 +20,17 @@ contract UnlockFacet {
     uint256 public constant COOLDOWN_PERIOD = 72 * 3600; // 72 Hours
 
     function unlock(uint256 _amount) external {
-        if (s.usersData[s.currentSeasonId][msg.sender].unlockTimestamp != 0) {
+        uint256 _currentSeasonId = s.currentSeasonId;
+        UserData storage _userData = s.usersData[_currentSeasonId][msg.sender];
+        Season storage _currentSeason = s.seasons[_currentSeasonId];
+        uint256 _seasonEndTimestamp = _currentSeason.endTimestamp; //used twice in transaction
+        if (_userData.unlockTimestamp != 0) {
             revert UnlockFacet__AlreadyUnlocked();
         }
-        if (s.usersData[s.currentSeasonId][msg.sender].depositAmount < _amount) {
+        if (_userData.depositAmount < _amount) {
             revert UnlockFacet__InvalidAmount();
         }
-        _deductPoints(_amount);
+        _deductPoints(_amount, _seasonEndTimestamp, _userData, _currentSeason);
 
         uint256 _timeDiscount = 0;
         uint256 _feeDiscount = 0;
@@ -35,30 +39,37 @@ contract UnlockFacet {
             _timeDiscount = s.unlockTimestampDiscountForStratosphereMembers[tier];
             _feeDiscount = s.unlockFeeDiscountForStratosphereMembers[tier];
         }
-        uint256 _fee = LPercentages.percentage(_amount, s.unlockFee - (_feeDiscount * s.unlockFee) / 10000);
+        uint256 _unlockFeeFromState = s.unlockFee;
+        uint256 _fee = LPercentages.percentage(
+            _amount,
+            _unlockFeeFromState - (_feeDiscount * _unlockFeeFromState) / 10000
+        );
         _applyUnlockFee(_fee);
         uint256 _unlockTimestamp = block.timestamp + COOLDOWN_PERIOD - (_timeDiscount * COOLDOWN_PERIOD) / 10000;
 
-        if (_unlockTimestamp >= s.seasons[s.currentSeasonId].endTimestamp) {
+        if (_unlockTimestamp >= _seasonEndTimestamp) {
             revert UnlockFacet__InvalidUnlock();
         }
 
-        s.usersData[s.currentSeasonId][msg.sender].unlockAmount += (_amount - _fee);
-        s.usersData[s.currentSeasonId][msg.sender].unlockTimestamp = _unlockTimestamp;
+        _userData.unlockAmount += (_amount - _fee);
+        _userData.unlockTimestamp = _unlockTimestamp;
 
-        emit Unlocked(msg.sender, _amount, s.currentSeasonId, _fee);
+        emit Unlocked(msg.sender, _amount, _currentSeasonId, _fee);
     }
 
     /// @notice deduct points
     /// @param _amount Amount of token to deduct points
-    function _deductPoints(uint256 _amount) internal {
-        uint256 _seasonId = s.currentSeasonId;
-        uint256 _daysUntilSeasonEnd = (s.seasons[_seasonId].endTimestamp - block.timestamp) / 1 days;
-        UserData storage _userData = s.usersData[_seasonId][msg.sender];
+    function _deductPoints(
+        uint256 _amount,
+        uint256 _seasonEndTimestamp,
+        UserData storage _userData,
+        Season storage _season
+    ) internal {
+        uint256 _daysUntilSeasonEnd = (_seasonEndTimestamp - block.timestamp) / 1 days;
         _userData.depositAmount -= _amount;
         _userData.depositPoints -= _amount * _daysUntilSeasonEnd;
-        s.seasons[_seasonId].totalDepositAmount -= _amount;
-        s.seasons[_seasonId].totalPoints -= _amount * _daysUntilSeasonEnd;
+        _season.totalDepositAmount -= _amount;
+        _season.totalPoints -= _amount * _daysUntilSeasonEnd;
     }
 
     /// @notice Apply deposit fee

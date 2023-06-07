@@ -39,8 +39,8 @@ contract WithdrawFacet {
         if (unlockTimestamp > block.timestamp) {
             revert WithdrawFacet__UnlockNotMatured();
         }
-        s.usersData[seasonId][user].unlockAmount = 0;
-        s.usersData[seasonId][user].unlockTimestamp = 0;
+        userData.unlockAmount = 0;
+        userData.unlockTimestamp = 0;
         IERC20(s.depositToken).transfer(user, amount);
         emit WithdrawUnlockedVPND(amount, user, seasonId);
     }

@@ -54,7 +54,7 @@ contract BoostFacet {
         } else {
             _boostPercent = s.boostForNonStratMembers;
         }
-        uint256 _boostPointsAmount = _calculatePoints(_userData, _boostPercent);
+        uint256 _boostPointsAmount = _calculatePoints(_userData, _boostPercent, _seasonId);
         _userData.boostPoints += _boostPointsAmount;
         _userData.lastBoostClaimAmount = _boostPointsAmount;
         if (_boostFee > 0) {
@@ -66,14 +66,33 @@ contract BoostFacet {
 
     /// @notice Calculate boost points
     /// @param _userData User data
+    /// @param _boostPercent % to boost points
+    /// @param _seasonId current seasonId
     /// @return Boost points
     /// @dev Utilizes 'LPercentages'.
     /// @dev _daysSinceSeasonStart starts from 0 equal to the first day of the season.
-    function _calculatePoints(UserData storage _userData, uint256 _boostPointsAmount) internal view returns (uint256) {
-        if (_boostPointsAmount == 0) {
+    function _calculatePoints(
+        UserData storage _userData,
+        uint256 _boostPercent,
+        uint256 _seasonId
+    ) internal view returns (uint256) {
+        if (_boostPercent == 0) {
             return 0;
         }
-        return LPercentages.percentage(_userData.depositAmount, _boostPointsAmount);
+
+        Season storage _season = s.seasons[_seasonId];
+        uint256 _daysUntilSeasonEnd = (_season.endTimestamp - block.timestamp) / 1 days;
+
+        if (_daysUntilSeasonEnd == 0) {
+            return 0;
+        }
+
+        uint256 _pointsObtainedTillNow = (_userData.depositPoints) - (_userData.depositAmount * _daysUntilSeasonEnd);
+
+        if (_pointsObtainedTillNow == 0) {
+            return 0;
+        }
+        return LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
     }
 
     /// @notice Apply boost fee

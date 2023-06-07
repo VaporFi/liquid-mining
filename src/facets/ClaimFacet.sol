@@ -32,7 +32,8 @@ contract ClaimFacet {
     function claim() external {
         uint256 seasonId = s.addressToLastSeasonId[msg.sender];
         UserData storage userData = s.usersData[seasonId][msg.sender];
-        if (s.seasons[seasonId].endTimestamp >= block.timestamp) {
+        Season storage season = s.seasons[seasonId];
+        if (season.endTimestamp >= block.timestamp) {
             revert ClaimFacet__InProgressSeason();
         }
         if (userData.depositPoints == 0) {
@@ -43,13 +44,13 @@ contract ClaimFacet {
         }
 
         uint256 totalPoints = userData.depositPoints + userData.boostPoints;
-        uint256 userShare = _calculateShare(totalPoints, seasonId);
+        uint256 userShare = _calculateShare(totalPoints, season);
 
-        uint256 rewardTokenShare = _vapeToDistribute(userShare, seasonId);
+        uint256 rewardTokenShare = _vapeToDistribute(userShare, season);
 
         userData.amountClaimed = rewardTokenShare;
-        s.seasons[seasonId].rewardTokenBalance -= rewardTokenShare;
-        s.seasons[seasonId].totalClaimAmount += rewardTokenShare;
+        season.rewardTokenBalance -= rewardTokenShare;
+        season.totalClaimAmount += rewardTokenShare;
 
         IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare);
         uint256 withdrawAmount = userData.depositAmount + userData.unlockAmount;
@@ -87,9 +88,9 @@ contract ClaimFacet {
             }
 
             uint256 totalPoints = _depositPoints + userData.boostPoints;
-            uint256 userShare = _calculateShare(totalPoints, _seasonId);
+            uint256 userShare = _calculateShare(totalPoints, season);
 
-            uint256 rewardTokenShare = _vapeToDistribute(userShare, _seasonId);
+            uint256 rewardTokenShare = _vapeToDistribute(userShare, season);
 
             userData.amountClaimed = rewardTokenShare;
             userData.hasWithdrawnOrRestaked = true;
@@ -115,14 +116,14 @@ contract ClaimFacet {
     //////////////////////
 
     /// @notice Calculate the share of the User based on totalPoints of season
-    function _calculateShare(uint256 _totalPoints, uint256 _seasonId) internal view returns (uint256) {
-        uint256 seasonTotalPoints = s.seasons[_seasonId].totalPoints;
+    function _calculateShare(uint256 _totalPoints, Season storage season) internal view returns (uint256) {
+        uint256 seasonTotalPoints = season.totalPoints;
         uint256 userShare = (_totalPoints * 1e18) / seasonTotalPoints;
         return userShare;
     }
 
     /// @notice Calculate VAPE earned by User through share of the totalPoints
-    function _vapeToDistribute(uint256 _userShare, uint256 _seasonId) internal view returns (uint256) {
-        return (s.seasons[_seasonId].rewardTokensToDistribute * _userShare) / 1e18;
+    function _vapeToDistribute(uint256 _userShare, Season storage season) internal view returns (uint256) {
+        return (season.rewardTokensToDistribute * _userShare) / 1e18;
     }
 }
