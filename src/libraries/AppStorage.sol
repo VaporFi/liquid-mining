@@ -94,4 +94,6 @@ struct AppStorage {
     address feeToken;
     address stratosphereAddress;
     uint256 reentrancyGuardStatus;
+
+    address emissionsManager;
 }
