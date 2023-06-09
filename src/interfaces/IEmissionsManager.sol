@@ -2,5 +2,5 @@
 pragma solidity 0.8.17;
 
 interface IEmissionsManager {
-    function mintLiquidStaking() external;
+    function mintLiquidMining() external;
 }
