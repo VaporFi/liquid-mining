@@ -160,7 +160,7 @@ contract DiamondManagerFacet {
     }
 
     function claimTokensForSeason() external onlyOwner {
-        IEmissionsManager(s.emissionsManager).mintLiquidStaking();
+        IEmissionsManager(s.emissionsManager).mintLiquidMining();
         emit VapeClaimedForSeason(s.currentSeasonId);
     }
 
