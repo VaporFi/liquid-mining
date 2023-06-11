@@ -5,6 +5,7 @@ import '@nomicfoundation/hardhat-foundry'
 import '@nomicfoundation/hardhat-network-helpers'
 import '@nomiclabs/hardhat-solhint'
 import '@nomicfoundation/hardhat-toolbox'
+import '@nomicfoundation/hardhat-verify'
 import 'dotenv/config'
 
 import './tasks/verify'
