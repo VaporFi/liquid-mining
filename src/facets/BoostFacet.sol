@@ -61,7 +61,7 @@ contract BoostFacet {
             _applyBoostFee(_boostFee);
             IERC20(s.feeToken).transferFrom(msg.sender, address(this), _boostFee);
         }
-        emit ClaimBoost(msg.sender, _seasonId, _userData.boostPoints, _boostFee, tier, boostLevel);
+        emit ClaimBoost(msg.sender, _seasonId, _boostPointsAmount, _boostFee, tier, boostLevel);
     }
 
     /// @notice Calculate boost points
