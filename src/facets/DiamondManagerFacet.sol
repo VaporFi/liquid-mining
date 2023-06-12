@@ -3,6 +3,7 @@ pragma solidity 0.8.17;
 
 import "clouds/diamond/LDiamond.sol";
 import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../interfaces/IEmissionsManager.sol";
 
 import "../libraries/AppStorage.sol";
 
@@ -27,6 +28,8 @@ contract DiamondManagerFacet {
     event BoostFeeReceiversSet(address[] receivers, uint256[] proportion);
     event ClaimFeeReceiversSet(address[] receivers, uint256[] proportion);
     event RestakeFeeReceiversSet(address[] receivers, uint256[] proportion);
+    event VapeClaimedForSeason(uint256 indexed seasonId);
+    event EmissionsManagerSet(address indexed emissionManager);
 
     event RestakeFeeSet(uint256 fee);
     event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
@@ -155,6 +158,19 @@ contract DiamondManagerFacet {
         season.rewardTokensToDistribute = _rewardTokenToDistribute;
         season.rewardTokenBalance = _rewardTokenToDistribute;
     }
+
+    function claimTokensForSeason() external onlyOwner {
+        IEmissionsManager(s.emissionsManager).mintLiquidMining();
+        emit VapeClaimedForSeason(s.currentSeasonId);
+    }
+
+    function setEmissionsManager(address _emissionManager) external onlyOwner {
+        if (_emissionManager == address(0)) {
+            revert DiamondManagerFacet__Invalid_Address();
+        }
+        s.emissionsManager = _emissionManager;
+        emit EmissionsManagerSet(_emissionManager);
+    } 
 
     function getUserDepositAmount(address user, uint256 seasonId) external view returns (uint256, uint256) {
         UserData storage _userData = s.usersData[seasonId][user];
