@@ -14,10 +14,9 @@ const CHAIN_ID = ['avalanche', 'fuji'].includes(network.name)
 export const defaultArgs: DiamondInit.ArgsStruct = {
   depositFee: '500',
   claimFee: '500',
-  restakeFee: '300',
   unlockFee: '1000',
   depositToken: addresses.vpnd[CHAIN_ID],
-  boostFeeToken: addresses.usdc[CHAIN_ID],
+  feeToken: addresses.usdc[CHAIN_ID],
   rewardToken: addresses.vape[CHAIN_ID],
   stratosphere: addresses.stratosphere[CHAIN_ID],
   xVAPE: addresses.xVAPE[CHAIN_ID],
@@ -38,7 +37,7 @@ export default async function deployDiamond(
 
   // Deploy Diamond
   const diamond = await deployContract('LiquidMiningDiamond', {
-    args: [deployer.address, diamondCutFacet.address],
+    args: [deployer.address, diamondCutFacet.target],
     log: true,
     // skipIfAlreadyDeployed: true,
   })
@@ -62,7 +61,7 @@ export default async function deployDiamond(
     Object.values(args),
   ])
 
-  await addFacets(facets, diamond.address, diamondInit.address, functionCall)
+  await addFacets(facets, diamond.target, diamondInit.target, functionCall)
 
   return diamond
 }

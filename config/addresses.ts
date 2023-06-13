@@ -24,7 +24,7 @@ export const addresses: {
   },
   teamMultisig: {
     [ChainId.AVALANCHE]: '0x6769DB4e3E94A63089f258B9500e0695586315bA',
-    [ChainId.AVALANCHE_TESTNET]: '0xd68Ed788ae640D4bFC9E80Dc45210c11F3193aE0',
+    [ChainId.AVALANCHE_TESTNET]: '0xb2a30d5D43DE954b32FacefEa17561c51b7baE9B',
   },
   stratosphere: {
     [ChainId.AVALANCHE]: '0x08e287adCf9BF6773a87e1a278aa9042BEF44b60',

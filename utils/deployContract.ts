@@ -13,37 +13,41 @@ export type DeployOptions = {
 const defaultDeployOptions: DeployOptions = {
   args: [],
   log: true,
-  skipIfAlreadyDeployed: true,
+  skipIfAlreadyDeployed: false,
 }
 
 export async function deployContract(
   contractName: string,
-  options: DeployOptions = defaultDeployOptions
+  options: any = defaultDeployOptions
 ) {
   const artifact = await artifacts.readArtifact(contractName)
 
-  if (network.name !== 'hardhat' && options.skipIfAlreadyDeployed) {
-    // Load previous deployment if exists
-    const previousDeployment = await loadPreviousDeployment(
-      contractName,
-      artifact
-    )
+  // if (network.name !== 'hardhat' && options.skipIfAlreadyDeployed) {
+  //   // Load previous deployment if exists
+  //   const previousDeployment = await loadPreviousDeployment(
+  //     contractName,
+  //     artifact
+  //   )
 
-    if (previousDeployment) return previousDeployment
-  }
+  //   if (previousDeployment) return previousDeployment
+  // }
 
-  const Contract = await ethers.getContractFactory(contractName)
-  const contract = await Contract.deploy(...options.args)
-  await contract.deployed()
+  // const Contract = await ethers.getContractFactory(contractName)
+  // const contract = await Contract.deploy(...options.args)
+  // await contract.waitForDeployment()
+  // console.log(contract);
+
+  const contract = await ethers.deployContract(contractName, options.args);
+  await contract.waitForDeployment();
 
   saveDeployment(
     contractName,
-    { artifact, options, address: contract.address },
+    { artifact, options, address: contract.target },
     network.name
   )
   generateFullABI(network.name)
   if (options.log) {
-    console.log(`${contractName} deployed to:`, contract.address)
+    console.log(`${contractName} deployed to:`, contract.target)
   }
 
   return contract

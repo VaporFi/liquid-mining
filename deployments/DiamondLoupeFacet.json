@@ -109,9 +109,9 @@
     "options": {
       "args": [],
       "log": true,
-      "skipIfAlreadyDeployed": true
+      "skipIfAlreadyDeployed": false
     },
-    "address": "0x366384463B30F474DB4222FE8d7338E391fAc7d4"
+    "address": "0xfb459325787db6CE6B4E7aFeFF75BB25d13b1233"
   },
   "hardhat": {
     "artifact": {
