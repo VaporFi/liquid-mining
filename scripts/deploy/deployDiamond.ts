@@ -37,7 +37,7 @@ export default async function deployDiamond(
 
   // Deploy Diamond
   const diamond = await deployContract('LiquidMiningDiamond', {
-    args: [deployer.address, diamondCutFacet.target],
+    args: [deployer.address, diamondCutFacet.address],
     log: true,
     // skipIfAlreadyDeployed: true,
   })
@@ -61,7 +61,7 @@ export default async function deployDiamond(
     Object.values(args),
   ])
 
-  await addFacets(facets, diamond.target, diamondInit.target, functionCall)
+  await addFacets(facets, diamond.address, diamondInit.address, functionCall)
 
   return diamond
 }

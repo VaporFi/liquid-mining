@@ -5,7 +5,6 @@ import '@nomicfoundation/hardhat-foundry'
 import '@nomicfoundation/hardhat-network-helpers'
 import '@nomiclabs/hardhat-solhint'
 import '@nomicfoundation/hardhat-toolbox'
-import '@nomicfoundation/hardhat-verify'
 import 'dotenv/config'
 
 import './tasks/verify'
@@ -33,6 +32,7 @@ const config: HardhatUserConfig = {
       chainId: 43113,
       url: FUJI_RPC_URL,
       gas: 8000000,
+      timeout: 10000000
     },
     hardhat: {
       forking: {

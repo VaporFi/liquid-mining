@@ -92,7 +92,7 @@
       "log": true,
       "skipIfAlreadyDeployed": false
     },
-    "address": "0x3fb5bCAf829367217925eA5F4a20eCb5F27a2283"
+    "address": "0x61aA1d5599f81444293C9a4e97AD8E5ba5Fce6FC"
   },
   "hardhat": {
     "artifact": {

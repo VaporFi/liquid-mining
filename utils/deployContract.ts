@@ -32,22 +32,22 @@ export async function deployContract(
   //   if (previousDeployment) return previousDeployment
   // }
 
-  // const Contract = await ethers.getContractFactory(contractName)
-  // const contract = await Contract.deploy(...options.args)
-  // await contract.waitForDeployment()
+  const Contract = await ethers.getContractFactory(contractName)
+  const contract = await Contract.deploy(...options.args)
+  await contract.deployed()
   // console.log(contract);
 
-  const contract = await ethers.deployContract(contractName, options.args);
-  await contract.waitForDeployment();
+  // const contract = await ethers.deployContract(contractName, options.args);
+  // await contract.waitForDeployment();
 
   saveDeployment(
     contractName,
-    { artifact, options, address: contract.target },
+    { artifact, options, address: contract.address },
     network.name
   )
   generateFullABI(network.name)
   if (options.log) {
-    console.log(`${contractName} deployed to:`, contract.target)
+    console.log(`${contractName} deployed to:`, contract.address)
   }
 
   return contract
