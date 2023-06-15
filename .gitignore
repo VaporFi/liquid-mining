@@ -12,6 +12,7 @@ typechain-types/
 
 # Dotenv file
 .env
+deployedaddresses
 
 # Yarn
 node_modules/
