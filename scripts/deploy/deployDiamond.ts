@@ -14,10 +14,9 @@ const CHAIN_ID = ['avalanche', 'fuji'].includes(network.name)
 export const defaultArgs: DiamondInit.ArgsStruct = {
   depositFee: '500',
   claimFee: '500',
-  restakeFee: '300',
   unlockFee: '1000',
   depositToken: addresses.vpnd[CHAIN_ID],
-  boostFeeToken: addresses.usdc[CHAIN_ID],
+  feeToken: addresses.usdc[CHAIN_ID],
   rewardToken: addresses.vape[CHAIN_ID],
   stratosphere: addresses.stratosphere[CHAIN_ID],
   xVAPE: addresses.xVAPE[CHAIN_ID],

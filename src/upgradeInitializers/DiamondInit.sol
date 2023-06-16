@@ -60,6 +60,7 @@ contract DiamondInit {
         // General
         s.stratosphereAddress = _args.stratosphere;
         s.feeToken = _args.feeToken;
+        s.rewardToken = _args.rewardToken;
 
         // DepositFacet
         s.depositToken = _args.depositToken;

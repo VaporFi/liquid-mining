@@ -329,8 +329,8 @@
     "options": {
       "args": [],
       "log": true,
-      "skipIfAlreadyDeployed": true
+      "skipIfAlreadyDeployed": false
     },
-    "address": "0x5Be753F7bEBD2f401f30A57CaFf8EF2D00de6092"
+    "address": "0x018CcFe1896AC08C7D4ee080097a23E59ca967E9"
   }
 }

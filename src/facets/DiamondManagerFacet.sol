@@ -159,6 +159,10 @@ contract DiamondManagerFacet {
         season.rewardTokenBalance = _rewardTokenToDistribute;
     }
 
+    function getRewardTokenToDistribute(uint256 _seasonId) external view returns(uint256) {
+        return s.seasons[_seasonId].rewardTokensToDistribute;
+    }
+
     function claimTokensForSeason() external onlyOwner {
         IEmissionsManager(s.emissionsManager).mintLiquidMining();
         emit VapeClaimedForSeason(s.currentSeasonId);
