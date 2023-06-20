@@ -1,4 +1,4 @@
-name: Automate Claim - Manual
+name: Automate Claim - Scheduled
 
 on:
   schedule:
