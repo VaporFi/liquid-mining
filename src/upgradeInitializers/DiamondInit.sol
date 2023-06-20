@@ -118,11 +118,11 @@ contract DiamondInit {
         s.boostPercentFromTierToLevel[4][2] = 81; // 0.81%
         s.boostPercentFromTierToLevel[5][2] = 125; // 1.25%
         s.boostPercentFromTierToLevel[0][3] = 28; // 0.28%
-        s.boostPercentFromTierToLevel[1][3] = 33; // 0.33%
-        s.boostPercentFromTierToLevel[2][3] = 44; // 0.44%
-        s.boostPercentFromTierToLevel[3][3] = 60; // 0.60%
-        s.boostPercentFromTierToLevel[4][3] = 87; // 0.87%
-        s.boostPercentFromTierToLevel[5][3] = 135; // 1.35%
+        s.boostPercentFromTierToLevel[1][3] = 35; // 0.35%
+        s.boostPercentFromTierToLevel[2][3] = 47; // 0.47%
+        s.boostPercentFromTierToLevel[3][3] = 64; // 0.64%
+        s.boostPercentFromTierToLevel[4][3] = 94; // 0.94%
+        s.boostPercentFromTierToLevel[5][3] = 145; // 1.45%
 
         // MiningPassFacet
         /// @dev fee is paid in USDC
