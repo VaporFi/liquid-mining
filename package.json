@@ -57,5 +57,8 @@
     "*.ts": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "bottleneck": "^2.19.5"
   }
 }
