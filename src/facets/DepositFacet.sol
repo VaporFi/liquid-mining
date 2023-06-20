@@ -19,6 +19,8 @@ error DepositFacet__InvalidMiningPass();
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
 contract DepositFacet {
+    
+    /// @notice Ordering of the events are according to their relevance in the facet
     event Deposit(uint256 indexed seasonId, address indexed user, uint256 amount);
 
     AppStorage s;

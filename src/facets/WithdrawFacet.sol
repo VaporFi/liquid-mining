@@ -18,7 +18,9 @@ contract WithdrawFacet {
     //////////////
     /// EVENTS ///
     //////////////
-    event WithdrawUnlockedVPND(uint256 amount, address indexed to, uint256 seasonId);
+
+    /// @notice Ordering of the events are according to their relevance in the facet
+    event WithdrawUnlockedVPND(uint256 seasonId, address indexed to, uint256 amount);
 
     //////////////////////
     /// EXTERNAL LOGIC ///
@@ -42,6 +44,6 @@ contract WithdrawFacet {
         userData.unlockAmount = 0;
         userData.unlockTimestamp = 0;
         IERC20(s.depositToken).transfer(user, amount);
-        emit WithdrawUnlockedVPND(amount, user, seasonId);
+        emit WithdrawUnlockedVPND(seasonId, user, amount);
     }
 }
