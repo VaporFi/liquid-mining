@@ -20,7 +20,7 @@ contract WithdrawFacet {
     //////////////
 
     /// @notice Ordering of the events are according to their relevance in the facet
-    event WithdrawUnlockedVPND(uint256 seasonId, address indexed to, uint256 amount);
+    event WithdrawUnlockedVPND(uint256 indexed seasonId, address indexed to, uint256 amount);
 
     //////////////////////
     /// EXTERNAL LOGIC ///

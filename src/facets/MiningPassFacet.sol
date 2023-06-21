@@ -19,7 +19,7 @@ contract MiningPassFacet {
     AppStorage s;
 
     /// @notice Ordering of the events are according to their relevance in the facet
-    event MiningPassPurchase(uint256 seasonId, address indexed user, uint256 indexed tier, uint256 fee);
+    event MiningPassPurchase(uint256 indexed seasonId, address indexed user, uint256 indexed tier, uint256 fee);
 
     /// notice Purchase a mining pass
     /// @param _tier Tier of mining pass to purchase

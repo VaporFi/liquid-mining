@@ -15,7 +15,7 @@ error UnlockFacet__InvalidUnlock();
 
 contract UnlockFacet {
     /// @notice Ordering of the events are according to their relevance in the facet
-    event Unlocked(uint256 seasonId, address indexed user, uint256 amount, uint256 unlockFee);
+    event Unlocked(uint256 indexed seasonId, address indexed user, uint256 amount, uint256 unlockFee);
 
     AppStorage s;
     uint256 public constant COOLDOWN_PERIOD = 72 * 3600; // 72 Hours
