@@ -1,0 +1,4090 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "DepositFacet__FundsInPrevSeason",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DepositFacet__InvalidMiningPass",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DepositFacet__NotEnoughTokenBalance",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DepositFacet__ReentrancyGuard__ReentrantCall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DepositFacet__SeasonEnded",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "seasonId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deposit",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x608060405234801561001057600080fd5b5061072c806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063b6b55f2514610030575b600080fd5b61004361003e3660046105cb565b610045565b005b601d54600203610081576040517f50bf8f2300000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6002601d81905560195490546040517f70a0823100000000000000000000000000000000000000000000000000000000815233600482015273ffffffffffffffffffffffffffffffffffffffff9092169182906370a0823190602401602060405180830381865afa1580156100fa573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061011e91906105e4565b831115610157576040517f8dd4747600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600081815260056020818152604080842033808652908352818520600b8085528387205480885295855283872092875291845291852092529290911580159061019f57508254155b905060008180156101c357506000836006015411806101c35750600a83015460ff16155b60098501546000908152601860205260409020548554919250906101e890899061062c565b1115610220576040517fda9e267800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8015610258576040517f755a09de00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8115610265574260048501555b336000818152600b602052604081208790559081908190610287908290610397565b60ff169150915081156102a65760008181526009602052604090205492505b6102b18a89896104dc565b6040517f23b872dd000000000000000000000000000000000000000000000000000000008152336004820152306024820152604481018b905273ffffffffffffffffffffffffffffffffffffffff8a16906323b872dd906064016020604051808303816000875af115801561032a573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061034e9190610645565b506040518a8152339089907feaa18152488ce5959073c9c79c88ca90b3d96c00de1f118cfaad664c3dab06b99060200160405180910390a350506001601d555050505050505050565b601c8201546040517f773c02d400000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009283929116908290829063773c02d490602401602060405180830381865afa158015610411573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061043591906105e4565b905080156104d3576040517f53f96df2000000000000000000000000000000000000000000000000000000008152600481018290526001945073ffffffffffffffffffffffffffffffffffffffff8316906353f96df290602401602060405180830381865afa1580156104ac573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104d0919061066e565b92505b50509250929050565b60008281526004602052604090206002810154421115610528576040517f20c02df000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60006201518042836002015461053e9190610691565b61054891906106a4565b90508483600001600082825461055e919061062c565b9091555061056e905081866106df565b836002016000828254610581919061062c565b925050819055508482600501600082825461059c919061062c565b909155506105ac905081866106df565b8260070160008282546105bf919061062c565b90915550505050505050565b6000602082840312156105dd57600080fd5b5035919050565b6000602082840312156105f657600080fd5b5051919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b8082018082111561063f5761063f6105fd565b92915050565b60006020828403121561065757600080fd5b8151801515811461066757600080fd5b9392505050565b60006020828403121561068057600080fd5b815160ff8116811461066757600080fd5b8181038181111561063f5761063f6105fd565b6000826106da577f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b500490565b808202811582820484141761063f5761063f6105fd56fea26469706673582212200b874ee4d12332b25770119033d24c591a0d650150de3764dd092b4670e1528964736f6c63430008110033",
+    "sourceMap": "672:3187:31:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x608060405234801561001057600080fd5b506004361061002b5760003560e01c8063b6b55f2514610030575b600080fd5b61004361003e3660046105cb565b610045565b005b601d54600203610081576040517f50bf8f2300000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6002601d81905560195490546040517f70a0823100000000000000000000000000000000000000000000000000000000815233600482015273ffffffffffffffffffffffffffffffffffffffff9092169182906370a0823190602401602060405180830381865afa1580156100fa573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061011e91906105e4565b831115610157576040517f8dd4747600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600081815260056020818152604080842033808652908352818520600b8085528387205480885295855283872092875291845291852092529290911580159061019f57508254155b905060008180156101c357506000836006015411806101c35750600a83015460ff16155b60098501546000908152601860205260409020548554919250906101e890899061062c565b1115610220576040517fda9e267800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8015610258576040517f755a09de00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8115610265574260048501555b336000818152600b602052604081208790559081908190610287908290610397565b60ff169150915081156102a65760008181526009602052604090205492505b6102b18a89896104dc565b6040517f23b872dd000000000000000000000000000000000000000000000000000000008152336004820152306024820152604481018b905273ffffffffffffffffffffffffffffffffffffffff8a16906323b872dd906064016020604051808303816000875af115801561032a573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061034e9190610645565b506040518a8152339089907feaa18152488ce5959073c9c79c88ca90b3d96c00de1f118cfaad664c3dab06b99060200160405180910390a350506001601d555050505050505050565b601c8201546040517f773c02d400000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009283929116908290829063773c02d490602401602060405180830381865afa158015610411573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061043591906105e4565b905080156104d3576040517f53f96df2000000000000000000000000000000000000000000000000000000008152600481018290526001945073ffffffffffffffffffffffffffffffffffffffff8316906353f96df290602401602060405180830381865afa1580156104ac573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104d0919061066e565b92505b50509250929050565b60008281526004602052604090206002810154421115610528576040517f20c02df000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60006201518042836002015461053e9190610691565b61054891906106a4565b90508483600001600082825461055e919061062c565b9091555061056e905081866106df565b836002016000828254610581919061062c565b925050819055508482600501600082825461059c919061062c565b909155506105ac905081866106df565b8260070160008282546105bf919061062c565b90915550505050505050565b6000602082840312156105dd57600080fd5b5035919050565b6000602082840312156105f657600080fd5b5051919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b8082018082111561063f5761063f6105fd565b92915050565b60006020828403121561065757600080fd5b8151801515811461066757600080fd5b9392505050565b60006020828403121561068057600080fd5b815160ff8116811461066757600080fd5b8181038181111561063f5761063f6105fd565b6000826106da577f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b500490565b808202811582820484141761063f5761063f6105fd56fea26469706673582212200b874ee4d12332b25770119033d24c591a0d650150de3764dd092b4670e1528964736f6c63430008110033",
+    "sourceMap": "672:3187:31:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1208:1982;;;;;;:::i;:::-;;:::i;:::-;;;931:23;;958:1;931:28;927:87;;968:46;;;;;;;;;;;;;;927:87;1050:1;1024:23;:27;;;1304:14:::1;::::0;1356:17;;1415:35:::1;::::0;;;;1439:10:::1;1415:35;::::0;::::1;345:74:59::0;1304:14:31::1;::::0;;::::1;::::0;;;1415:23:::1;::::0;318:18:59;;1415:35:31::1;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;1405:7;:45;1401:120;;;1473:37;;;;;;;;;;;;;;1401:120;1531:42;1576:29:::0;;;:11:::1;:29;::::0;;;;;;;1606:10:::1;1576:41:::0;;;;;;;;;1693:23:::1;:35:::0;;;;;;;1681:48;;;;;;;;;:82;;;;;;;;;1800:35;;1576:41;1681:82;;1800:40;;::::1;::::0;:100:::1;;-1:-1:-1::0;1856:39:31;;:44;1800:100:::1;1774:126;;1911:24;1938:18;:173;;;;;2023:1;1973:34;:47;;;:51;:137;;;-1:-1:-1::0;2044:57:31::1;::::0;::::1;::::0;::::1;;:66;1973:137;2233:40;::::0;::::1;::::0;2202:1:::1;:72:::0;;;:30:::1;:72;::::0;;;;;2138:39;;1911:200;;-1:-1:-1;2202:72:31;2138:49:::1;::::0;2180:7;;2138:49:::1;:::i;:::-;:136;2121:229;;;2306:33;;;;;;;;;;;;;;2121:229;2364:19;2360:90;;;2406:33;;;;;;;;;;;;;;2360:90;2463:18;2459:165;;;2549:15;2497:49;::::0;::::1;:67:::0;2459:165:::1;2706:10;2651:17;2682:35:::0;;;:23:::1;:35;::::0;;;;:54;;;2651:17;;;;;2791:39:::1;::::0;2651:17;;2791:24:::1;:39::i;:::-;2747:83;;;;;;2844:20;2840:108;;;2892:1;:45:::0;;;:39:::1;:45;::::0;;;;;;-1:-1:-1;2840:108:31::1;2958:66;2971:7;2980:16;2998:25;2958:12;:66::i;:::-;3059:62;::::0;;;;3086:10:::1;3059:62;::::0;::::1;1201:34:59::0;3106:4:31::1;1251:18:59::0;;;1244:43;1303:18;;;1296:34;;;3059:26:31::1;::::0;::::1;::::0;::::1;::::0;1113:18:59;;3059:62:31::1;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;-1:-1:-1::0;3137:46:31::1;::::0;1769:25:59;;;3163:10:31::1;::::0;3145:16;;3137:46:::1;::::0;1757:2:59;1742:18;3137:46:31::1;;;;;;;-1:-1:-1::0;;1098:1:31;1072:23;:27;-1:-1:-1;;;;;;;;1208:1982:31:o;505:419:47:-;703:21;;;;754:33;;;;;703:21;363:55:59;;;754:33:47;;;345:74:59;610:25:47;;;;703:21;;;610:25;;703:21;;754:23;;318:18:59;;754:33:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;735:52;-1:-1:-1;801:12:47;;797:121;;877:30;;;;;;;;1769:25:59;;;852:4:47;;-1:-1:-1;877:20:47;;;;;;1742:18:59;;877:30:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;870:37;;797:121;649:275;;505:419;;;;;:::o;3280:577:31:-;3385:22;3410:20;;;:9;:20;;;;;3462;;;;3444:15;:38;3440:103;;;3505:27;;;;;;;;;;;;;;3440:103;3552:27;3625:6;3606:15;3583:7;:20;;;:38;;;;:::i;:::-;3582:49;;;;:::i;:::-;3552:79;;3668:7;3641:9;:23;;;:34;;;;;;;:::i;:::-;;;;-1:-1:-1;3712:29:31;;-1:-1:-1;3722:19:31;3712:7;:29;:::i;:::-;3685:9;:23;;;:56;;;;;;;:::i;:::-;;;;;;;;3781:7;3751;:26;;;:37;;;;;;;:::i;:::-;;;;-1:-1:-1;3821:29:31;;-1:-1:-1;3831:19:31;3821:7;:29;:::i;:::-;3798:7;:19;;;:52;;;;;;;:::i;:::-;;;;-1:-1:-1;;;;;;;3280:577:31:o;14:180:59:-;73:6;126:2;114:9;105:7;101:23;97:32;94:52;;;142:1;139;132:12;94:52;-1:-1:-1;165:23:59;;14:180;-1:-1:-1;14:180:59:o;430:184::-;500:6;553:2;541:9;532:7;528:23;524:32;521:52;;;569:1;566;559:12;521:52;-1:-1:-1;592:16:59;;430:184;-1:-1:-1;430:184:59:o;619:::-;671:77;668:1;661:88;768:4;765:1;758:15;792:4;789:1;782:15;808:125;873:9;;;894:10;;;891:36;;;907:18;;:::i;:::-;808:125;;;;:::o;1341:277::-;1408:6;1461:2;1449:9;1440:7;1436:23;1432:32;1429:52;;;1477:1;1474;1467:12;1429:52;1509:9;1503:16;1562:5;1555:13;1548:21;1541:5;1538:32;1528:60;;1584:1;1581;1574:12;1528:60;1607:5;1341:277;-1:-1:-1;;;1341:277:59:o;1805:273::-;1873:6;1926:2;1914:9;1905:7;1901:23;1897:32;1894:52;;;1942:1;1939;1932:12;1894:52;1974:9;1968:16;2024:4;2017:5;2013:16;2006:5;2003:27;1993:55;;2044:1;2041;2034:12;2083:128;2150:9;;;2171:11;;;2168:37;;;2185:18;;:::i;2216:274::-;2256:1;2282;2272:189;;2317:77;2314:1;2307:88;2418:4;2415:1;2408:15;2446:4;2443:1;2436:15;2272:189;-1:-1:-1;2475:9:59;;2216:274::o;2495:168::-;2568:9;;;2599;;2616:15;;;2610:22;;2596:37;2586:71;;2637:18;;:::i",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "deposit(uint256)": "b6b55f25"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"DepositFacet__FundsInPrevSeason\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DepositFacet__InvalidMiningPass\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DepositFacet__NotEnoughTokenBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DepositFacet__ReentrancyGuard__ReentrantCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DepositFacet__SeasonEnded\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"seasonId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Deposit\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'\",\"kind\":\"dev\",\"methods\":{\"deposit(uint256)\":{\"params\":{\"_amount\":\"Amount of token to deposit\"}}},\"title\":\"DepositFacet\",\"version\":1},\"userdoc\":{\"events\":{\"Deposit(uint256,address,uint256)\":{\"notice\":\"Ordering of the events are according to their relevance in the facet\"}},\"kind\":\"user\",\"methods\":{\"deposit(uint256)\":{\"notice\":\"Deposit token to the contract\"}},\"notice\":\"Facet in charge of depositing VPND tokens\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/facets/DepositFacet.sol\":\"DepositFacet\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":1000000},\"remappings\":[\":clouds/=lib/clouds/src/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat-deploy/=node_modules/hardhat-deploy/\",\":hardhat/=node_modules/hardhat/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":solmate/=lib/solmate/src/\"]},\"sources\":{\"lib/clouds/src/diamond/LDiamond.sol\":{\"keccak256\":\"0xd0ab4069c2fc4da721d1525f1ff78be96cdb3339c5e7f19a3541157e86a5fb32\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://71f9e1d94d81f9326e444bf72347758f5805ea987484acfd910b6d3d834a0779\",\"dweb:/ipfs/QmQGuYfQfKJw9Uz25tq8uVe9yT65PJbgUSTmucaXDxdgML\"]},\"lib/clouds/src/interfaces/IDiamondCut.sol\":{\"keccak256\":\"0x01135c8025e05a654cf1c25f720d283622917b312b17d280968a6d97d8478dd1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://696392213dbccdb5d4857bd45a2b1225d1f98c776ec0e32a7855c7ec04b1b3d7\",\"dweb:/ipfs/QmWPXAmJ3MPrUeFqt2TPStL1AHqjgdGd54sucx6b4iN14C\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x00c839ff53d07d19db2e7cfa1e5133f9ee90a8d64b0e2e57f50446a2d1a3a0e0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3dac621d015a68a5251b1e5d41dda0faf252699bf6e8bcf46a958b29964d9dd1\",\"dweb:/ipfs/QmP9axjgZv4cezAhALoTemM62sdLtMDJ9MGTxECnNwHgSJ\"]},\"src/facets/DepositFacet.sol\":{\"keccak256\":\"0xf145d6326cf45e24006440f180feae7334850307830b9287f6ddb953546a23c6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9c2292f0fe4dfe11b9e9c0b0b04a9fb161e1a6395e29b5f6e57dd39c2b99fada\",\"dweb:/ipfs/QmSfUtoXYJLSAnbQTUjHsgatWu2JvWqruw7DPMizj5kBoN\"]},\"src/interfaces/IStratosphere.sol\":{\"keccak256\":\"0x26ad5c6ecd19227a5a972fe5a08c2a0251191f6bf5cc234141848a9cbed9e648\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://660c2cbc7d445a87204b5a9e6cfdecf9c94e9d2aa0296af1bc15d82048d2faab\",\"dweb:/ipfs/QmTkmJjL6o1DhqPe34F9PkcFMpousarMk2HWHuBaiusqyn\"]},\"src/libraries/AppStorage.sol\":{\"keccak256\":\"0xfbb44a704f1fbcf5c7030e85136a4625c73092556a47b658fc5c311819041f19\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cd9adc8b0966123329e6a1df21e05e7bf9ece4f80d3b99f907ee2631bc60ede6\",\"dweb:/ipfs/QmaAyV7bZ7dmUgHHgSN8qUvMZwxwNw366AJqvVHZbcDKsD\"]},\"src/libraries/LPercentages.sol\":{\"keccak256\":\"0x3c2ee21d5c8098cfb442bd9176845fdfb0615e599d1dbb6bda145e833480d772\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://afbcdc374a2ce011eee5242cb2f60e6e525034109ab845ac2a37548eae8ab60f\",\"dweb:/ipfs/QmQnRQ2jvMbjGgVZByVywS4qNboLjE8ruFm6LL5gnG9j8N\"]},\"src/libraries/LStratosphere.sol\":{\"keccak256\":\"0x9de3e81be908bc5054d10b9b0ae0a0b569b395e6ee25b35661b1c97444ed5dd1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1a8802f6e7340a3761dffa61d3d63e636a9338cc9c70052df03df2ee18a0f5f3\",\"dweb:/ipfs/QmZQB1q3gqhGQnKiJFC7GzA9v4sfch7nbUoyUQt9pp4Ffv\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "DepositFacet__FundsInPrevSeason"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "DepositFacet__InvalidMiningPass"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "DepositFacet__NotEnoughTokenBalance"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "DepositFacet__ReentrancyGuard__ReentrantCall"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "DepositFacet__SeasonEnded"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "seasonId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Deposit",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "deposit"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "deposit(uint256)": {
+            "params": {
+              "_amount": "Amount of token to deposit"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "deposit(uint256)": {
+            "notice": "Deposit token to the contract"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":clouds/=lib/clouds/src/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat-deploy/=node_modules/hardhat-deploy/",
+        ":hardhat/=node_modules/hardhat/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+        ":openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        ":solmate/=lib/solmate/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 1000000
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/facets/DepositFacet.sol": "DepositFacet"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "lib/clouds/src/diamond/LDiamond.sol": {
+        "keccak256": "0xd0ab4069c2fc4da721d1525f1ff78be96cdb3339c5e7f19a3541157e86a5fb32",
+        "urls": [
+          "bzz-raw://71f9e1d94d81f9326e444bf72347758f5805ea987484acfd910b6d3d834a0779",
+          "dweb:/ipfs/QmQGuYfQfKJw9Uz25tq8uVe9yT65PJbgUSTmucaXDxdgML"
+        ],
+        "license": "MIT"
+      },
+      "lib/clouds/src/interfaces/IDiamondCut.sol": {
+        "keccak256": "0x01135c8025e05a654cf1c25f720d283622917b312b17d280968a6d97d8478dd1",
+        "urls": [
+          "bzz-raw://696392213dbccdb5d4857bd45a2b1225d1f98c776ec0e32a7855c7ec04b1b3d7",
+          "dweb:/ipfs/QmWPXAmJ3MPrUeFqt2TPStL1AHqjgdGd54sucx6b4iN14C"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+        "keccak256": "0x00c839ff53d07d19db2e7cfa1e5133f9ee90a8d64b0e2e57f50446a2d1a3a0e0",
+        "urls": [
+          "bzz-raw://3dac621d015a68a5251b1e5d41dda0faf252699bf6e8bcf46a958b29964d9dd1",
+          "dweb:/ipfs/QmP9axjgZv4cezAhALoTemM62sdLtMDJ9MGTxECnNwHgSJ"
+        ],
+        "license": "MIT"
+      },
+      "src/facets/DepositFacet.sol": {
+        "keccak256": "0xf145d6326cf45e24006440f180feae7334850307830b9287f6ddb953546a23c6",
+        "urls": [
+          "bzz-raw://9c2292f0fe4dfe11b9e9c0b0b04a9fb161e1a6395e29b5f6e57dd39c2b99fada",
+          "dweb:/ipfs/QmSfUtoXYJLSAnbQTUjHsgatWu2JvWqruw7DPMizj5kBoN"
+        ],
+        "license": "MIT"
+      },
+      "src/interfaces/IStratosphere.sol": {
+        "keccak256": "0x26ad5c6ecd19227a5a972fe5a08c2a0251191f6bf5cc234141848a9cbed9e648",
+        "urls": [
+          "bzz-raw://660c2cbc7d445a87204b5a9e6cfdecf9c94e9d2aa0296af1bc15d82048d2faab",
+          "dweb:/ipfs/QmTkmJjL6o1DhqPe34F9PkcFMpousarMk2HWHuBaiusqyn"
+        ],
+        "license": "MIT"
+      },
+      "src/libraries/AppStorage.sol": {
+        "keccak256": "0xfbb44a704f1fbcf5c7030e85136a4625c73092556a47b658fc5c311819041f19",
+        "urls": [
+          "bzz-raw://cd9adc8b0966123329e6a1df21e05e7bf9ece4f80d3b99f907ee2631bc60ede6",
+          "dweb:/ipfs/QmaAyV7bZ7dmUgHHgSN8qUvMZwxwNw366AJqvVHZbcDKsD"
+        ],
+        "license": "MIT"
+      },
+      "src/libraries/LPercentages.sol": {
+        "keccak256": "0x3c2ee21d5c8098cfb442bd9176845fdfb0615e599d1dbb6bda145e833480d772",
+        "urls": [
+          "bzz-raw://afbcdc374a2ce011eee5242cb2f60e6e525034109ab845ac2a37548eae8ab60f",
+          "dweb:/ipfs/QmQnRQ2jvMbjGgVZByVywS4qNboLjE8ruFm6LL5gnG9j8N"
+        ],
+        "license": "MIT"
+      },
+      "src/libraries/LStratosphere.sol": {
+        "keccak256": "0x9de3e81be908bc5054d10b9b0ae0a0b569b395e6ee25b35661b1c97444ed5dd1",
+        "urls": [
+          "bzz-raw://1a8802f6e7340a3761dffa61d3d63e636a9338cc9c70052df03df2ee18a0f5f3",
+          "dweb:/ipfs/QmZQB1q3gqhGQnKiJFC7GzA9v4sfch7nbUoyUQt9pp4Ffv"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/facets/DepositFacet.sol",
+    "id": 31285,
+    "exportedSymbols": {
+      "AppStorage": [
+        33814
+      ],
+      "DepositFacet": [
+        31284
+      ],
+      "DepositFacet__FundsInPrevSeason": [
+        30995
+      ],
+      "DepositFacet__InvalidMiningPass": [
+        30997
+      ],
+      "DepositFacet__NotEnoughTokenBalance": [
+        30989
+      ],
+      "DepositFacet__ReentrancyGuard__ReentrantCall": [
+        30991
+      ],
+      "DepositFacet__SeasonEnded": [
+        30993
+      ],
+      "IDiamondCut": [
+        892
+      ],
+      "IERC20": [
+        30146
+      ],
+      "IStratosphere": [
+        33656
+      ],
+      "LDiamond": [
+        852
+      ],
+      "LDiamond__AddressMustBeZero": [
+        4
+      ],
+      "LDiamond__FunctionAlreadyExists": [
+        6
+      ],
+      "LDiamond__ImmutableFunction": [
+        8
+      ],
+      "LDiamond__IncorrectAction": [
+        10
+      ],
+      "LDiamond__InexistentFacetCode": [
+        12
+      ],
+      "LDiamond__InexistentFunction": [
+        14
+      ],
+      "LDiamond__InitializationFailed": [
+        20
+      ],
+      "LDiamond__InvalidAddressZero": [
+        22
+      ],
+      "LDiamond__InvalidReplacementWithSameFunction": [
+        24
+      ],
+      "LDiamond__NoSelectors": [
+        26
+      ],
+      "LDiamond__OnlyOwner": [
+        28
+      ],
+      "LPercentages": [
+        33886
+      ],
+      "LStratosphere": [
+        33937
+      ],
+      "Season": [
+        33675
+      ],
+      "UserData": [
+        33698
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:3828:31",
+    "nodes": [
+      {
+        "id": 30981,
+        "nodeType": "PragmaDirective",
+        "src": "32:24:31",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".17"
+        ]
+      },
+      {
+        "id": 30982,
+        "nodeType": "ImportDirective",
+        "src": "58:37:31",
+        "nodes": [],
+        "absolutePath": "lib/clouds/src/diamond/LDiamond.sol",
+        "file": "clouds/diamond/LDiamond.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 31285,
+        "sourceUnit": 853,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 30983,
+        "nodeType": "ImportDirective",
+        "src": "96:55:31",
+        "nodes": [],
+        "absolutePath": "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "file": "openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 31285,
+        "sourceUnit": 30147,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 30984,
+        "nodeType": "ImportDirective",
+        "src": "153:37:31",
+        "nodes": [],
+        "absolutePath": "src/libraries/AppStorage.sol",
+        "file": "../libraries/AppStorage.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 31285,
+        "sourceUnit": 33815,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 30985,
+        "nodeType": "ImportDirective",
+        "src": "191:39:31",
+        "nodes": [],
+        "absolutePath": "src/libraries/LPercentages.sol",
+        "file": "../libraries/LPercentages.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 31285,
+        "sourceUnit": 33887,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 30986,
+        "nodeType": "ImportDirective",
+        "src": "231:41:31",
+        "nodes": [],
+        "absolutePath": "src/interfaces/IStratosphere.sol",
+        "file": "../interfaces/IStratosphere.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 31285,
+        "sourceUnit": 33657,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 30987,
+        "nodeType": "ImportDirective",
+        "src": "273:40:31",
+        "nodes": [],
+        "absolutePath": "src/libraries/LStratosphere.sol",
+        "file": "../libraries/LStratosphere.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 31285,
+        "sourceUnit": 33938,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 30989,
+        "nodeType": "ErrorDefinition",
+        "src": "315:44:31",
+        "nodes": [],
+        "errorSelector": "8dd47476",
+        "name": "DepositFacet__NotEnoughTokenBalance",
+        "nameLocation": "321:35:31",
+        "parameters": {
+          "id": 30988,
+          "nodeType": "ParameterList",
+          "parameters": [],
+          "src": "356:2:31"
+        }
+      },
+      {
+        "id": 30991,
+        "nodeType": "ErrorDefinition",
+        "src": "360:53:31",
+        "nodes": [],
+        "errorSelector": "50bf8f23",
+        "name": "DepositFacet__ReentrancyGuard__ReentrantCall",
+        "nameLocation": "366:44:31",
+        "parameters": {
+          "id": 30990,
+          "nodeType": "ParameterList",
+          "parameters": [],
+          "src": "410:2:31"
+        }
+      },
+      {
+        "id": 30993,
+        "nodeType": "ErrorDefinition",
+        "src": "414:34:31",
+        "nodes": [],
+        "errorSelector": "20c02df0",
+        "name": "DepositFacet__SeasonEnded",
+        "nameLocation": "420:25:31",
+        "parameters": {
+          "id": 30992,
+          "nodeType": "ParameterList",
+          "parameters": [],
+          "src": "445:2:31"
+        }
+      },
+      {
+        "id": 30995,
+        "nodeType": "ErrorDefinition",
+        "src": "449:40:31",
+        "nodes": [],
+        "errorSelector": "755a09de",
+        "name": "DepositFacet__FundsInPrevSeason",
+        "nameLocation": "455:31:31",
+        "parameters": {
+          "id": 30994,
+          "nodeType": "ParameterList",
+          "parameters": [],
+          "src": "486:2:31"
+        }
+      },
+      {
+        "id": 30997,
+        "nodeType": "ErrorDefinition",
+        "src": "490:40:31",
+        "nodes": [],
+        "errorSelector": "da9e2678",
+        "name": "DepositFacet__InvalidMiningPass",
+        "nameLocation": "496:31:31",
+        "parameters": {
+          "id": 30996,
+          "nodeType": "ParameterList",
+          "parameters": [],
+          "src": "527:2:31"
+        }
+      },
+      {
+        "id": 31284,
+        "nodeType": "ContractDefinition",
+        "src": "672:3187:31",
+        "nodes": [
+          {
+            "id": 31007,
+            "nodeType": "EventDefinition",
+            "src": "790:78:31",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 30999,
+              "nodeType": "StructuredDocumentation",
+              "src": "705:80:31",
+              "text": "@notice Ordering of the events are according to their relevance in the facet"
+            },
+            "eventSelector": "eaa18152488ce5959073c9c79c88ca90b3d96c00de1f118cfaad664c3dab06b9",
+            "name": "Deposit",
+            "nameLocation": "796:7:31",
+            "parameters": {
+              "id": 31006,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 31001,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "seasonId",
+                  "nameLocation": "820:8:31",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31007,
+                  "src": "804:24:31",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 31000,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "804:7:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31003,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "846:4:31",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31007,
+                  "src": "830:20:31",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 31002,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "830:7:31",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31005,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nameLocation": "860:6:31",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31007,
+                  "src": "852:14:31",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 31004,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "852:7:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "803:64:31"
+            }
+          },
+          {
+            "id": 31010,
+            "nodeType": "VariableDeclaration",
+            "src": "874:12:31",
+            "nodes": [],
+            "constant": false,
+            "mutability": "mutable",
+            "name": "s",
+            "nameLocation": "885:1:31",
+            "scope": 31284,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+              "typeString": "struct AppStorage"
+            },
+            "typeName": {
+              "id": 31009,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 31008,
+                "name": "AppStorage",
+                "nameLocations": [
+                  "874:10:31"
+                ],
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 33814,
+                "src": "874:10:31"
+              },
+              "referencedDeclaration": 33814,
+              "src": "874:10:31",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_AppStorage_$33814_storage_ptr",
+                "typeString": "struct AppStorage"
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "id": 31034,
+            "nodeType": "ModifierDefinition",
+            "src": "893:213:31",
+            "nodes": [],
+            "body": {
+              "id": 31033,
+              "nodeType": "Block",
+              "src": "917:189:31",
+              "nodes": [],
+              "statements": [
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 31015,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "expression": {
+                        "id": 31012,
+                        "name": "s",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31010,
+                        "src": "931:1:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                          "typeString": "struct AppStorage storage ref"
+                        }
+                      },
+                      "id": 31013,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "933:21:31",
+                      "memberName": "reentrancyGuardStatus",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33811,
+                      "src": "931:23:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "hexValue": "32",
+                      "id": 31014,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "958:1:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_2_by_1",
+                        "typeString": "int_const 2"
+                      },
+                      "value": "2"
+                    },
+                    "src": "931:28:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31019,
+                  "nodeType": "IfStatement",
+                  "src": "927:87:31",
+                  "trueBody": {
+                    "errorCall": {
+                      "arguments": [],
+                      "expression": {
+                        "argumentTypes": [],
+                        "id": 31016,
+                        "name": "DepositFacet__ReentrancyGuard__ReentrantCall",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 30991,
+                        "src": "968:44:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_error_pure$__$returns$__$",
+                          "typeString": "function () pure"
+                        }
+                      },
+                      "id": 31017,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "nameLocations": [],
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "968:46:31",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$__$",
+                        "typeString": "tuple()"
+                      }
+                    },
+                    "id": 31018,
+                    "nodeType": "RevertStatement",
+                    "src": "961:53:31"
+                  }
+                },
+                {
+                  "expression": {
+                    "id": 31024,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 31020,
+                        "name": "s",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31010,
+                        "src": "1024:1:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                          "typeString": "struct AppStorage storage ref"
+                        }
+                      },
+                      "id": 31022,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "1026:21:31",
+                      "memberName": "reentrancyGuardStatus",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33811,
+                      "src": "1024:23:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "32",
+                      "id": 31023,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1050:1:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_2_by_1",
+                        "typeString": "int_const 2"
+                      },
+                      "value": "2"
+                    },
+                    "src": "1024:27:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 31025,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1024:27:31"
+                },
+                {
+                  "id": 31026,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1061:1:31"
+                },
+                {
+                  "expression": {
+                    "id": 31031,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 31027,
+                        "name": "s",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31010,
+                        "src": "1072:1:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                          "typeString": "struct AppStorage storage ref"
+                        }
+                      },
+                      "id": 31029,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "1074:21:31",
+                      "memberName": "reentrancyGuardStatus",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33811,
+                      "src": "1072:23:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "31",
+                      "id": 31030,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1098:1:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_1_by_1",
+                        "typeString": "int_const 1"
+                      },
+                      "value": "1"
+                    },
+                    "src": "1072:27:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 31032,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1072:27:31"
+                }
+              ]
+            },
+            "name": "nonReentrant",
+            "nameLocation": "902:12:31",
+            "parameters": {
+              "id": 31011,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "914:2:31"
+            },
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "id": 31214,
+            "nodeType": "FunctionDefinition",
+            "src": "1208:1982:31",
+            "nodes": [],
+            "body": {
+              "id": 31213,
+              "nodeType": "Block",
+              "src": "1264:1926:31",
+              "nodes": [],
+              "statements": [
+                {
+                  "assignments": [
+                    31044
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31044,
+                      "mutability": "mutable",
+                      "name": "_depositToken",
+                      "nameLocation": "1281:13:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "1274:20:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IERC20_$30146",
+                        "typeString": "contract IERC20"
+                      },
+                      "typeName": {
+                        "id": 31043,
+                        "nodeType": "UserDefinedTypeName",
+                        "pathNode": {
+                          "id": 31042,
+                          "name": "IERC20",
+                          "nameLocations": [
+                            "1274:6:31"
+                          ],
+                          "nodeType": "IdentifierPath",
+                          "referencedDeclaration": 30146,
+                          "src": "1274:6:31"
+                        },
+                        "referencedDeclaration": 30146,
+                        "src": "1274:6:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_IERC20_$30146",
+                          "typeString": "contract IERC20"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31049,
+                  "initialValue": {
+                    "arguments": [
+                      {
+                        "expression": {
+                          "id": 31046,
+                          "name": "s",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31010,
+                          "src": "1304:1:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                            "typeString": "struct AppStorage storage ref"
+                          }
+                        },
+                        "id": 31047,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "1306:12:31",
+                        "memberName": "depositToken",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33803,
+                        "src": "1304:14:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 31045,
+                      "name": "IERC20",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 30146,
+                      "src": "1297:6:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_contract$_IERC20_$30146_$",
+                        "typeString": "type(contract IERC20)"
+                      }
+                    },
+                    "id": 31048,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "typeConversion",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1297:22:31",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IERC20_$30146",
+                      "typeString": "contract IERC20"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1274:45:31"
+                },
+                {
+                  "assignments": [
+                    31051
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31051,
+                      "mutability": "mutable",
+                      "name": "_currentSeasonId",
+                      "nameLocation": "1337:16:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "1329:24:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 31050,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1329:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31054,
+                  "initialValue": {
+                    "expression": {
+                      "id": 31052,
+                      "name": "s",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31010,
+                      "src": "1356:1:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                        "typeString": "struct AppStorage storage ref"
+                      }
+                    },
+                    "id": 31053,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberLocation": "1358:15:31",
+                    "memberName": "currentSeasonId",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 33709,
+                    "src": "1356:17:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1329:44:31"
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 31061,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "id": 31055,
+                      "name": "_amount",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31037,
+                      "src": "1405:7:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">",
+                    "rightExpression": {
+                      "arguments": [
+                        {
+                          "expression": {
+                            "id": 31058,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": -15,
+                            "src": "1439:3:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 31059,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "1443:6:31",
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "src": "1439:10:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "expression": {
+                          "id": 31056,
+                          "name": "_depositToken",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31044,
+                          "src": "1415:13:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_IERC20_$30146",
+                            "typeString": "contract IERC20"
+                          }
+                        },
+                        "id": 31057,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "1429:9:31",
+                        "memberName": "balanceOf",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 30103,
+                        "src": "1415:23:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
+                          "typeString": "function (address) view external returns (uint256)"
+                        }
+                      },
+                      "id": 31060,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "nameLocations": [],
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1415:35:31",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1405:45:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31066,
+                  "nodeType": "IfStatement",
+                  "src": "1401:120:31",
+                  "trueBody": {
+                    "id": 31065,
+                    "nodeType": "Block",
+                    "src": "1452:69:31",
+                    "statements": [
+                      {
+                        "errorCall": {
+                          "arguments": [],
+                          "expression": {
+                            "argumentTypes": [],
+                            "id": 31062,
+                            "name": "DepositFacet__NotEnoughTokenBalance",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 30989,
+                            "src": "1473:35:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_error_pure$__$returns$__$",
+                              "typeString": "function () pure"
+                            }
+                          },
+                          "id": 31063,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "nameLocations": [],
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1473:37:31",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 31064,
+                        "nodeType": "RevertStatement",
+                        "src": "1466:44:31"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "assignments": [
+                    31069
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31069,
+                      "mutability": "mutable",
+                      "name": "_userDataForCurrentSeason",
+                      "nameLocation": "1548:25:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "1531:42:31",
+                      "stateVariable": false,
+                      "storageLocation": "storage",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                        "typeString": "struct UserData"
+                      },
+                      "typeName": {
+                        "id": 31068,
+                        "nodeType": "UserDefinedTypeName",
+                        "pathNode": {
+                          "id": 31067,
+                          "name": "UserData",
+                          "nameLocations": [
+                            "1531:8:31"
+                          ],
+                          "nodeType": "IdentifierPath",
+                          "referencedDeclaration": 33698,
+                          "src": "1531:8:31"
+                        },
+                        "referencedDeclaration": 33698,
+                        "src": "1531:8:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                          "typeString": "struct UserData"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31077,
+                  "initialValue": {
+                    "baseExpression": {
+                      "baseExpression": {
+                        "expression": {
+                          "id": 31070,
+                          "name": "s",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31010,
+                          "src": "1576:1:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                            "typeString": "struct AppStorage storage ref"
+                          }
+                        },
+                        "id": 31071,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "1578:9:31",
+                        "memberName": "usersData",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33723,
+                        "src": "1576:11:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_mapping$_t_address_$_t_struct$_UserData_$33698_storage_$_$",
+                          "typeString": "mapping(uint256 => mapping(address => struct UserData storage ref))"
+                        }
+                      },
+                      "id": 31073,
+                      "indexExpression": {
+                        "id": 31072,
+                        "name": "_currentSeasonId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31051,
+                        "src": "1588:16:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1576:29:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_UserData_$33698_storage_$",
+                        "typeString": "mapping(address => struct UserData storage ref)"
+                      }
+                    },
+                    "id": 31076,
+                    "indexExpression": {
+                      "expression": {
+                        "id": 31074,
+                        "name": "msg",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": -15,
+                        "src": "1606:3:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_message",
+                          "typeString": "msg"
+                        }
+                      },
+                      "id": 31075,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "1610:6:31",
+                      "memberName": "sender",
+                      "nodeType": "MemberAccess",
+                      "src": "1606:10:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1576:41:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_UserData_$33698_storage",
+                      "typeString": "struct UserData storage ref"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1531:86:31"
+                },
+                {
+                  "assignments": [
+                    31080
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31080,
+                      "mutability": "mutable",
+                      "name": "_userDataForLastSeasonParticipated",
+                      "nameLocation": "1644:34:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "1627:51:31",
+                      "stateVariable": false,
+                      "storageLocation": "storage",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                        "typeString": "struct UserData"
+                      },
+                      "typeName": {
+                        "id": 31079,
+                        "nodeType": "UserDefinedTypeName",
+                        "pathNode": {
+                          "id": 31078,
+                          "name": "UserData",
+                          "nameLocations": [
+                            "1627:8:31"
+                          ],
+                          "nodeType": "IdentifierPath",
+                          "referencedDeclaration": 33698,
+                          "src": "1627:8:31"
+                        },
+                        "referencedDeclaration": 33698,
+                        "src": "1627:8:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                          "typeString": "struct UserData"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31092,
+                  "initialValue": {
+                    "baseExpression": {
+                      "baseExpression": {
+                        "expression": {
+                          "id": 31081,
+                          "name": "s",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31010,
+                          "src": "1681:1:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                            "typeString": "struct AppStorage storage ref"
+                          }
+                        },
+                        "id": 31082,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "1683:9:31",
+                        "memberName": "usersData",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33723,
+                        "src": "1681:11:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_mapping$_t_address_$_t_struct$_UserData_$33698_storage_$_$",
+                          "typeString": "mapping(uint256 => mapping(address => struct UserData storage ref))"
+                        }
+                      },
+                      "id": 31088,
+                      "indexExpression": {
+                        "baseExpression": {
+                          "expression": {
+                            "id": 31083,
+                            "name": "s",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 31010,
+                            "src": "1693:1:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                              "typeString": "struct AppStorage storage ref"
+                            }
+                          },
+                          "id": 31084,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "1695:21:31",
+                          "memberName": "addressToLastSeasonId",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 33746,
+                          "src": "1693:23:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                            "typeString": "mapping(address => uint256)"
+                          }
+                        },
+                        "id": 31087,
+                        "indexExpression": {
+                          "expression": {
+                            "id": 31085,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": -15,
+                            "src": "1717:3:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 31086,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "1721:6:31",
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "src": "1717:10:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1693:35:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1681:48:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_UserData_$33698_storage_$",
+                        "typeString": "mapping(address => struct UserData storage ref)"
+                      }
+                    },
+                    "id": 31091,
+                    "indexExpression": {
+                      "expression": {
+                        "id": 31089,
+                        "name": "msg",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": -15,
+                        "src": "1743:3:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_message",
+                          "typeString": "msg"
+                        }
+                      },
+                      "id": 31090,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "1747:6:31",
+                      "memberName": "sender",
+                      "nodeType": "MemberAccess",
+                      "src": "1743:10:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1681:82:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_UserData_$33698_storage",
+                      "typeString": "struct UserData storage ref"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1627:136:31"
+                },
+                {
+                  "assignments": [
+                    31094
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31094,
+                      "mutability": "mutable",
+                      "name": "isNewSeasonForUser",
+                      "nameLocation": "1779:18:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "1774:23:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "typeName": {
+                        "id": 31093,
+                        "name": "bool",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1774:4:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31107,
+                  "initialValue": {
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 31106,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 31101,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "baseExpression": {
+                          "expression": {
+                            "id": 31095,
+                            "name": "s",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 31010,
+                            "src": "1800:1:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                              "typeString": "struct AppStorage storage ref"
+                            }
+                          },
+                          "id": 31096,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "1802:21:31",
+                          "memberName": "addressToLastSeasonId",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 33746,
+                          "src": "1800:23:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                            "typeString": "mapping(address => uint256)"
+                          }
+                        },
+                        "id": 31099,
+                        "indexExpression": {
+                          "expression": {
+                            "id": 31097,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": -15,
+                            "src": "1824:3:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 31098,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "1828:6:31",
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "src": "1824:10:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1800:35:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "!=",
+                      "rightExpression": {
+                        "hexValue": "30",
+                        "id": 31100,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1839:1:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_0_by_1",
+                          "typeString": "int_const 0"
+                        },
+                        "value": "0"
+                      },
+                      "src": "1800:40:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "&&",
+                    "rightExpression": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 31105,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "expression": {
+                          "id": 31102,
+                          "name": "_userDataForCurrentSeason",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31069,
+                          "src": "1856:25:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                            "typeString": "struct UserData storage pointer"
+                          }
+                        },
+                        "id": 31103,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "1882:13:31",
+                        "memberName": "depositAmount",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33677,
+                        "src": "1856:39:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "==",
+                      "rightExpression": {
+                        "hexValue": "30",
+                        "id": 31104,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1899:1:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_0_by_1",
+                          "typeString": "int_const 0"
+                        },
+                        "value": "0"
+                      },
+                      "src": "1856:44:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "src": "1800:100:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1774:126:31"
+                },
+                {
+                  "assignments": [
+                    31109
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31109,
+                      "mutability": "mutable",
+                      "name": "isFundsInPrevSeason",
+                      "nameLocation": "1916:19:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "1911:24:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "typeName": {
+                        "id": 31108,
+                        "name": "bool",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1911:4:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31122,
+                  "initialValue": {
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 31121,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "id": 31110,
+                      "name": "isNewSeasonForUser",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31094,
+                      "src": "1938:18:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "&&",
+                    "rightExpression": {
+                      "components": [
+                        {
+                          "commonType": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          },
+                          "id": 31119,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftExpression": {
+                            "commonType": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            },
+                            "id": 31114,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "leftExpression": {
+                              "expression": {
+                                "id": 31111,
+                                "name": "_userDataForLastSeasonParticipated",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 31080,
+                                "src": "1973:34:31",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                                  "typeString": "struct UserData storage pointer"
+                                }
+                              },
+                              "id": 31112,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "memberLocation": "2008:12:31",
+                              "memberName": "unlockAmount",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 33689,
+                              "src": "1973:47:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "nodeType": "BinaryOperation",
+                            "operator": ">",
+                            "rightExpression": {
+                              "hexValue": "30",
+                              "id": 31113,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "2023:1:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0"
+                            },
+                            "src": "1973:51:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bool",
+                              "typeString": "bool"
+                            }
+                          },
+                          "nodeType": "BinaryOperation",
+                          "operator": "||",
+                          "rightExpression": {
+                            "commonType": {
+                              "typeIdentifier": "t_bool",
+                              "typeString": "bool"
+                            },
+                            "id": 31118,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "leftExpression": {
+                              "expression": {
+                                "id": 31115,
+                                "name": "_userDataForLastSeasonParticipated",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 31080,
+                                "src": "2044:34:31",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                                  "typeString": "struct UserData storage pointer"
+                                }
+                              },
+                              "id": 31116,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "memberLocation": "2079:22:31",
+                              "memberName": "hasWithdrawnOrRestaked",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 33697,
+                              "src": "2044:57:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_bool",
+                                "typeString": "bool"
+                              }
+                            },
+                            "nodeType": "BinaryOperation",
+                            "operator": "==",
+                            "rightExpression": {
+                              "hexValue": "66616c7365",
+                              "id": 31117,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "bool",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "2105:5:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_bool",
+                                "typeString": "bool"
+                              },
+                              "value": "false"
+                            },
+                            "src": "2044:66:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bool",
+                              "typeString": "bool"
+                            }
+                          },
+                          "src": "1973:137:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        }
+                      ],
+                      "id": 31120,
+                      "isConstant": false,
+                      "isInlineArray": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "TupleExpression",
+                      "src": "1972:139:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "src": "1938:173:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1911:200:31"
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 31132,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 31126,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "expression": {
+                          "id": 31123,
+                          "name": "_userDataForCurrentSeason",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31069,
+                          "src": "2138:25:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                            "typeString": "struct UserData storage pointer"
+                          }
+                        },
+                        "id": 31124,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "2164:13:31",
+                        "memberName": "depositAmount",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33677,
+                        "src": "2138:39:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "+",
+                      "rightExpression": {
+                        "id": 31125,
+                        "name": "_amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31037,
+                        "src": "2180:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "src": "2138:49:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">",
+                    "rightExpression": {
+                      "baseExpression": {
+                        "expression": {
+                          "id": 31127,
+                          "name": "s",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31010,
+                          "src": "2202:1:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                            "typeString": "struct AppStorage storage ref"
+                          }
+                        },
+                        "id": 31128,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "2204:28:31",
+                        "memberName": "miningPassTierToDepositLimit",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33800,
+                        "src": "2202:30:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                          "typeString": "mapping(uint256 => uint256)"
+                        }
+                      },
+                      "id": 31131,
+                      "indexExpression": {
+                        "expression": {
+                          "id": 31129,
+                          "name": "_userDataForCurrentSeason",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31069,
+                          "src": "2233:25:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                            "typeString": "struct UserData storage pointer"
+                          }
+                        },
+                        "id": 31130,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "2259:14:31",
+                        "memberName": "miningPassTier",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33695,
+                        "src": "2233:40:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2202:72:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2138:136:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31137,
+                  "nodeType": "IfStatement",
+                  "src": "2121:229:31",
+                  "trueBody": {
+                    "id": 31136,
+                    "nodeType": "Block",
+                    "src": "2285:65:31",
+                    "statements": [
+                      {
+                        "errorCall": {
+                          "arguments": [],
+                          "expression": {
+                            "argumentTypes": [],
+                            "id": 31133,
+                            "name": "DepositFacet__InvalidMiningPass",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 30997,
+                            "src": "2306:31:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_error_pure$__$returns$__$",
+                              "typeString": "function () pure"
+                            }
+                          },
+                          "id": 31134,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "nameLocations": [],
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "2306:33:31",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 31135,
+                        "nodeType": "RevertStatement",
+                        "src": "2299:40:31"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "condition": {
+                    "id": 31138,
+                    "name": "isFundsInPrevSeason",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 31109,
+                    "src": "2364:19:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31143,
+                  "nodeType": "IfStatement",
+                  "src": "2360:90:31",
+                  "trueBody": {
+                    "id": 31142,
+                    "nodeType": "Block",
+                    "src": "2385:65:31",
+                    "statements": [
+                      {
+                        "errorCall": {
+                          "arguments": [],
+                          "expression": {
+                            "argumentTypes": [],
+                            "id": 31139,
+                            "name": "DepositFacet__FundsInPrevSeason",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 30995,
+                            "src": "2406:31:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_error_pure$__$returns$__$",
+                              "typeString": "function () pure"
+                            }
+                          },
+                          "id": 31140,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "nameLocations": [],
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "2406:33:31",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 31141,
+                        "nodeType": "RevertStatement",
+                        "src": "2399:40:31"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "condition": {
+                    "id": 31144,
+                    "name": "isNewSeasonForUser",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 31094,
+                    "src": "2463:18:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31153,
+                  "nodeType": "IfStatement",
+                  "src": "2459:165:31",
+                  "trueBody": {
+                    "id": 31152,
+                    "nodeType": "Block",
+                    "src": "2483:141:31",
+                    "statements": [
+                      {
+                        "expression": {
+                          "id": 31150,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftHandSide": {
+                            "expression": {
+                              "id": 31145,
+                              "name": "_userDataForCurrentSeason",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 31069,
+                              "src": "2497:25:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                                "typeString": "struct UserData storage pointer"
+                              }
+                            },
+                            "id": 31147,
+                            "isConstant": false,
+                            "isLValue": true,
+                            "isPure": false,
+                            "lValueRequested": true,
+                            "memberLocation": "2523:23:31",
+                            "memberName": "lastBoostClaimTimestamp",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 33685,
+                            "src": "2497:49:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "Assignment",
+                          "operator": "=",
+                          "rightHandSide": {
+                            "expression": {
+                              "id": 31148,
+                              "name": "block",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": -4,
+                              "src": "2549:5:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_magic_block",
+                                "typeString": "block"
+                              }
+                            },
+                            "id": 31149,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberLocation": "2555:9:31",
+                            "memberName": "timestamp",
+                            "nodeType": "MemberAccess",
+                            "src": "2549:15:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "src": "2497:67:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 31151,
+                        "nodeType": "ExpressionStatement",
+                        "src": "2497:67:31"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "assignments": [
+                    31155
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31155,
+                      "mutability": "mutable",
+                      "name": "_discount",
+                      "nameLocation": "2659:9:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "2651:17:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 31154,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "2651:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31157,
+                  "initialValue": {
+                    "hexValue": "30",
+                    "id": 31156,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "number",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "2671:1:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_rational_0_by_1",
+                      "typeString": "int_const 0"
+                    },
+                    "value": "0"
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "2651:21:31"
+                },
+                {
+                  "expression": {
+                    "id": 31165,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "expression": {
+                          "id": 31158,
+                          "name": "s",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 31010,
+                          "src": "2682:1:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                            "typeString": "struct AppStorage storage ref"
+                          }
+                        },
+                        "id": 31162,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "2684:21:31",
+                        "memberName": "addressToLastSeasonId",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33746,
+                        "src": "2682:23:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 31163,
+                      "indexExpression": {
+                        "expression": {
+                          "id": 31160,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "2706:3:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 31161,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "2710:6:31",
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "src": "2706:10:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "2682:35:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 31164,
+                      "name": "_currentSeasonId",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31051,
+                      "src": "2720:16:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2682:54:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 31166,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2682:54:31"
+                },
+                {
+                  "assignments": [
+                    31168,
+                    31170
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31168,
+                      "mutability": "mutable",
+                      "name": "isStratosphereMember",
+                      "nameLocation": "2753:20:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "2748:25:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "typeName": {
+                        "id": 31167,
+                        "name": "bool",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "2748:4:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      "visibility": "internal"
+                    },
+                    {
+                      "constant": false,
+                      "id": 31170,
+                      "mutability": "mutable",
+                      "name": "tier",
+                      "nameLocation": "2783:4:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31213,
+                      "src": "2775:12:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 31169,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "2775:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31177,
+                  "initialValue": {
+                    "arguments": [
+                      {
+                        "id": 31173,
+                        "name": "s",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31010,
+                        "src": "2816:1:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                          "typeString": "struct AppStorage storage ref"
+                        }
+                      },
+                      {
+                        "expression": {
+                          "id": 31174,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "2819:3:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 31175,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "2823:6:31",
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "src": "2819:10:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                          "typeString": "struct AppStorage storage ref"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "id": 31171,
+                        "name": "LStratosphere",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 33937,
+                        "src": "2791:13:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_LStratosphere_$33937_$",
+                          "typeString": "type(library LStratosphere)"
+                        }
+                      },
+                      "id": 31172,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "2805:10:31",
+                      "memberName": "getDetails",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33936,
+                      "src": "2791:24:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_AppStorage_$33814_storage_ptr_$_t_address_$returns$_t_bool_$_t_uint8_$",
+                        "typeString": "function (struct AppStorage storage pointer,address) view returns (bool,uint8)"
+                      }
+                    },
+                    "id": 31176,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2791:39:31",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_bool_$_t_uint8_$",
+                      "typeString": "tuple(bool,uint8)"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "2747:83:31"
+                },
+                {
+                  "condition": {
+                    "id": 31178,
+                    "name": "isStratosphereMember",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 31168,
+                    "src": "2844:20:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31187,
+                  "nodeType": "IfStatement",
+                  "src": "2840:108:31",
+                  "trueBody": {
+                    "id": 31186,
+                    "nodeType": "Block",
+                    "src": "2866:82:31",
+                    "statements": [
+                      {
+                        "expression": {
+                          "id": 31184,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftHandSide": {
+                            "id": 31179,
+                            "name": "_discount",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 31155,
+                            "src": "2880:9:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "Assignment",
+                          "operator": "=",
+                          "rightHandSide": {
+                            "baseExpression": {
+                              "expression": {
+                                "id": 31180,
+                                "name": "s",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 31010,
+                                "src": "2892:1:31",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                                  "typeString": "struct AppStorage storage ref"
+                                }
+                              },
+                              "id": 31181,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "memberLocation": "2894:37:31",
+                              "memberName": "depositDiscountForStratosphereMembers",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 33738,
+                              "src": "2892:39:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                                "typeString": "mapping(uint256 => uint256)"
+                              }
+                            },
+                            "id": 31183,
+                            "indexExpression": {
+                              "id": 31182,
+                              "name": "tier",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 31170,
+                              "src": "2932:4:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "isConstant": false,
+                            "isLValue": true,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "nodeType": "IndexAccess",
+                            "src": "2892:45:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "src": "2880:57:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 31185,
+                        "nodeType": "ExpressionStatement",
+                        "src": "2880:57:31"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 31189,
+                        "name": "_amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31037,
+                        "src": "2971:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "id": 31190,
+                        "name": "_currentSeasonId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31051,
+                        "src": "2980:16:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "id": 31191,
+                        "name": "_userDataForCurrentSeason",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31069,
+                        "src": "2998:25:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                          "typeString": "struct UserData storage pointer"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                          "typeString": "struct UserData storage pointer"
+                        }
+                      ],
+                      "id": 31188,
+                      "name": "_applyPoints",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31283,
+                      "src": "2958:12:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_uint256_$_t_struct$_UserData_$33698_storage_ptr_$returns$__$",
+                        "typeString": "function (uint256,uint256,struct UserData storage pointer)"
+                      }
+                    },
+                    "id": 31192,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2958:66:31",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 31193,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2958:66:31"
+                },
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "expression": {
+                          "id": 31197,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "3086:3:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 31198,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "3090:6:31",
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "src": "3086:10:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "arguments": [
+                          {
+                            "id": 31201,
+                            "name": "this",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": -28,
+                            "src": "3106:4:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_DepositFacet_$31284",
+                              "typeString": "contract DepositFacet"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_contract$_DepositFacet_$31284",
+                              "typeString": "contract DepositFacet"
+                            }
+                          ],
+                          "id": 31200,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "nodeType": "ElementaryTypeNameExpression",
+                          "src": "3098:7:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_address_$",
+                            "typeString": "type(address)"
+                          },
+                          "typeName": {
+                            "id": 31199,
+                            "name": "address",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "3098:7:31",
+                            "typeDescriptions": {}
+                          }
+                        },
+                        "id": 31202,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "3098:13:31",
+                        "tryCall": false,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "id": 31203,
+                        "name": "_amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31037,
+                        "src": "3113:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 31194,
+                        "name": "_depositToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31044,
+                        "src": "3059:13:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_IERC20_$30146",
+                          "typeString": "contract IERC20"
+                        }
+                      },
+                      "id": 31196,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "3073:12:31",
+                      "memberName": "transferFrom",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 30145,
+                      "src": "3059:26:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (address,address,uint256) external returns (bool)"
+                      }
+                    },
+                    "id": 31204,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3059:62:31",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31205,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3059:62:31"
+                },
+                {
+                  "eventCall": {
+                    "arguments": [
+                      {
+                        "id": 31207,
+                        "name": "_currentSeasonId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31051,
+                        "src": "3145:16:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "expression": {
+                          "id": 31208,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": -15,
+                          "src": "3163:3:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 31209,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberLocation": "3167:6:31",
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "src": "3163:10:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "id": 31210,
+                        "name": "_amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31037,
+                        "src": "3175:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 31206,
+                      "name": "Deposit",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31007,
+                      "src": "3137:7:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256,address,uint256)"
+                      }
+                    },
+                    "id": 31211,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "3137:46:31",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 31212,
+                  "nodeType": "EmitStatement",
+                  "src": "3132:51:31"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 31035,
+              "nodeType": "StructuredDocumentation",
+              "src": "1112:91:31",
+              "text": "@notice Deposit token to the contract\n @param _amount Amount of token to deposit"
+            },
+            "functionSelector": "b6b55f25",
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 31040,
+                "kind": "modifierInvocation",
+                "modifierName": {
+                  "id": 31039,
+                  "name": "nonReentrant",
+                  "nameLocations": [
+                    "1251:12:31"
+                  ],
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 31034,
+                  "src": "1251:12:31"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1251:12:31"
+              }
+            ],
+            "name": "deposit",
+            "nameLocation": "1217:7:31",
+            "parameters": {
+              "id": 31038,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 31037,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "1233:7:31",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31214,
+                  "src": "1225:15:31",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 31036,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1225:7:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1224:17:31"
+            },
+            "returnParameters": {
+              "id": 31041,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1264:0:31"
+            },
+            "scope": 31284,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 31283,
+            "nodeType": "FunctionDefinition",
+            "src": "3280:577:31",
+            "nodes": [],
+            "body": {
+              "id": 31282,
+              "nodeType": "Block",
+              "src": "3375:482:31",
+              "nodes": [],
+              "statements": [
+                {
+                  "assignments": [
+                    31227
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31227,
+                      "mutability": "mutable",
+                      "name": "_season",
+                      "nameLocation": "3400:7:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31282,
+                      "src": "3385:22:31",
+                      "stateVariable": false,
+                      "storageLocation": "storage",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Season_$33675_storage_ptr",
+                        "typeString": "struct Season"
+                      },
+                      "typeName": {
+                        "id": 31226,
+                        "nodeType": "UserDefinedTypeName",
+                        "pathNode": {
+                          "id": 31225,
+                          "name": "Season",
+                          "nameLocations": [
+                            "3385:6:31"
+                          ],
+                          "nodeType": "IdentifierPath",
+                          "referencedDeclaration": 33675,
+                          "src": "3385:6:31"
+                        },
+                        "referencedDeclaration": 33675,
+                        "src": "3385:6:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Season_$33675_storage_ptr",
+                          "typeString": "struct Season"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31232,
+                  "initialValue": {
+                    "baseExpression": {
+                      "expression": {
+                        "id": 31228,
+                        "name": "s",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31010,
+                        "src": "3410:1:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_AppStorage_$33814_storage",
+                          "typeString": "struct AppStorage storage ref"
+                        }
+                      },
+                      "id": 31229,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "3412:7:31",
+                      "memberName": "seasons",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33716,
+                      "src": "3410:9:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Season_$33675_storage_$",
+                        "typeString": "mapping(uint256 => struct Season storage ref)"
+                      }
+                    },
+                    "id": 31231,
+                    "indexExpression": {
+                      "id": 31230,
+                      "name": "_seasonId",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31219,
+                      "src": "3420:9:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "3410:20:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Season_$33675_storage",
+                      "typeString": "struct Season storage ref"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "3385:45:31"
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 31237,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "expression": {
+                        "id": 31233,
+                        "name": "block",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": -4,
+                        "src": "3444:5:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_block",
+                          "typeString": "block"
+                        }
+                      },
+                      "id": 31234,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "3450:9:31",
+                      "memberName": "timestamp",
+                      "nodeType": "MemberAccess",
+                      "src": "3444:15:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">",
+                    "rightExpression": {
+                      "expression": {
+                        "id": 31235,
+                        "name": "_season",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31227,
+                        "src": "3462:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Season_$33675_storage_ptr",
+                          "typeString": "struct Season storage pointer"
+                        }
+                      },
+                      "id": 31236,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "3470:12:31",
+                      "memberName": "endTimestamp",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33664,
+                      "src": "3462:20:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "3444:38:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 31242,
+                  "nodeType": "IfStatement",
+                  "src": "3440:103:31",
+                  "trueBody": {
+                    "id": 31241,
+                    "nodeType": "Block",
+                    "src": "3484:59:31",
+                    "statements": [
+                      {
+                        "errorCall": {
+                          "arguments": [],
+                          "expression": {
+                            "argumentTypes": [],
+                            "id": 31238,
+                            "name": "DepositFacet__SeasonEnded",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 30993,
+                            "src": "3505:25:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_error_pure$__$returns$__$",
+                              "typeString": "function () pure"
+                            }
+                          },
+                          "id": 31239,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "nameLocations": [],
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "3505:27:31",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 31240,
+                        "nodeType": "RevertStatement",
+                        "src": "3498:34:31"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "assignments": [
+                    31244
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 31244,
+                      "mutability": "mutable",
+                      "name": "_daysUntilSeasonEnd",
+                      "nameLocation": "3560:19:31",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 31282,
+                      "src": "3552:27:31",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 31243,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "3552:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 31253,
+                  "initialValue": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 31252,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "components": [
+                        {
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "id": 31249,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftExpression": {
+                            "expression": {
+                              "id": 31245,
+                              "name": "_season",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 31227,
+                              "src": "3583:7:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_struct$_Season_$33675_storage_ptr",
+                                "typeString": "struct Season storage pointer"
+                              }
+                            },
+                            "id": 31246,
+                            "isConstant": false,
+                            "isLValue": true,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberLocation": "3591:12:31",
+                            "memberName": "endTimestamp",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 33664,
+                            "src": "3583:20:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "BinaryOperation",
+                          "operator": "-",
+                          "rightExpression": {
+                            "expression": {
+                              "id": 31247,
+                              "name": "block",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": -4,
+                              "src": "3606:5:31",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_magic_block",
+                                "typeString": "block"
+                              }
+                            },
+                            "id": 31248,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberLocation": "3612:9:31",
+                            "memberName": "timestamp",
+                            "nodeType": "MemberAccess",
+                            "src": "3606:15:31",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "src": "3583:38:31",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "id": 31250,
+                      "isConstant": false,
+                      "isInlineArray": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "TupleExpression",
+                      "src": "3582:40:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "/",
+                    "rightExpression": {
+                      "hexValue": "31",
+                      "id": 31251,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "3625:6:31",
+                      "subdenomination": "days",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_86400_by_1",
+                        "typeString": "int_const 86400"
+                      },
+                      "value": "1"
+                    },
+                    "src": "3582:49:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "3552:79:31"
+                },
+                {
+                  "expression": {
+                    "id": 31258,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 31254,
+                        "name": "_userData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31222,
+                        "src": "3641:9:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                          "typeString": "struct UserData storage pointer"
+                        }
+                      },
+                      "id": 31256,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "3651:13:31",
+                      "memberName": "depositAmount",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33677,
+                      "src": "3641:23:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "id": 31257,
+                      "name": "_amount",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31217,
+                      "src": "3668:7:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "3641:34:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 31259,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3641:34:31"
+                },
+                {
+                  "expression": {
+                    "id": 31266,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 31260,
+                        "name": "_userData",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31222,
+                        "src": "3685:9:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                          "typeString": "struct UserData storage pointer"
+                        }
+                      },
+                      "id": 31262,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "3695:13:31",
+                      "memberName": "depositPoints",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33681,
+                      "src": "3685:23:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 31265,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 31263,
+                        "name": "_amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31217,
+                        "src": "3712:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "*",
+                      "rightExpression": {
+                        "id": 31264,
+                        "name": "_daysUntilSeasonEnd",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31244,
+                        "src": "3722:19:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "src": "3712:29:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "3685:56:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 31267,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3685:56:31"
+                },
+                {
+                  "expression": {
+                    "id": 31272,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 31268,
+                        "name": "_season",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31227,
+                        "src": "3751:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Season_$33675_storage_ptr",
+                          "typeString": "struct Season storage pointer"
+                        }
+                      },
+                      "id": 31270,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "3759:18:31",
+                      "memberName": "totalDepositAmount",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33670,
+                      "src": "3751:26:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "id": 31271,
+                      "name": "_amount",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 31217,
+                      "src": "3781:7:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "3751:37:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 31273,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3751:37:31"
+                },
+                {
+                  "expression": {
+                    "id": 31280,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 31274,
+                        "name": "_season",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31227,
+                        "src": "3798:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Season_$33675_storage_ptr",
+                          "typeString": "struct Season storage pointer"
+                        }
+                      },
+                      "id": 31276,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "3806:11:31",
+                      "memberName": "totalPoints",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33674,
+                      "src": "3798:19:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 31279,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 31277,
+                        "name": "_amount",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31217,
+                        "src": "3821:7:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "*",
+                      "rightExpression": {
+                        "id": 31278,
+                        "name": "_daysUntilSeasonEnd",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 31244,
+                        "src": "3831:19:31",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "src": "3821:29:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "3798:52:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 31281,
+                  "nodeType": "ExpressionStatement",
+                  "src": "3798:52:31"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 31215,
+              "nodeType": "StructuredDocumentation",
+              "src": "3196:79:31",
+              "text": "@notice Apply points\n @param _amount Amount of token to apply points"
+            },
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_applyPoints",
+            "nameLocation": "3289:12:31",
+            "parameters": {
+              "id": 31223,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 31217,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "3310:7:31",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31283,
+                  "src": "3302:15:31",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 31216,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3302:7:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31219,
+                  "mutability": "mutable",
+                  "name": "_seasonId",
+                  "nameLocation": "3327:9:31",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31283,
+                  "src": "3319:17:31",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 31218,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3319:7:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 31222,
+                  "mutability": "mutable",
+                  "name": "_userData",
+                  "nameLocation": "3355:9:31",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31283,
+                  "src": "3338:26:31",
+                  "stateVariable": false,
+                  "storageLocation": "storage",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                    "typeString": "struct UserData"
+                  },
+                  "typeName": {
+                    "id": 31221,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 31220,
+                      "name": "UserData",
+                      "nameLocations": [
+                        "3338:8:31"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 33698,
+                      "src": "3338:8:31"
+                    },
+                    "referencedDeclaration": 33698,
+                    "src": "3338:8:31",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_UserData_$33698_storage_ptr",
+                      "typeString": "struct UserData"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3301:64:31"
+            },
+            "returnParameters": {
+              "id": 31224,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3375:0:31"
+            },
+            "scope": 31284,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "DepositFacet",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 30998,
+          "nodeType": "StructuredDocumentation",
+          "src": "532:140:31",
+          "text": "@title DepositFacet\n @notice Facet in charge of depositing VPND tokens\n @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'"
+        },
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          31284
+        ],
+        "name": "DepositFacet",
+        "nameLocation": "681:12:31",
+        "scope": 31285,
+        "usedErrors": [
+          30989,
+          30991,
+          30993,
+          30995,
+          30997
+        ]
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 31
+}
