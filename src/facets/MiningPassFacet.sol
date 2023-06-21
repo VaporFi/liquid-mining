@@ -18,7 +18,8 @@ error MiningPassFacet__SeasonEnded();
 contract MiningPassFacet {
     AppStorage s;
 
-    event MiningPassPurchase(address indexed user, uint256 indexed tier, uint256 fee);
+    /// @notice Ordering of the events are according to their relevance in the facet
+    event MiningPassPurchase(uint256 indexed seasonId, address indexed user, uint256 indexed tier, uint256 fee);
 
     /// notice Purchase a mining pass
     /// @param _tier Tier of mining pass to purchase
@@ -45,7 +46,7 @@ contract MiningPassFacet {
         // transfer USDC from user to contract
         _feeToken.transferFrom(msg.sender, address(this), _fee);
 
-        emit MiningPassPurchase(msg.sender, _tier, _fee);
+        emit MiningPassPurchase(_currentSeasonId, msg.sender, _tier, _fee);
     }
 
     /// @notice Get user's mining pass tier and deposit limit
