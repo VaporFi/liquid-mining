@@ -21,8 +21,8 @@ contract BoostFacet {
 
     /// @notice Ordering of the events are according to their relevance in the facet
     event ClaimBoost(
-        uint256 indexed _seasonId,
-        address indexed _user,
+        uint256 indexed seasonId,
+        address indexed user,
         uint256 boostLevel,
         uint256 _boostPoints,
         uint256 boostFee,
