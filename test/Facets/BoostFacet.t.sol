@@ -77,7 +77,7 @@ contract BoostFacetTest is DiamondTest {
     function test_RevertIf_NotStratosphereMember() public {
         vm.startPrank(user);
         _mintAndDeposit(user, testDepositAmount);
-        vm.expectRevert(BoostFacet__InvalidBoostLevel.selector);
+        vm.expectRevert(BoostFacet__BoostAlreadyClaimed.selector);
         boostFacet.claimBoost(1);
         vm.stopPrank();
     }
