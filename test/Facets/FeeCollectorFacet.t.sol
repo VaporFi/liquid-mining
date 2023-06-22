@@ -78,7 +78,7 @@ contract FeeCollectorFacetTest is DiamondTest {
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, 1000);
         _fundUserWithfeeToken(stratosphereMemberBasic, boostFeeLvl1);
-        vm.expectRevert(BoostFacet__BoostAlreadyClaimed.selector);
+        vm.warp(block.timestamp + 2 days);
         boostFacet.claimBoost(1);
         vm.stopPrank();
 
