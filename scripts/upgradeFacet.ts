@@ -14,7 +14,7 @@ async function main(facetName: string) {
   console.log('✅ Facet upgraded')
 }
 
-main('BoostFacet')
+main('DepositFacet')
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error)
