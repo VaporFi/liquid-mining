@@ -69,8 +69,8 @@ task('automatedClaim', 'Claim all rewards for a season')
      * TODO: implement starting a new season right after claiming
      * 1. Calculate new season rewards amount (VAPE)
      * 2. Calculate new season start and end timestamps
-     * 3. Call EmmissionsManager to mint VAPE
-     * 4. Call Diamond to start new season
+     * 3. Call Diamond to start new season
+     * 4. Call diamond to mint VAPE through emissions manager(function name is claimTokensForSeason)
      */
 
     console.log('✅ Done')
