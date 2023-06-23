@@ -14,7 +14,8 @@ error UnlockFacet__InvalidFeeReceivers();
 error UnlockFacet__InvalidUnlock();
 
 contract UnlockFacet {
-    event Unlocked(address indexed user, uint256 amount, uint256 seasonId, uint256 unlockFee);
+    /// @notice Ordering of the events are according to their relevance in the facet
+    event Unlocked(uint256 indexed seasonId, address indexed user, uint256 amount, uint256 unlockFee);
 
     AppStorage s;
     uint256 public constant COOLDOWN_PERIOD = 72 * 3600; // 72 Hours
@@ -54,7 +55,7 @@ contract UnlockFacet {
         _userData.unlockAmount += (_amount - _fee);
         _userData.unlockTimestamp = _unlockTimestamp;
 
-        emit Unlocked(msg.sender, _amount, _currentSeasonId, _fee);
+        emit Unlocked(_currentSeasonId, msg.sender, _amount, _fee);
     }
 
     /// @notice deduct points

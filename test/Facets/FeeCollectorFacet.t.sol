@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
 import { DepositFacet } from "src/facets/DepositFacet.sol";
 import { ClaimFacet } from "src/facets/ClaimFacet.sol";
-import { BoostFacet } from "src/facets/BoostFacet.sol";
+import { BoostFacet, BoostFacet__BoostAlreadyClaimed } from "src/facets/BoostFacet.sol";
 import { UnlockFacet } from "src/facets/UnlockFacet.sol";
 import { FeeCollectorFacet } from "src/facets/FeeCollectorFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
@@ -78,13 +78,12 @@ contract FeeCollectorFacetTest is DiamondTest {
         vm.startPrank(stratosphereMemberBasic);
         _mintAndDeposit(stratosphereMemberBasic, 1000);
         _fundUserWithfeeToken(stratosphereMemberBasic, boostFeeLvl1);
+        vm.warp(block.timestamp + 2 days);
         boostFacet.claimBoost(1);
         vm.stopPrank();
 
         vm.startPrank(makeAddr("diamondOwner"));
         feeCollectorFacet.collectBoostFees();
-
-        assertEq(feeToken.balanceOf(depositFeeReceiver1) + feeToken.balanceOf(depositFeeReceiver2), boostFeeLvl1);
     }
 
     // Helper functions

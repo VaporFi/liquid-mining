@@ -19,6 +19,8 @@ error DepositFacet__InvalidMiningPass();
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
 contract DepositFacet {
+    
+    /// @notice Ordering of the events are according to their relevance in the facet
     event Deposit(uint256 indexed seasonId, address indexed user, uint256 amount);
 
     AppStorage s;
@@ -41,16 +43,7 @@ contract DepositFacet {
         }
 
         UserData storage _userDataForCurrentSeason = s.usersData[_currentSeasonId][msg.sender];
-        UserData storage _userDataForLastSeasonParticipated = s.usersData[s.addressToLastSeasonId[msg.sender]][
-            msg.sender
-        ];
 
-        bool isNewSeasonForUser = s.addressToLastSeasonId[msg.sender] != 0 &&
-            _userDataForCurrentSeason.depositAmount == 0;
-
-        bool isFundsInPrevSeason = isNewSeasonForUser &&
-            (_userDataForLastSeasonParticipated.unlockAmount > 0 ||
-                _userDataForLastSeasonParticipated.hasWithdrawnOrRestaked == false);
         if (
             _userDataForCurrentSeason.depositAmount + _amount >
             s.miningPassTierToDepositLimit[_userDataForCurrentSeason.miningPassTier]
@@ -58,13 +51,10 @@ contract DepositFacet {
             revert DepositFacet__InvalidMiningPass();
         }
 
-        if (isFundsInPrevSeason) {
-            revert DepositFacet__FundsInPrevSeason();
-        }
-        if (isNewSeasonForUser) {
+        // effects
+        if (_userDataForCurrentSeason.depositAmount == 0) {
             _userDataForCurrentSeason.lastBoostClaimTimestamp = block.timestamp; //BoostFacet#_calculatePoints over/underflow fix
         }
-        //effects
         uint256 _discount = 0;
         s.addressToLastSeasonId[msg.sender] = _currentSeasonId;
 

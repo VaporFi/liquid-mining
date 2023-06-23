@@ -22,42 +22,13 @@ contract ClaimFacet {
     //////////////
     /// EVENTS ///
     //////////////
+
+    /// @notice Ordering of the events are according to their relevance in the facet
     event Claim(uint256 indexed seasonId, address indexed user, uint256 rewardsAmount, uint256 depositAmount);
 
     //////////////////////
     /// EXTERNAL LOGIC ///
     //////////////////////
-
-    /// @notice Claim accrued VAPE reward token and withdraw unlocked VPND
-    function claim() external {
-        uint256 seasonId = s.addressToLastSeasonId[msg.sender];
-        UserData storage userData = s.usersData[seasonId][msg.sender];
-        Season storage season = s.seasons[seasonId];
-        if (season.endTimestamp >= block.timestamp) {
-            revert ClaimFacet__InProgressSeason();
-        }
-        if (userData.depositPoints == 0) {
-            revert ClaimFacet__NotEnoughPoints();
-        }
-        if (userData.amountClaimed > 0) {
-            revert ClaimFacet__AlreadyClaimed();
-        }
-
-        uint256 totalPoints = userData.depositPoints + userData.boostPoints;
-        uint256 userShare = _calculateShare(totalPoints, season);
-
-        uint256 rewardTokenShare = _vapeToDistribute(userShare, season);
-
-        userData.amountClaimed = rewardTokenShare;
-        season.rewardTokenBalance -= rewardTokenShare;
-        season.totalClaimAmount += rewardTokenShare;
-
-        IERC20(s.rewardToken).transfer(msg.sender, rewardTokenShare);
-        uint256 withdrawAmount = userData.depositAmount + userData.unlockAmount;
-        IERC20(s.depositToken).transfer(msg.sender, withdrawAmount);
-
-        emit Claim(seasonId, msg.sender, rewardTokenShare, withdrawAmount);
-    }
 
     /// @notice Claim accrued VAPE rewards during the current season and withdraw unlocked VPND
     /// @param _seasonId The season ID

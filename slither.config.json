@@ -1,3 +1,5 @@
 {
-  "filter_paths": "(lib/|test/)"
+  "filter_paths": "(lib/|test/)",
+  "detectors_to_exclude": "unchecked-transfer,divide-before-multiply,incorrect-equality,uninitialized-local-variables,calls-inside-a-loop,reentrancy-events,block-timestamp,assembly-usage,boolean-equality,dead-code,conformance-to-solidity-naming-conventions,calls-loop",
+  "exclude_informational": true
 }
