@@ -8,6 +8,7 @@ import '@nomicfoundation/hardhat-toolbox'
 import 'dotenv/config'
 
 import './tasks/verify'
+import './tasks/automatedClaim'
 
 const AVALANCHE_RPC_URL = getEnvValSafe('AVALANCHE_RPC_URL')
 const FUJI_RPC_URL = getEnvValSafe('FUJI_RPC_URL')
@@ -32,7 +33,7 @@ const config: HardhatUserConfig = {
       chainId: 43113,
       url: FUJI_RPC_URL,
       gas: 8000000,
-      timeout: 10000000
+      timeout: 10000000,
     },
     hardhat: {
       forking: {

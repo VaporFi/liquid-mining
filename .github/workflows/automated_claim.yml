@@ -1,0 +1,28 @@
+name: Automate Claim - Manual
+
+on: workflow_dispatch
+
+jobs:
+  automated-claim:
+    environment: development
+    runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: ${{ secrets.DEPLOYER_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --prefer-offline --frozen-lockfile
+
+      - name: Compile project with Hardhat
+        run: yarn hardhat compile
+
+      - name: Execute Automated Claim task
+        run: yarn hardhat automatedClaim --network fuji
