@@ -133,7 +133,7 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 0);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 0);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 0);
-        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberBasic, 1), 900); // deposit amount - (unlock fee * STRAT fee discount)
+        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberBasic, 1), 900); 
         assertEq(
             diamondManagerFacet.getUnlockTimestampOfUser(stratosphereMemberBasic, 1),
             block.timestamp + 3 days - 12960
