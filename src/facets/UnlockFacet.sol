@@ -33,20 +33,17 @@ contract UnlockFacet {
         }
         _deductPoints(_amount, _seasonEndTimestamp, _userData, _currentSeason);
 
-        uint256 _timeDiscount = 0;
-        uint256 _feeDiscount = 0;
-        (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
-        if (isStratosphereMember) {
-            _timeDiscount = s.unlockTimestampDiscountForStratosphereMembers[tier];
-            _feeDiscount = s.unlockFeeDiscountForStratosphereMembers[tier];
-        }
+        // uint256 _timeDiscount = 0;
+        // uint256 _feeDiscount = 0;
+        // (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
+        // if (isStratosphereMember) {
+        //     _timeDiscount = s.unlockTimestampDiscountForStratosphereMembers[tier];
+        //     _feeDiscount = s.unlockFeeDiscountForStratosphereMembers[tier];
+        // }
         uint256 _unlockFeeFromState = s.unlockFee;
-        uint256 _fee = LPercentages.percentage(
-            _amount,
-            _unlockFeeFromState - (_feeDiscount * _unlockFeeFromState) / 10000
-        );
+        uint256 _fee = LPercentages.percentage(_amount,_unlockFeeFromState);
         _applyUnlockFee(_fee);
-        uint256 _unlockTimestamp = block.timestamp + COOLDOWN_PERIOD - (_timeDiscount * COOLDOWN_PERIOD) / 10000;
+        uint256 _unlockTimestamp = block.timestamp + COOLDOWN_PERIOD;
 
         if (_unlockTimestamp >= _seasonEndTimestamp) {
             revert UnlockFacet__InvalidUnlock();
