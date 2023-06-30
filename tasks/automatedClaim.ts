@@ -4,6 +4,8 @@ import chunk from '../utils/chunk'
 import { DepositEvent } from '../typechain-types/src/facets/DepositFacet'
 import Bottleneck from 'bottleneck'
 
+const BLOCK_RANGE = 1_000
+
 const FROM_BLOCK: { [key: string]: number } = {
   fuji: 23009545,
   avalanche: 0, // TODO: Update this once we have a mainnet deployment
@@ -37,8 +39,8 @@ task('automatedClaim', 'Claim all rewards for a season')
     const lastBlock = await ethers.provider.getBlockNumber()
     const result = await limiter.schedule(async () => {
       let depositEvents: DepositEvent[] = []
-      for (let i = FROM_BLOCK[network.name]; i < lastBlock; i += 10_000) {
-        const toBlock = i + 10_000 > lastBlock ? 'latest' : i + 10_000
+      for (let i = FROM_BLOCK[network.name]; i < lastBlock; i += BLOCK_RANGE) {
+        const toBlock = i + BLOCK_RANGE > lastBlock ? 'latest' : i + BLOCK_RANGE
         console.log(`Querying events from block ${i} to ${toBlock}`)
         const events = await DepositFacet.queryFilter(filter, i, toBlock)
         console.log(`Found ${events.length} events`)
