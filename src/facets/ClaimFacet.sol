@@ -8,6 +8,8 @@ import "../libraries/AppStorage.sol";
 import "../libraries/LPercentages.sol";
 import "../libraries/LAuthorizable.sol";
 
+import "forge-std/console.sol";
+
 error ClaimFacet__NotEnoughPoints();
 error ClaimFacet__InProgressSeason();
 error ClaimFacet__AlreadyClaimed();
@@ -33,7 +35,7 @@ contract ClaimFacet {
     /// @notice Claim accrued VAPE rewards during the current season and withdraw unlocked VPND
     /// @param _seasonId The season ID
     /// @param _users The users to claim for
-    function automatedClaim(uint256 _seasonId, address[] memory _users) external {
+    function automatedClaimBatch(uint256 _seasonId, address[] memory _users) external {
         LAuthorizable.enforceIsAuthorized(s, msg.sender);
 
         Season storage season = s.seasons[_seasonId];
@@ -80,6 +82,47 @@ contract ClaimFacet {
                 i++;
             }
         }
+    }
+
+    function automatedClaim(uint256 _seasonId, address _user) external {
+        LAuthorizable.enforceIsAuthorized(s, msg.sender);
+
+        Season storage season = s.seasons[_seasonId];
+        // If season is still in progress, skip
+        if (season.endTimestamp >= block.timestamp) {
+            revert ClaimFacet__InProgressSeason();
+        }
+
+        UserData storage userData = s.usersData[_seasonId][_user];
+        uint256 _depositPoints = userData.depositPoints;
+        uint256 _unlockAmount = userData.unlockAmount;
+
+        // If user has not participated in the season, skip
+        if (_depositPoints == 0) {
+            revert ClaimFacet__NotEnoughPoints();
+        }
+        // If user has already claimed, skip
+        if (userData.amountClaimed > 0) {
+            revert ClaimFacet__AlreadyClaimed();
+        }
+
+        uint256 totalPoints = _depositPoints + userData.boostPoints;
+        uint256 userShare = _calculateShare(totalPoints, season);
+
+        uint256 rewardTokenShare = _vapeToDistribute(userShare, season);
+
+        userData.amountClaimed = rewardTokenShare;
+        userData.hasWithdrawnOrRestaked = true;
+        userData.unlockAmount = 0;
+        userData.unlockTimestamp = 0;
+        season.rewardTokenBalance -= rewardTokenShare;
+        season.totalClaimAmount += rewardTokenShare;
+
+        IERC20(s.rewardToken).transfer(_user, rewardTokenShare);
+        uint256 withdrawAmount = userData.depositAmount + _unlockAmount;
+        IERC20(s.depositToken).transfer(_user, withdrawAmount);
+
+        emit Claim(_seasonId, _user, rewardTokenShare, withdrawAmount);
     }
 
     //////////////////////

@@ -39,6 +39,9 @@ contract DiamondManagerFacet {
     event UnlockFeeSet(uint256 fee);
     event UnlockFeeReceiversSet(address[] receivers, uint256[] proportion);
 
+    event SeasonStarted(uint256 indexed seasonId, uint256 rewardTokenToDistribute);
+    event SeasonEnded(uint256 indexed seasonId, uint256 rewardTokenDistributed);
+
     modifier onlyOwner() {
         if (msg.sender != LDiamond.contractOwner()) {
             revert DiamondManagerFacet__Not_Owner();
@@ -135,12 +138,14 @@ contract DiamondManagerFacet {
         uint256 newSeasonId = _currentSeason + 1;
         s.currentSeasonId = newSeasonId;
         Season storage season = s.seasons[newSeasonId];
-        
+
         season.id = newSeasonId;
         season.startTimestamp = block.timestamp;
         season.endTimestamp = block.timestamp + 25 days;
         season.rewardTokensToDistribute = _rewardTokenToDistribute;
         season.rewardTokenBalance = _rewardTokenToDistribute;
+
+        emit SeasonStarted(newSeasonId, _rewardTokenToDistribute);
     }
 
     function startNewSeasonWithDuration(uint256 _rewardTokenToDistribute, uint8 _durationDays) external onlyOwner {
@@ -155,9 +160,11 @@ contract DiamondManagerFacet {
         season.endTimestamp = block.timestamp + (_durationDays * 1 days);
         season.rewardTokensToDistribute = _rewardTokenToDistribute;
         season.rewardTokenBalance = _rewardTokenToDistribute;
+
+        emit SeasonStarted(s.currentSeasonId, _rewardTokenToDistribute);
     }
 
-    function getRewardTokenToDistribute(uint256 _seasonId) external view returns(uint256) {
+    function getRewardTokenToDistribute(uint256 _seasonId) external view returns (uint256) {
         return s.seasons[_seasonId].rewardTokensToDistribute;
     }
 
@@ -172,7 +179,7 @@ contract DiamondManagerFacet {
         }
         s.emissionsManager = _emissionManager;
         emit EmissionsManagerSet(_emissionManager);
-    } 
+    }
 
     function getUserDepositAmount(address user, uint256 seasonId) external view returns (uint256, uint256) {
         UserData storage _userData = s.usersData[seasonId][user];

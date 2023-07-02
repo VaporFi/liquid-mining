@@ -19,8 +19,8 @@ import "src/facets/WithdrawFacet.sol";
 import "src/facets/FeeCollectorFacet.sol";
 import "src/facets/MiningPassFacet.sol";
 import "src/upgradeInitializers/DiamondInit.sol";
-import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
-import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
+import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
 
 contract DiamondTest is Test {
     IDiamondCut.FacetCut[] internal cut;
@@ -149,8 +149,9 @@ contract DiamondTest is Test {
     function setClaimFacet() private {
         ClaimFacet claim = new ClaimFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](1);
+        functionSelectors = new bytes4[](2);
         functionSelectors[0] = ClaimFacet.automatedClaim.selector;
+        functionSelectors[1] = ClaimFacet.automatedClaimBatch.selector;
         cut.push(
             IDiamondCut.FacetCut({
                 facetAddress: address(claim),

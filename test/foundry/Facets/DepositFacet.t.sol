@@ -5,8 +5,8 @@ import "lib/forge-std/src/Test.sol";
 import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
 import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidMiningPass } from "src/facets/DepositFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
-import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
-import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
+import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
 import { MiningPassFacet } from "src/facets/MiningPassFacet.sol";
 
 contract DepositFacetTest is DiamondTest {

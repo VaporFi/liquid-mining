@@ -1,9 +1,7 @@
 {
-  "name": "liquid-mining",
+  "name": "@vaporfi/liquid-mining",
   "version": "1.0.0",
-  "repository": "git@github.com:VaporFi/liquid-mining.git",
   "license": "MIT",
-  "author": "Jose Mejias <mejiasdev@icloud.com>",
   "main": "index.js",
   "scripts": {
     "build": "make build",
@@ -32,7 +30,7 @@
     "@ethersproject/providers": "5.7.2",
     "@nomicfoundation/hardhat-chai-matchers": "1.0.4",
     "@nomicfoundation/hardhat-foundry": "1.0.1",
-    "@nomicfoundation/hardhat-network-helpers": "1.0.8",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
     "@nomicfoundation/hardhat-toolbox": "2.0.0",
     "@nomicfoundation/hardhat-verify": "^1.0.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",

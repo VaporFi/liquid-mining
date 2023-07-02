@@ -6,8 +6,8 @@ import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
 import { UnlockFacet, UnlockFacet__InvalidAmount, UnlockFacet__AlreadyUnlocked, UnlockFacet__InvalidFeeReceivers, UnlockFacet__InvalidUnlock } from "src/facets/UnlockFacet.sol";
 import { DepositFacet } from "src/facets/DepositFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
-import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
-import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
+import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
 
 contract UnlockFacetTest is DiamondTest {
     LiquidMiningDiamond internal diamond;

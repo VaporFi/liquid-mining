@@ -9,8 +9,8 @@ import { BoostFacet, BoostFacet__BoostAlreadyClaimed } from "src/facets/BoostFac
 import { UnlockFacet } from "src/facets/UnlockFacet.sol";
 import { FeeCollectorFacet } from "src/facets/FeeCollectorFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
-import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
-import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
+import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
 import "src/libraries/LPercentages.sol";
 
 contract FeeCollectorFacetTest is DiamondTest {

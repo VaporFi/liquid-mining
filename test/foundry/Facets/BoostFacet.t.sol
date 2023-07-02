@@ -7,8 +7,8 @@ import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__Season
 import { ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed } from "src/facets/ClaimFacet.sol";
 import { BoostFacet, BoostFacet__InvalidBoostLevel, BoostFacet__BoostAlreadyClaimed, BoostFacet__UserNotParticipated } from "src/facets/BoostFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
-import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
-import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
+import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
 import "src/libraries/LPercentages.sol";
 
 contract BoostFacetTest is DiamondTest {
@@ -96,10 +96,7 @@ contract BoostFacetTest is DiamondTest {
         _fundUserWithBoostFeeToken(stratosphereMemberBasic, boostFeeLvl1);
         assertEq(feeToken.balanceOf(stratosphereMemberBasic), boostFeeLvl1);
 
-        (uint256 depositPointsTillNow, uint256 boostPointsTillNow) = diamondManagerFacet.getUserPoints(
-            stratosphereMemberBasic,
-            1
-        );
+        (uint256 depositPointsTillNow, ) = diamondManagerFacet.getUserPoints(stratosphereMemberBasic, 1);
 
         vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = depositPointsTillNow + _calculatePoints(depositPointsTillNow, boostLvl1Tier1);
@@ -117,10 +114,7 @@ contract BoostFacetTest is DiamondTest {
         _fundUserWithBoostFeeToken(stratosphereMemberSilver, boostFeeLvl1);
         assertEq(feeToken.balanceOf(stratosphereMemberSilver), boostFeeLvl1);
 
-        (uint256 depositPointsTillNow, uint256 boostPointsTillNow) = diamondManagerFacet.getUserPoints(
-            stratosphereMemberSilver,
-            1
-        );
+        (uint256 depositPointsTillNow, ) = diamondManagerFacet.getUserPoints(stratosphereMemberSilver, 1);
 
         vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = depositPointsTillNow + _calculatePoints(depositPointsTillNow, boostLvl1Tier2);
@@ -140,10 +134,7 @@ contract BoostFacetTest is DiamondTest {
         _fundUserWithBoostFeeToken(stratosphereMemberGold, boostFeeLvl1);
         assertEq(feeToken.balanceOf(stratosphereMemberGold), boostFeeLvl1);
 
-        (uint256 depositPointsTillNow, uint256 boostPointsTillNow) = diamondManagerFacet.getUserPoints(
-            stratosphereMemberGold,
-            1
-        );
+        (uint256 depositPointsTillNow, ) = diamondManagerFacet.getUserPoints(stratosphereMemberGold, 1);
 
         vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = depositPointsTillNow + _calculatePoints(depositPointsTillNow, boostLvl1Tier3);
@@ -162,10 +153,7 @@ contract BoostFacetTest is DiamondTest {
         _fundUserWithBoostFeeToken(stratosphereMemberBasic, boostFeeLvl2);
         assertEq(feeToken.balanceOf(stratosphereMemberBasic), boostFeeLvl2);
 
-        (uint256 depositPointsTillNow, uint256 boostPointsTillNow) = diamondManagerFacet.getUserPoints(
-            stratosphereMemberBasic,
-            1
-        );
+        (uint256 depositPointsTillNow, ) = diamondManagerFacet.getUserPoints(stratosphereMemberBasic, 1);
         vm.warp(block.timestamp + 3 days);
         uint256 expectedTotalPoints = depositPointsTillNow + _calculatePoints(depositPointsTillNow, boostLvl2Tier1);
         boostFacet.claimBoost(2);

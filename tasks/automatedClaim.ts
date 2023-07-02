@@ -4,7 +4,7 @@ import chunk from '../utils/chunk'
 import { DepositEvent } from '../typechain-types/src/facets/DepositFacet'
 import Bottleneck from 'bottleneck'
 
-const BLOCK_RANGE = 1_000
+const BLOCK_RANGE = 500
 
 const FROM_BLOCK: { [key: string]: number } = {
   fuji: 23009545,
@@ -12,7 +12,7 @@ const FROM_BLOCK: { [key: string]: number } = {
 }
 
 const limiter = new Bottleneck({
-  minTime: 33, // ~30 requests per second
+  minTime: 10, // ~30 requests per second
   maxConcurrent: 1,
 })
 
@@ -30,7 +30,7 @@ task('automatedClaim', 'Claim all rewards for a season')
     )
     const ClaimFacet = await ethers.getContractAt('ClaimFacet', diamondAddress)
     // Load all Deposit events
-    const filter = DepositFacet.filters.Deposit(seasonId, null, null)
+    const depositFilter = DepositFacet.filters.Deposit(seasonId, null, null)
     /*
      * Query events for evey 10,000 blocks since FROM_BLOCK
      * using a limiter to avoid rate limiting from RPC provider
@@ -40,9 +40,10 @@ task('automatedClaim', 'Claim all rewards for a season')
     const result = await limiter.schedule(async () => {
       let depositEvents: DepositEvent[] = []
       for (let i = FROM_BLOCK[network.name]; i < lastBlock; i += BLOCK_RANGE) {
-        const toBlock = i + BLOCK_RANGE > lastBlock ? 'latest' : i + BLOCK_RANGE
+        const toBlock =
+          i + BLOCK_RANGE > lastBlock ? lastBlock : i + BLOCK_RANGE
         console.log(`Querying events from block ${i} to ${toBlock}`)
-        const events = await DepositFacet.queryFilter(filter, i, toBlock)
+        const events = await DepositFacet.queryFilter(depositFilter, i, toBlock)
         console.log(`Found ${events.length} events`)
         depositEvents = depositEvents.concat(events)
       }
@@ -60,11 +61,13 @@ task('automatedClaim', 'Claim all rewards for a season')
       const chunkedDepositors = chunk(uniqueDepositors, 100)
       // Claim for each chunk
       for (const chunk of chunkedDepositors) {
+        console.log(`Claiming for ${chunk.length} depositors`, chunk)
         await (await ClaimFacet.automatedClaim(seasonId, chunk)).wait(3)
+        console.log(`✅ Claimed for ${chunk.length} depositors`)
       }
-    } catch (e) {
-      console.error(e)
-      throw e
+    } catch (error) {
+      console.error('❌ AutomatedClaim failed:', error)
+      throw error
     }
 
     /*

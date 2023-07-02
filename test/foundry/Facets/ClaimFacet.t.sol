@@ -7,9 +7,9 @@ import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__Season
 import { ClaimFacet, ClaimFacet__NotEnoughPoints, ClaimFacet__InProgressSeason, ClaimFacet__AlreadyClaimed } from "src/facets/ClaimFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
 import { AuthorizationFacet } from "src/facets/AuthorizationFacet.sol";
-import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
-import { StratosphereMock } from "test/mocks/StratosphereMock.sol";
-import "../../src/libraries/LPercentages.sol";
+import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
+import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
+import { LPercentages } from "src/libraries/LPercentages.sol";
 
 contract ClaimFacetTest is DiamondTest {
     // StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
@@ -41,38 +41,101 @@ contract ClaimFacetTest is DiamondTest {
         diamondManagerFacet = DiamondManagerFacet(address(diamond));
         authorizationFacet = AuthorizationFacet(address(diamond));
 
-        // Set up season details for deposit
-        rewardToken.mint(address(diamond), rewardTokenToDistribute);
+        // Set up reward token
         diamondManagerFacet.setRewardToken(address(rewardToken));
-        diamondManagerFacet.startNewSeason(rewardTokenToDistribute);
-
-        // Authoriza oracle for automated claims
+        // Authorize oracle for automated claims
         authorizationFacet.authorize(oracle);
 
         vm.stopPrank();
     }
 
-  
     function test_automatedClaim() public {
+        console.log(type(uint8).max);
+        _startSeason();
+
         vm.startPrank(user);
         _mintAndDeposit(user, testDepositAmount);
-        vm.warp(block.timestamp + 31 days);
-        assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), 0);
         vm.stopPrank();
 
-        vm.startPrank(oracle);
+        (uint256 _depositAmount, ) = diamondManagerFacet.getUserDepositAmount(user, 1);
+        assertEq(_depositAmount, (testDepositAmount));
+
+        vm.warp(block.timestamp + 26 days);
+        assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), 0);
+
         address[] memory users = new address[](1);
         users[0] = user;
-        claimFacet.automatedClaim(1, users);
-        assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), rewardTokenToDistribute);
+
+        vm.startPrank(oracle);
+        claimFacet.automatedClaimBatch(1, users);
         vm.stopPrank();
+
+        assertEq(diamondManagerFacet.getUserClaimedRewards(user, 1), rewardTokenToDistribute);
     }
+
+    // function test_automatedClaim_MultipleSeasons() public {
+    //     uint8 _seasonAmount = 3;
+    //     uint16 _userAmount = 100;
+
+    //     for (uint8 i = 1; i < _seasonAmount; i++) {
+    //         console.log("Season: %s", i);
+    //         _startSeason();
+    //         address[] memory users = _mintAndDepositForUsers(_userAmount);
+    //         vm.warp(block.timestamp + 26 days);
+    //         _automatedClaimFromOracle(i, users);
+    //     }
+    // }
 
     // Helper functions
 
+    function _startSeason() internal {
+        vm.startPrank(diamondOwner);
+        rewardToken.mint(address(diamond), rewardTokenToDistribute);
+        diamondManagerFacet.startNewSeason(rewardTokenToDistribute);
+        vm.stopPrank();
+    }
+
+    function _automatedClaimFromOracle(uint256 _seasonId, address[] memory _users) internal {
+        vm.startPrank(oracle);
+
+        if (_users.length <= 100) {
+            claimFacet.automatedClaimBatch(_seasonId, _users);
+            return;
+        } else {
+            // Chunk users into 100 user batches
+            for (uint256 i = 0; i < _users.length; i += 100) {
+                uint256 chunkSize = _users.length - i < 100 ? _users.length - i : 100;
+                address[] memory chunk = new address[](chunkSize);
+                for (uint256 j = 0; j < chunkSize; j++) {
+                    chunk[j] = _users[i + j];
+                }
+                claimFacet.automatedClaimBatch(_seasonId, chunk);
+            }
+        }
+
+        vm.stopPrank();
+    }
+
+    function _mintAndDepositForUsers(uint256 _usersAmount) internal returns (address[] memory) {
+        address[] memory users = new address[](_usersAmount);
+        console.log("Users: %s", _usersAmount);
+        for (uint256 i = 0; i < _usersAmount; i++) {
+            // address _user = makeAddr(string(abi.encodePacked("user", i)));
+            address _user = vm.addr(i + 1);
+            console.log("User: %s", _user);
+            vm.startPrank(_user);
+            _mintAndDeposit(_user, testDepositAmount);
+            vm.stopPrank();
+
+            users[i] = user;
+        }
+
+        return users;
+    }
+
     function _mintAndDeposit(address _addr, uint256 _amount) internal {
-        depositToken.increaseAllowance(address(depositFacet), _amount);
         depositToken.mint(_addr, _amount);
+        depositToken.increaseAllowance(address(depositFacet), _amount);
         depositFacet.deposit(_amount);
     }
 
