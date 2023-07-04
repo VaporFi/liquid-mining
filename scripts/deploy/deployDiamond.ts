@@ -1,4 +1,4 @@
-import { Contract } from 'ethers'
+import { BaseContract } from 'ethers'
 import { ethers, network } from 'hardhat'
 import { addFacets } from '../../utils/diamond'
 import { deployContract } from '../../utils/deployContract'
@@ -10,7 +10,7 @@ import { BURN_WALLET } from '../../config/constants'
 const CHAIN_ID = ['avalanche', 'fuji'].includes(network.name)
   ? network.config?.chainId || '43113'
   : '43113'
-// WARNING: the order here is important, check DiamondInit.sol
+// WARNING: the order here is important, check src/DiamondInit.sol
 export const defaultArgs: DiamondInit.ArgsStruct = {
   depositFee: '500',
   claimFee: '500',
@@ -37,7 +37,7 @@ export default async function deployDiamond(
 
   // Deploy Diamond
   const diamond = await deployContract('LiquidMiningDiamond', {
-    args: [deployer.address, diamondCutFacet.address],
+    args: [deployer.address, await diamondCutFacet.getAddress()],
     log: true,
     // skipIfAlreadyDeployed: true,
   })
@@ -46,8 +46,10 @@ export default async function deployDiamond(
   const diamondInit = await deployContract('DiamondInit')
 
   // Deploy Facets
-  const facets: Contract[] = []
-  const facetsByName = {} as { [K in (typeof FacetNames)[number]]: Contract }
+  const facets: BaseContract[] = []
+  const facetsByName = {} as {
+    [K in (typeof FacetNames)[number]]: BaseContract
+  }
   for (const FacetName of FacetNames) {
     const facet = await deployContract(FacetName)
 
@@ -61,7 +63,12 @@ export default async function deployDiamond(
     Object.values(args),
   ])
 
-  await addFacets(facets, diamond.address, diamondInit.address, functionCall)
+  await addFacets(
+    facets,
+    await diamond.getAddress(),
+    await diamondInit.getAddress(),
+    functionCall
+  )
 
   return diamond
 }

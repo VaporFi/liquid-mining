@@ -13,7 +13,7 @@ async function main(seasonId: number) {
   )
   const ClaimFacet = await ethers.getContractAt('ClaimFacet', diamondAddress)
   // Load all Deposit events
-  const filter = DepositFacet.filters.Deposit(seasonId, null, null)
+  const filter = DepositFacet.filters.Deposit(seasonId, undefined, undefined)
   const depositEvents = await DepositFacet.queryFilter(filter)
   // Get all depositors
   const depositors = depositEvents.map((event) => event.args?.user)

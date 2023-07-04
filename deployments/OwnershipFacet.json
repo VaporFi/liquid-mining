@@ -133,8 +133,8 @@
     "options": {
       "args": [],
       "log": true,
-      "skipIfAlreadyDeployed": true
+      "skipIfAlreadyDeployed": false
     },
-    "address": "0x86A2EE8FAf9A840F7a2c64CA3d51209F9A02081D"
+    "address": "0xA4899D35897033b927acFCf422bc745916139776"
   }
 }

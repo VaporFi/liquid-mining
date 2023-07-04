@@ -1,7 +1,12 @@
-import { constants, Contract } from 'ethers'
-import { Fragment, FunctionFragment } from 'ethers/lib/utils'
+import {
+  BaseContract,
+  Contract,
+  ZeroAddress,
+  Fragment,
+  FunctionFragment,
+} from 'ethers'
 import { ethers } from 'hardhat'
-import { IDiamondCut, IDiamondLoupe } from '../typechain-types'
+import { IDiamondLoupe } from '../typechain-types'
 
 export type FacetCut = {
   facetAddress: string
@@ -15,26 +20,18 @@ export enum FacetCutAction {
   Remove = 2,
 }
 
-export function getSelectors(contract: Contract): string[] {
-  const selectors = contract.interface.fragments.reduce(
-    (acc: string[], val: Fragment) => {
-      if (val.type === 'function') {
-        const sig = contract.interface.getSighash(val as FunctionFragment)
-        acc.push(sig)
-        return acc
-      } else {
-        return acc
-      }
-    },
-    []
-  )
+export function getSelectors(contract: BaseContract): string[] {
+  const selectors: string[] = []
+  contract.interface.forEachFunction((func) => {
+    selectors.push(func.selector)
+  })
   return selectors
 }
 
 export async function addOrReplaceFacets(
-  facets: Contract[],
+  facets: BaseContract[],
   diamondAddress: string,
-  initContract: string = constants.AddressZero,
+  initContract: string = ZeroAddress,
   initData = '0x'
 ): Promise<void> {
   const loupe = <IDiamondLoupe>(
@@ -45,32 +42,33 @@ export async function addOrReplaceFacets(
   for (const f of facets) {
     const replaceSelectors = []
     const addSelectors = []
+    const facetAddress = await f.getAddress()
 
     const selectors = getSelectors(f)
 
     for (const s of selectors) {
-      const addr = await loupe.facetAddress(s)
+      const addr = await loupe.facetAddress(s.toString())
 
-      if (addr === constants.AddressZero) {
+      if (addr === ZeroAddress) {
         addSelectors.push(s)
         continue
       }
 
-      if (addr.toLowerCase() !== f.address.toLowerCase()) {
+      if (addr.toLowerCase() !== (await f.getAddress()).toLowerCase()) {
         replaceSelectors.push(s)
       }
     }
 
     if (replaceSelectors.length) {
       cut.push({
-        facetAddress: f.address,
+        facetAddress,
         action: FacetCutAction.Replace,
         functionSelectors: replaceSelectors,
       })
     }
     if (addSelectors.length) {
       cut.push({
-        facetAddress: f.address,
+        facetAddress,
         action: FacetCutAction.Add,
         functionSelectors: addSelectors,
       })
@@ -89,17 +87,18 @@ export async function addOrReplaceFacets(
 }
 
 export async function addFacets(
-  facets: Contract[],
+  facets: BaseContract[],
   diamondAddress: string,
-  initContract: string = constants.AddressZero,
+  initContract: string = ZeroAddress,
   initData = '0x'
 ): Promise<void> {
   const cut = []
   for (const f of facets) {
     const selectors = getSelectors(f)
+    const facetAddress = await f.getAddress()
 
     cut.push({
-      facetAddress: f.address,
+      facetAddress,
       action: FacetCutAction.Add,
       functionSelectors: selectors,
     })
@@ -122,14 +121,14 @@ export async function removeFacet(
 ): Promise<void> {
   const cut = [
     {
-      facetAddress: constants.AddressZero,
+      facetAddress: ZeroAddress,
       action: FacetCutAction.Remove,
       functionSelectors: selectors,
     },
   ]
 
   console.log('Removing facet...')
-  await doCut(diamondAddress, cut, constants.AddressZero, '0x')
+  await doCut(diamondAddress, cut, ZeroAddress, '0x')
 
   console.log('Done.')
 }
@@ -137,7 +136,7 @@ export async function removeFacet(
 export async function replaceFacet(
   facet: Contract,
   diamondAddress: string,
-  initContract: string = constants.AddressZero,
+  initContract: string = ZeroAddress,
   initData = '0x'
 ): Promise<void> {
   const selectors = getSelectors(facet)
@@ -165,10 +164,15 @@ async function doCut(
   const cutter = await ethers.getContractAt('DiamondCutFacet', diamondAddress)
   console.log('Cutting diamond...')
 
+  console.log(
+    '🚀 ~ file: diamond.ts:168 ~ cut, initContract, initData:',
+    cut,
+    initContract,
+    initData
+  )
   const tx = await cutter.diamondCut(cut, initContract, initData)
-  console.log('Diamond cut tx: ', tx.hash)
   const receipt = await tx.wait()
-  if (!receipt.status) {
-    throw Error(`Diamond upgrade failed: ${tx.hash}`)
+  if (!receipt?.status) {
+    throw Error(`Diamond upgrade failed: ${tx.data}`)
   }
 }

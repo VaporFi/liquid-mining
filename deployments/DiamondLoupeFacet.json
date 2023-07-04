@@ -223,7 +223,7 @@
     "options": {
       "args": [],
       "log": true,
-      "skipIfAlreadyDeployed": true
+      "skipIfAlreadyDeployed": false
     },
     "address": "0x7A9Ec1d04904907De0ED7b6839CcdD59c3716AC9"
   }

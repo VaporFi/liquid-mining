@@ -5,14 +5,15 @@ import { addresses } from '../../config/addresses'
 async function main() {
   // Deploy VaporNodesDiamond
   const diamond = await deployDiamond()
+  const diamondAddress = await diamond.getAddress()
 
   const DiamondManagerFacet = await ethers.getContractAt(
     'DiamondManagerFacet',
-    diamond.address
+    diamondAddress
   )
   const OwnershipFacet = await ethers.getContractAt(
     'OwnershipFacet',
-    diamond.address
+    diamondAddress
   )
 
   // Start first season
