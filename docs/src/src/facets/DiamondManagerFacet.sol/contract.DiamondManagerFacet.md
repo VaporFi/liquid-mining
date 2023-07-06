@@ -1,5 +1,5 @@
 # DiamondManagerFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/DiamondManagerFacet.sol)
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/4b4d0d561b5718174cc348f0e7fc8a94c51e2caa/src/facets/DiamondManagerFacet.sol)
 
 
 ## State Variables
@@ -7,6 +7,13 @@
 
 ```solidity
 AppStorage s;
+```
+
+
+### TOTAL_SHARES
+
+```solidity
+uint256 public constant TOTAL_SHARES = 10_000;
 ```
 
 
@@ -25,13 +32,6 @@ modifier onlyOwner();
 modifier validAddress(address token);
 ```
 
-### withdrawBoostFee
-
-
-```solidity
-function withdrawBoostFee(address to, uint256 amount) external onlyOwner;
-```
-
 ### setDepositToken
 
 
@@ -44,20 +44,6 @@ function setDepositToken(address token) external validAddress(token) onlyOwner;
 
 ```solidity
 function setCurrentSeasonId(uint256 seasonId) external onlyOwner;
-```
-
-### setDepositDiscountForStratosphereMember
-
-
-```solidity
-function setDepositDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner;
-```
-
-### setDepositFee
-
-
-```solidity
-function setDepositFee(uint256 fee) external onlyOwner;
 ```
 
 ### setStratosphereAddress
@@ -74,13 +60,6 @@ function setStratosphereAddress(address stratosphereAddress) external validAddre
 function setSeasonEndTimestamp(uint256 seasonId, uint256 timestamp) external onlyOwner;
 ```
 
-### setDepositFeeReceivers
-
-
-```solidity
-function setDepositFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner;
-```
-
 ### setBoostFeeReceivers
 
 
@@ -88,39 +67,11 @@ function setDepositFeeReceivers(address[] memory receivers, uint256[] memory pro
 function setBoostFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner;
 ```
 
-### setClaimFeeReceivers
-
-
-```solidity
-function setClaimFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner;
-```
-
-### setRestakeFeeReceivers
-
-
-```solidity
-function setRestakeFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner;
-```
-
 ### setUnlockFeeReceivers
 
 
 ```solidity
 function setUnlockFeeReceivers(address[] memory receivers, uint256[] memory proportion) external onlyOwner;
-```
-
-### setRestakeDiscountForStratosphereMember
-
-
-```solidity
-function setRestakeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner;
-```
-
-### setRestakeFee
-
-
-```solidity
-function setRestakeFee(uint256 fee) external onlyOwner;
 ```
 
 ### setRewardToken
@@ -135,6 +86,34 @@ function setRewardToken(address token) external validAddress(token) onlyOwner;
 
 ```solidity
 function startNewSeason(uint256 _rewardTokenToDistribute) external onlyOwner;
+```
+
+### startNewSeasonWithDuration
+
+
+```solidity
+function startNewSeasonWithDuration(uint256 _rewardTokenToDistribute, uint8 _durationDays) external onlyOwner;
+```
+
+### getRewardTokenToDistribute
+
+
+```solidity
+function getRewardTokenToDistribute(uint256 _seasonId) external view returns (uint256);
+```
+
+### claimTokensForSeason
+
+
+```solidity
+function claimTokensForSeason() external onlyOwner;
+```
+
+### setEmissionsManager
+
+
+```solidity
+function setEmissionsManager(address _emissionManager) external onlyOwner;
 ```
 
 ### getUserDepositAmount
@@ -223,13 +202,6 @@ function setUnlockTimestampDiscountForStratosphereMember(uint256 tier, uint256 d
     onlyOwner;
 ```
 
-### setUnlockFeeDiscountForStratosphereMember
-
-
-```solidity
-function setUnlockFeeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner;
-```
-
 ### setUnlockFee
 
 
@@ -244,13 +216,6 @@ function setUnlockFee(uint256 fee) external onlyOwner;
 function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner;
 ```
 
-### setBoostFeeToken
-
-
-```solidity
-function setBoostFeeToken(address boostFeeToken) external onlyOwner;
-```
-
 ### setBoostPercentTierLevel
 
 
@@ -263,6 +228,13 @@ function setBoostPercentTierLevel(uint256 tier, uint256 level, uint256 percent) 
 
 ```solidity
 function getUserPoints(address user, uint256 seasonId) external view returns (uint256, uint256);
+```
+
+### getUserLastBoostClaimedAmount
+
+
+```solidity
+function getUserLastBoostClaimedAmount(address user, uint256 seasonId) external view returns (uint256);
 ```
 
 ### getUnlockAmountOfUser
@@ -335,6 +307,13 @@ function getSeasonData(uint256 seasonId) external view returns (Season memory);
 function getStratosphereAddress() external view returns (address);
 ```
 
+### getRewardTokensToDistribute
+
+
+```solidity
+function getRewardTokensToDistribute(uint256 seasonId) external view returns (uint256);
+```
+
 ## Events
 ### BoostFeeWithdrawn
 
@@ -352,12 +331,6 @@ event DepositTokenSet(address indexed token);
 
 ```solidity
 event SeasonIdSet(uint256 indexed seasonId);
-```
-
-### DepositDiscountForStratosphereMemberSet
-
-```solidity
-event DepositDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
 ```
 
 ### DepositFeeSet
@@ -408,28 +381,22 @@ event ClaimFeeReceiversSet(address[] receivers, uint256[] proportion);
 event RestakeFeeReceiversSet(address[] receivers, uint256[] proportion);
 ```
 
-### RestakeFeeSet
+### VapeClaimedForSeason
 
 ```solidity
-event RestakeFeeSet(uint256 fee);
+event VapeClaimedForSeason(uint256 indexed seasonId);
 ```
 
-### RestakeDiscountForStratosphereMemberSet
+### EmissionsManagerSet
 
 ```solidity
-event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
+event EmissionsManagerSet(address indexed emissionManager);
 ```
 
 ### UnlockTimestampDiscountForStratosphereMemberSet
 
 ```solidity
 event UnlockTimestampDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
-```
-
-### UnlockFeeDiscountForStratosphereMemberSet
-
-```solidity
-event UnlockFeeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
 ```
 
 ### UnlockFeeSet
@@ -442,5 +409,17 @@ event UnlockFeeSet(uint256 fee);
 
 ```solidity
 event UnlockFeeReceiversSet(address[] receivers, uint256[] proportion);
+```
+
+### SeasonStarted
+
+```solidity
+event SeasonStarted(uint256 indexed seasonId, uint256 rewardTokenToDistribute);
+```
+
+### SeasonEnded
+
+```solidity
+event SeasonEnded(uint256 indexed seasonId, uint256 rewardTokenDistributed);
 ```
 

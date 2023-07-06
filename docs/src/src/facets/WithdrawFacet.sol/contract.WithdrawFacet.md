@@ -1,5 +1,5 @@
 # WithdrawFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/WithdrawFacet.sol)
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/4b4d0d561b5718174cc348f0e7fc8a94c51e2caa/src/facets/WithdrawFacet.sol)
 
 Facet in charge of withdrawing unlocked VPND
 
@@ -28,46 +28,14 @@ Withdraw prematurely unlocked VPND
 function withdrawUnlocked() external;
 ```
 
-### withdraw
-
-Withdraw unlocked VPND
-
-*User cannot participate in new seasons until they withdraw*
-
-
-```solidity
-function withdraw() external;
-```
-
-### withdrawAll
-
-Withdraw all unlocked VPND
-
-*User cannot participate in new seasons until they withdraw*
-
-
-```solidity
-function withdrawAll() external;
-```
-
 ## Events
 ### WithdrawUnlockedVPND
 EVENTS ///
 
+Ordering of the events are according to their relevance in the facet
+
 
 ```solidity
-event WithdrawUnlockedVPND(uint256 amount, address indexed to);
-```
-
-### WithdrawVPND
-
-```solidity
-event WithdrawVPND(uint256 amount, address indexed to);
-```
-
-### WithdrawAll
-
-```solidity
-event WithdrawAll(uint256 amount, address indexed to);
+event WithdrawUnlockedVPND(uint256 indexed seasonId, address indexed to, uint256 amount);
 ```
 

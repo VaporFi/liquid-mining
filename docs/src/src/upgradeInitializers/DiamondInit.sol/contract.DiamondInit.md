@@ -1,5 +1,5 @@
 # DiamondInit
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/upgradeInitializers/DiamondInit.sol)
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/4b4d0d561b5718174cc348f0e7fc8a94c51e2caa/src/upgradeInitializers/DiamondInit.sol)
 
 \
 Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
@@ -29,14 +29,16 @@ function init(Args memory _args) external;
 
 ```solidity
 struct Args {
-    uint256 depositFee;
-    uint256 claimFee;
-    uint256 restakeFee;
     uint256 unlockFee;
     address depositToken;
-    address boostFeeToken;
+    address feeToken;
     address rewardToken;
     address stratosphere;
+    address xVAPE;
+    address passport;
+    address replenishmentPool;
+    address labsMultisig;
+    address burnWallet;
 }
 ```
 
