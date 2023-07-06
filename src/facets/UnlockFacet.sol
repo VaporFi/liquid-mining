@@ -39,7 +39,7 @@ contract UnlockFacet {
             _timeDiscount = s.unlockTimestampDiscountForStratosphereMembers[tier];
         }
         uint256 _unlockFeeFromState = s.unlockFee;
-        uint256 _fee = LPercentages.percentage(_amount,_unlockFeeFromState);
+        uint256 _fee = LPercentages.percentage(_amount, _unlockFeeFromState);
         _applyUnlockFee(_fee);
         uint256 _unlockTimestamp = block.timestamp + COOLDOWN_PERIOD - (_timeDiscount * COOLDOWN_PERIOD) / 10000;
 

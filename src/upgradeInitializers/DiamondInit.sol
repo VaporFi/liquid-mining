@@ -26,8 +26,6 @@ contract DiamondInit {
     AppStorage s;
 
     struct Args {
-        uint256 depositFee;
-        uint256 claimFee;
         uint256 unlockFee;
         address depositToken;
         address feeToken;
@@ -64,21 +62,10 @@ contract DiamondInit {
 
         // DepositFacet
         s.depositToken = _args.depositToken;
-        s.depositDiscountForStratosphereMembers[0] = 500; // 5%º
-        s.depositDiscountForStratosphereMembers[1] = 550; // 5.5%
-        s.depositDiscountForStratosphereMembers[2] = 650; // 6.5%
-        s.depositDiscountForStratosphereMembers[3] = 800; // 8%
-        s.depositDiscountForStratosphereMembers[4] = 1000; // 10%
-        s.depositDiscountForStratosphereMembers[5] = 1500; // 15%
 
         // UnlockFacet
         s.unlockFee = _args.unlockFee;
-        s.unlockFeeDiscountForStratosphereMembers[0] = 500; // 5%
-        s.unlockFeeDiscountForStratosphereMembers[1] = 550; // 5.5%
-        s.unlockFeeDiscountForStratosphereMembers[2] = 650; // 6.5%
-        s.unlockFeeDiscountForStratosphereMembers[3] = 800; // 8%
-        s.unlockFeeDiscountForStratosphereMembers[4] = 1000; // 10%
-        s.unlockFeeDiscountForStratosphereMembers[5] = 1500; // 15%
+
         s.unlockTimestampDiscountForStratosphereMembers[0] = 500; // 5%
         s.unlockTimestampDiscountForStratosphereMembers[1] = 550; // 5.5%
         s.unlockTimestampDiscountForStratosphereMembers[2] = 650; // 6.5%

@@ -51,9 +51,6 @@ struct AppStorage {
     uint256 unlockFee;
     // mapping: tier => discount percentage
     mapping(uint256 => uint256) unlockTimestampDiscountForStratosphereMembers;
-    mapping(uint256 => uint256) unlockFeeDiscountForStratosphereMembers;
-    mapping(uint256 => uint256) depositDiscountForStratosphereMembers;
-    mapping(uint256 => uint256) restakeDiscountForStratosphereMembers;
     // mapping: user => lastSeasonParticipated
     mapping(address => uint256) addressToLastSeasonId;
     address[] unlockFeeReceivers;

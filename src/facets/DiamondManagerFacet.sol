@@ -19,7 +19,6 @@ contract DiamondManagerFacet {
     event BoostFeeWithdrawn(address indexed to, uint256 amount);
     event DepositTokenSet(address indexed token);
     event SeasonIdSet(uint256 indexed seasonId);
-    event DepositDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
     event DepositFeeSet(uint256 fee);
     event StratosphereAddressSet(address indexed stratosphereAddress);
     event RewardsControllerAddressSet(address indexed rewardsControllerAddress);
@@ -35,7 +34,6 @@ contract DiamondManagerFacet {
     event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
 
     event UnlockTimestampDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
-    event UnlockFeeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
     event UnlockFeeSet(uint256 fee);
     event UnlockFeeReceiversSet(address[] receivers, uint256[] proportion);
 
@@ -64,11 +62,6 @@ contract DiamondManagerFacet {
     function setCurrentSeasonId(uint256 seasonId) external onlyOwner {
         s.currentSeasonId = seasonId;
         emit SeasonIdSet(seasonId);
-    }
-
-    function setDepositDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner {
-        s.depositDiscountForStratosphereMembers[tier] = discountBasisPoints;
-        emit DepositDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
 
     function setStratosphereAddress(address stratosphereAddress) external validAddress(stratosphereAddress) onlyOwner {
@@ -111,11 +104,6 @@ contract DiamondManagerFacet {
         s.unlockFeeReceivers = receivers;
         s.unlockFeeReceiversShares = proportion;
         emit UnlockFeeReceiversSet(receivers, proportion);
-    }
-
-    function setRestakeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner {
-        s.restakeDiscountForStratosphereMembers[tier] = discountBasisPoints;
-        emit RestakeDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
 
     function setRestakeFee(uint256 fee) external onlyOwner {
@@ -235,11 +223,6 @@ contract DiamondManagerFacet {
     ) external onlyOwner {
         s.unlockTimestampDiscountForStratosphereMembers[tier] = discountBasisPoints;
         emit UnlockTimestampDiscountForStratosphereMemberSet(tier, discountBasisPoints);
-    }
-
-    function setUnlockFeeDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints) external onlyOwner {
-        s.unlockFeeDiscountForStratosphereMembers[tier] = discountBasisPoints;
-        emit UnlockFeeDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
 
     function setUnlockFee(uint256 fee) external onlyOwner {

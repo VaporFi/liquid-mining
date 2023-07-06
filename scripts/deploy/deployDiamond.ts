@@ -12,9 +12,7 @@ const CHAIN_ID = ['avalanche', 'fuji'].includes(network.name)
   : '43113'
 // WARNING: the order here is important, check src/DiamondInit.sol
 export const defaultArgs: DiamondInit.ArgsStruct = {
-  depositFee: '500',
-  claimFee: '500',
-  unlockFee: '1000',
+  unlockFee: '1000', // 10%
   depositToken: addresses.vpnd[CHAIN_ID],
   feeToken: addresses.usdc[CHAIN_ID],
   rewardToken: addresses.vape[CHAIN_ID],

@@ -3,37 +3,13 @@ import { ethers, network } from 'hardhat'
 import { addresses } from '../../config/addresses'
 
 async function main() {
-  // Deploy VaporNodesDiamond
+  // Deploy LiquidMiningDiamond
   const diamond = await deployDiamond()
   const diamondAddress = await diamond.getAddress()
 
-  const DiamondManagerFacet = await ethers.getContractAt(
-    'DiamondManagerFacet',
-    diamondAddress
+  console.log(
+    `LiquidMiningDiamond deployed at ${diamondAddress} on ${network.name}`
   )
-  const OwnershipFacet = await ethers.getContractAt(
-    'OwnershipFacet',
-    diamondAddress
-  )
-
-  // Start first season
-  // await (
-  //   await DiamondManagerFacet.startNewSeasonWithDuration(
-  //     ethers.utils.parseEther('15000'),
-  //     5
-  //   )
-  // ).wait()
-  // console.log('Season started')
-
-  // const currentSeason = await DiamondManagerFacet.getCurrentSeasonData()
-  // console.log('Current season', currentSeason)
-
-  // Transfer ownership to labs multisig
-  // if (network.name !== 'avalanche') return
-  // await (
-  //   await OwnershipFacet.transferOwnership(addresses.teamMultisig['43113'])
-  // ).wait()
-  // console.log('Ownership transferred')
 }
 
 main()

@@ -19,7 +19,6 @@ error DepositFacet__InvalidMiningPass();
 /// @notice Facet in charge of depositing VPND tokens
 /// @dev Utilizes 'LDiamond', 'AppStorage' and 'LPercentages'
 contract DepositFacet {
-    
     /// @notice Ordering of the events are according to their relevance in the facet
     event Deposit(uint256 indexed seasonId, address indexed user, uint256 amount);
 
@@ -55,13 +54,7 @@ contract DepositFacet {
         if (_userDataForCurrentSeason.depositAmount == 0) {
             _userDataForCurrentSeason.lastBoostClaimTimestamp = block.timestamp; //BoostFacet#_calculatePoints over/underflow fix
         }
-        uint256 _discount = 0;
         s.addressToLastSeasonId[msg.sender] = _currentSeasonId;
-
-        (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
-        if (isStratosphereMember) {
-            _discount = s.depositDiscountForStratosphereMembers[tier];
-        }
 
         _applyPoints(_amount, _currentSeasonId, _userDataForCurrentSeason);
 
