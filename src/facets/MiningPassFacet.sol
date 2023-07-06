@@ -24,15 +24,16 @@ contract MiningPassFacet {
     /// notice Purchase a mining pass
     /// @param _tier Tier of mining pass to purchase
     function purchase(uint256 _tier) external {
+        uint256 feeForPassedTier = s.miningPassTierToFee[_tier];
         IERC20 _feeToken = IERC20(s.feeToken);
         uint256 _currentSeasonId = s.currentSeasonId;
         UserData storage _userData = s.usersData[_currentSeasonId][msg.sender];
         // check _tier is not 0
-        if (_tier == 0 || _tier <= _userData.miningPassTier) {
+        if (_tier == 0 || _tier <= _userData.miningPassTier || feeForPassedTier == 0) {
             revert MiningPassFacet__InvalidTier();
         }
         // check if user have enough USDC to purchase
-        uint256 _fee = s.miningPassTierToFee[_tier] - s.miningPassTierToFee[_userData.miningPassTier];
+        uint256 _fee = feeForPassedTier - s.miningPassTierToFee[_userData.miningPassTier];
         if (_feeToken.balanceOf(msg.sender) < _fee) {
             revert MiningPassFacet__InsufficientBalance();
         }
