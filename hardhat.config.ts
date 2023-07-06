@@ -9,6 +9,7 @@ import 'dotenv/config'
 
 import './tasks/verify'
 import './tasks/automatedClaim'
+import './tasks/season'
 
 const AVALANCHE_RPC_URL = getEnvValSafe('AVALANCHE_RPC_URL')
 const FUJI_RPC_URL = getEnvValSafe('FUJI_RPC_URL')
