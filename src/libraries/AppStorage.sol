@@ -86,7 +86,6 @@ struct AppStorage {
     ///////////////////
     mapping(uint256 => uint256) miningPassTierToFee;
     mapping(uint256 => uint256) miningPassTierToDepositLimit;
-    uint256 miningPassMaxTier;
     ///////////////
     /// GENERAL ///
     ///////////////

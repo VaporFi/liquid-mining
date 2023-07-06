@@ -125,8 +125,6 @@ contract DiamondInit {
         s.boostPercentFromTierToLevel[5][3] = 145; // 1.45%
 
         // MiningPassFacet
-        ///@dev max tier is 10
-        s.miningPassMaxTier = 10;
         /// @dev fee is paid in USDC
         s.miningPassTierToFee[0] = 0;
         s.miningPassTierToFee[1] = 0.5 * 1e6;
