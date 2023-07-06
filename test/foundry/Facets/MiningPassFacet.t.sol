@@ -64,6 +64,17 @@ contract MiningPassFacetTest is DiamondTest {
         vm.stopPrank();
     }
 
+    function test_Purchase_RevertIf_TiersIsGreaterThanMaxTier() public {
+        vm.startPrank(makeAddr("user"));
+
+        _approveAndMintFeeToken(100 * 1e6);
+
+        vm.expectRevert(MiningPassFacet__InvalidTier.selector);
+        miningPassFacet.purchase(11);
+
+        vm.stopPrank();
+    }
+
     function test_Purchase_RevertIf_PurchaseSameTwice() public {
         vm.startPrank(makeAddr("user"));
 

@@ -128,8 +128,8 @@ contract DiamondInit {
         s.miningPassTierToFee[6] = 15 * 1e6;
         s.miningPassTierToFee[7] = 30 * 1e6;
         s.miningPassTierToFee[8] = 50 * 1e6;
-        s.miningPassTierToFee[9] = 70 * 1e6;
-        s.miningPassTierToFee[9] = 100 * 1e6;
+        s.miningPassTierToFee[9] = 75 * 1e6;
+        s.miningPassTierToFee[10] = 100 * 1e6;
         /// @dev deposit limit is in VPND
         s.miningPassTierToDepositLimit[0] = 5_000 * 1e18;
         s.miningPassTierToDepositLimit[1] = 10_000 * 1e18;
