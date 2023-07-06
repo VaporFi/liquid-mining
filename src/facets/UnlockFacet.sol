@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "../libraries/AppStorage.sol";
-import "../libraries/LPercentages.sol";
-import "../interfaces/IStratosphere.sol";
-import "../libraries/LStratosphere.sol";
+import { AppStorage, UserData, Season } from "../libraries/AppStorage.sol";
+import { LPercentages } from "../libraries/LPercentages.sol";
+import { IStratosphere } from "../interfaces/IStratosphere.sol";
+import { LStratosphere } from "../libraries/LStratosphere.sol";
 
 error UnlockFacet__InvalidAmount();
 error UnlockFacet__AlreadyUnlocked();
@@ -71,13 +71,16 @@ contract UnlockFacet {
     /// @notice Apply deposit fee
     /// @param _fee Fee amount
     function _applyUnlockFee(uint256 _fee) internal {
-        if (s.unlockFeeReceivers.length != s.unlockFeeReceiversShares.length) {
+        address[] memory _receivers = s.unlockFeeReceivers;
+        uint256[] memory _shares = s.unlockFeeReceiversShares;
+        uint256 _length = _receivers.length;
+
+        if (_length != _shares.length) {
             revert UnlockFacet__InvalidFeeReceivers();
         }
-        uint256 _length = s.unlockFeeReceivers.length;
         for (uint256 i; i < _length; ) {
-            uint256 _share = LPercentages.percentage(_fee, s.unlockFeeReceiversShares[i]);
-            s.pendingWithdrawals[s.unlockFeeReceivers[i]][s.depositToken] += _share;
+            uint256 _share = LPercentages.percentage(_fee, _shares[i]);
+            s.pendingWithdrawals[_receivers[i]][s.depositToken] += _share;
             unchecked {
                 i++;
             }

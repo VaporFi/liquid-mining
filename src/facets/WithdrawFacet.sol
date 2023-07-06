@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/diamond/LDiamond.sol";
-import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "../libraries/AppStorage.sol";
+import { AppStorage, UserData } from "../libraries/AppStorage.sol";
 
 error WithdrawFacet__InsufficientBalance();
 error WithdrawFacet__UnlockNotMatured();

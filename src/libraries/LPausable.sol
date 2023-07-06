@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "../libraries/AppStorage.sol";
+import { AppStorage } from "./AppStorage.sol";
 
 error LPausable__AlreadyPaused();
 error LPausable__AlreadyUnpaused();

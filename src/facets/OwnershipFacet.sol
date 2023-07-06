@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/interfaces/IERC173.sol";
-import "clouds/diamond/LDiamond.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+import { IERC173 } from "clouds/interfaces/IERC173.sol";
 
 /// @title OwnershipFacet
 /// @author Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat

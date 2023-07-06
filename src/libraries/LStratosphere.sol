@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "../libraries/AppStorage.sol";
-import "../interfaces/IStratosphere.sol";
+import { AppStorage } from "./AppStorage.sol";
+import { IStratosphere } from "../interfaces/IStratosphere.sol";
 
 /// @title LStratosphere
 /// @notice Library in charge of Stratosphere related logic

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/diamond/LDiamond.sol";
-import "openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interfaces/IEmissionsManager.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "../libraries/AppStorage.sol";
+import { AppStorage, UserData, Season } from "../libraries/AppStorage.sol";
+import { IEmissionsManager } from "../interfaces/IEmissionsManager.sol";
 
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
@@ -29,14 +29,9 @@ contract DiamondManagerFacet {
     event RestakeFeeReceiversSet(address[] receivers, uint256[] proportion);
     event VapeClaimedForSeason(uint256 indexed seasonId);
     event EmissionsManagerSet(address indexed emissionManager);
-
-    event RestakeFeeSet(uint256 fee);
-    event RestakeDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
-
     event UnlockTimestampDiscountForStratosphereMemberSet(uint256 indexed tier, uint256 discountPoints);
     event UnlockFeeSet(uint256 fee);
     event UnlockFeeReceiversSet(address[] receivers, uint256[] proportion);
-
     event SeasonStarted(uint256 indexed seasonId, uint256 rewardTokenToDistribute);
     event SeasonEnded(uint256 indexed seasonId, uint256 rewardTokenDistributed);
 
@@ -104,14 +99,6 @@ contract DiamondManagerFacet {
         s.unlockFeeReceivers = receivers;
         s.unlockFeeReceiversShares = proportion;
         emit UnlockFeeReceiversSet(receivers, proportion);
-    }
-
-    function setRestakeFee(uint256 fee) external onlyOwner {
-        if (fee > TOTAL_SHARES) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.restakeFee = fee;
-        emit RestakeFeeSet(fee);
     }
 
     function setRewardToken(address token) external validAddress(token) onlyOwner {

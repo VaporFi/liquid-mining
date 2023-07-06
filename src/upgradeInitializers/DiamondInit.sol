@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
 /******************************************************************************\
 * Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
@@ -57,7 +57,7 @@ contract DiamondInit {
 
         // General
         s.stratosphereAddress = _args.stratosphere;
-        s.feeToken = _args.feeToken;
+        s.feeToken = _args.feeToken; // Used for boost fees and mining pass fees
         s.rewardToken = _args.rewardToken;
 
         // DepositFacet
@@ -110,6 +110,12 @@ contract DiamondInit {
         s.boostPercentFromTierToLevel[3][3] = 64; // 0.64%
         s.boostPercentFromTierToLevel[4][3] = 94; // 0.94%
         s.boostPercentFromTierToLevel[5][3] = 145; // 1.45%
+        s.boostFeeReceivers.push(_args.labsMultisig);
+        s.boostFeeReceivers.push(_args.xVAPE);
+        s.boostFeeReceivers.push(_args.passport);
+        s.boostFeeReceiversShares.push(5000); // 50%
+        s.boostFeeReceiversShares.push(4000); // 40%
+        s.boostFeeReceiversShares.push(1000); // 10%
 
         // MiningPassFacet
         /// @dev fee is paid in USDC
@@ -136,5 +142,11 @@ contract DiamondInit {
         s.miningPassTierToDepositLimit[8] = 4_500_000 * 1e18;
         s.miningPassTierToDepositLimit[9] = 12_000_000 * 1e18;
         s.miningPassTierToDepositLimit[10] = type(uint256).max;
+        s.miningPassFeeReceivers.push(_args.xVAPE);
+        s.miningPassFeeReceivers.push(_args.labsMultisig);
+        s.miningPassFeeReceivers.push(_args.passport);
+        s.miningPassFeeReceiversShares.push(6500); // 65%
+        s.miningPassFeeReceiversShares.push(3000); // 30%
+        s.miningPassFeeReceiversShares.push(500); // 5%
     }
 }

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/diamond/LDiamond.sol";
-import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "../libraries/AppStorage.sol";
-import "../libraries/LPercentages.sol";
-import "../interfaces/IStratosphere.sol";
-import "../libraries/LStratosphere.sol";
+import { AppStorage, UserData, Season } from "../libraries/AppStorage.sol";
+import { LPercentages } from "../libraries/LPercentages.sol";
+import { IStratosphere } from "../interfaces/IStratosphere.sol";
+import { LStratosphere } from "../libraries/LStratosphere.sol";
 
 error DepositFacet__NotEnoughTokenBalance();
 error DepositFacet__ReentrancyGuard__ReentrantCall();

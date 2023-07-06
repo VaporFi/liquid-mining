@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/diamond/LDiamond.sol";
-import "openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "../libraries/AppStorage.sol";
+import { AppStorage } from "../libraries/AppStorage.sol";
 
 /// @title FeeCollectorFacet
 /// @notice Facet in charge of collecting fees
@@ -18,9 +18,11 @@ contract FeeCollectorFacet {
         _;
     }
 
-    /// @notice Transfer the collected fees to the fee receivers
+    /// @notice Transfer the collected boost fees to the fee receivers
+    /// @dev As long as the boostFeeReceivers and miningPassFeeReceivers
+    /// @dev are the same, this function can be used to collect both
     function collectBoostFees() external onlyOwner {
-        address[] storage _receivers = s.boostFeeReceivers;
+        address[] memory _receivers = s.boostFeeReceivers;
         uint256 _length = _receivers.length;
         address _feeToken = s.feeToken;
 
@@ -32,8 +34,9 @@ contract FeeCollectorFacet {
         }
     }
 
+    /// @notice Transfer the collected unlock fees to the fee receivers
     function collectUnlockFees() external onlyOwner {
-        address[] storage _receivers = s.unlockFeeReceivers;
+        address[] memory _receivers = s.unlockFeeReceivers;
         uint256 _length = _receivers.length;
         address _depositToken = s.depositToken;
 
@@ -44,6 +47,4 @@ contract FeeCollectorFacet {
             IERC20(_depositToken).transfer(_receivers[i], amount);
         }
     }
-
-    // TODO: add minig pass fees
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.17;
+pragma solidity 0.8.18;
 
 import "forge-std/Test.sol";
 import "clouds/interfaces/IDiamondCut.sol";
@@ -178,7 +178,7 @@ contract DiamondTest is Test {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](30);
+        functionSelectors = new bytes4[](29);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setStratosphereAddress.selector;
@@ -188,27 +188,26 @@ contract DiamondTest is Test {
         functionSelectors[6] = diamondManager.getDepositPointsOfUser.selector;
         functionSelectors[7] = diamondManager.getTotalDepositAmountOfSeason.selector;
         functionSelectors[8] = diamondManager.getTotalPointsOfSeason.selector;
-        functionSelectors[9] = diamondManager.setRestakeFee.selector;
-        functionSelectors[10] = diamondManager.getCurrentSeasonId.selector;
-        functionSelectors[11] = diamondManager.getSeasonEndTimestamp.selector;
-        functionSelectors[12] = diamondManager.getWithdrawRestakeStatus.selector;
-        functionSelectors[13] = diamondManager.startNewSeason.selector;
-        functionSelectors[14] = diamondManager.getUserDepositAmount.selector;
-        functionSelectors[15] = diamondManager.setRewardToken.selector;
-        functionSelectors[16] = diamondManager.getUserClaimedRewards.selector;
-        functionSelectors[17] = diamondManager.getSeasonTotalPoints.selector;
-        functionSelectors[18] = diamondManager.getSeasonTotalClaimedRewards.selector;
-        functionSelectors[19] = diamondManager.getUserTotalPoints.selector;
-        functionSelectors[20] = diamondManager.setBoostFee.selector;
-        functionSelectors[21] = diamondManager.setBoostPercentTierLevel.selector;
-        functionSelectors[22] = diamondManager.getUserPoints.selector;
-        functionSelectors[23] = diamondManager.getUnlockAmountOfUser.selector;
-        functionSelectors[24] = diamondManager.getUnlockTimestampOfUser.selector;
-        functionSelectors[25] = diamondManager.getStratosphereAddress.selector;
-        functionSelectors[26] = diamondManager.setUnlockTimestampDiscountForStratosphereMember.selector;
-        functionSelectors[27] = diamondManager.setBoostFeeReceivers.selector;
-        functionSelectors[28] = diamondManager.setUnlockFeeReceivers.selector;
-        functionSelectors[29] = diamondManager.getUserLastBoostClaimedAmount.selector;
+        functionSelectors[9] = diamondManager.getCurrentSeasonId.selector;
+        functionSelectors[10] = diamondManager.getSeasonEndTimestamp.selector;
+        functionSelectors[11] = diamondManager.getWithdrawRestakeStatus.selector;
+        functionSelectors[12] = diamondManager.startNewSeason.selector;
+        functionSelectors[13] = diamondManager.getUserDepositAmount.selector;
+        functionSelectors[14] = diamondManager.setRewardToken.selector;
+        functionSelectors[15] = diamondManager.getUserClaimedRewards.selector;
+        functionSelectors[16] = diamondManager.getSeasonTotalPoints.selector;
+        functionSelectors[17] = diamondManager.getSeasonTotalClaimedRewards.selector;
+        functionSelectors[18] = diamondManager.getUserTotalPoints.selector;
+        functionSelectors[19] = diamondManager.setBoostFee.selector;
+        functionSelectors[20] = diamondManager.setBoostPercentTierLevel.selector;
+        functionSelectors[21] = diamondManager.getUserPoints.selector;
+        functionSelectors[22] = diamondManager.getUnlockAmountOfUser.selector;
+        functionSelectors[23] = diamondManager.getUnlockTimestampOfUser.selector;
+        functionSelectors[24] = diamondManager.getStratosphereAddress.selector;
+        functionSelectors[25] = diamondManager.setUnlockTimestampDiscountForStratosphereMember.selector;
+        functionSelectors[26] = diamondManager.setBoostFeeReceivers.selector;
+        functionSelectors[27] = diamondManager.setUnlockFeeReceivers.selector;
+        functionSelectors[28] = diamondManager.getUserLastBoostClaimedAmount.selector;
 
         cut.push(
             IDiamondCut.FacetCut({

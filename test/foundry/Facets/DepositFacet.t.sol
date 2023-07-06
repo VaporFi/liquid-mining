@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.17;
+pragma solidity 0.8.18;
 
 import "lib/forge-std/src/Test.sol";
 import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/interfaces/IDiamondLoupe.sol";
-import "clouds/interfaces/IERC165.sol";
-import "clouds/diamond/LDiamond.sol";
+import { IDiamondLoupe } from "clouds/interfaces/IDiamondLoupe.sol";
+import { IERC165 } from "clouds/interfaces/IERC165.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
 
 /// @title DiamondLoupeFacet
 /// @author Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat

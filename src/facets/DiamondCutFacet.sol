@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/interfaces/IDiamondCut.sol";
-import "clouds/diamond/LDiamond.sol";
+import { IDiamondCut } from "clouds/interfaces/IDiamondCut.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
 
 /// @title DiamondCutFacet
 /// @author Modified from Nick Mudge: https://github.com/mudgen/diamond-3-hardhat

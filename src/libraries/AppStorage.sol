@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.18;
 
 /// @dev rewardTokenToDistribute is the amount of reward token to distribute to users
 /// @dev rewardTokenBalance is the amount of reward token that is currently in the contract
@@ -65,14 +65,6 @@ struct AppStorage {
     mapping(uint256 => mapping(uint256 => uint256)) boostPercentFromTierToLevel;
     address[] boostFeeReceivers;
     uint256[] boostFeeReceiversShares;
-    ///////////////
-    /// RESTAKE ///
-    ///////////////
-    uint256 restakeFee;
-    // nested mapping: seasonId => userAddress => amount
-    mapping(uint256 => mapping(address => uint256)) claimAmounts;
-    // total amount claimed for each season: seasonId => amount
-    mapping(uint256 => uint256) totalClaimAmounts;
     ////////////////
     /// WITHDRAW ///
     ////////////////
@@ -83,6 +75,8 @@ struct AppStorage {
     ///////////////////
     mapping(uint256 => uint256) miningPassTierToFee;
     mapping(uint256 => uint256) miningPassTierToDepositLimit;
+    address[] miningPassFeeReceivers;
+    uint256[] miningPassFeeReceiversShares;
     ///////////////
     /// GENERAL ///
     ///////////////

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.17;
+pragma solidity 0.8.18;
 
 import "forge-std/Test.sol";
 import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
@@ -133,7 +133,7 @@ contract UnlockFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 0);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 0);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 0);
-        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberBasic, 1), 900); 
+        assertEq(diamondManagerFacet.getUnlockAmountOfUser(stratosphereMemberBasic, 1), 900);
         assertEq(
             diamondManagerFacet.getUnlockTimestampOfUser(stratosphereMemberBasic, 1),
             block.timestamp + 3 days - 12960
