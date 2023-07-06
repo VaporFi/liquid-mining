@@ -28,7 +28,7 @@ contract MiningPassFacet {
         uint256 _currentSeasonId = s.currentSeasonId;
         UserData storage _userData = s.usersData[_currentSeasonId][msg.sender];
         // check _tier is not 0
-        if (_tier == 0 || _tier <= _userData.miningPassTier) {
+        if (_tier == 0 || _tier <= _userData.miningPassTier || _tier > s.miningPassMaxTier) {
             revert MiningPassFacet__InvalidTier();
         }
         // check if user have enough USDC to purchase
