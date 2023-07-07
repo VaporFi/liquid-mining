@@ -113,8 +113,8 @@ contract DiamondInit {
         s.boostFeeReceivers.push(_args.labsMultisig);
         s.boostFeeReceivers.push(_args.xVAPE);
         s.boostFeeReceivers.push(_args.passport);
-        s.boostFeeReceiversShares.push(5000); // 50%
-        s.boostFeeReceiversShares.push(4000); // 40%
+        s.boostFeeReceiversShares.push(6000); // 50%
+        s.boostFeeReceiversShares.push(3000); // 40%
         s.boostFeeReceiversShares.push(1000); // 10%
 
         // MiningPassFacet
