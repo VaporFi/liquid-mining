@@ -42,4 +42,7 @@ export const addresses: {
     [ChainId.AVALANCHE]: '0x1cEc7B81Fdc2d46241B54b5190AF7967A93aa0E0',
     [ChainId.AVALANCHE_TESTNET]: '0xcf00c1ac6d26d52054ec89be6e093f2e270d61d9',
   },
+  emissionsManager: {
+    [ChainId.AVALANCHE]: '0x9f0EDB45c2DC0f56bA7C48368c26426f366Bb788',
+  },
 }
