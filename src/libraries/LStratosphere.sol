@@ -24,7 +24,7 @@ library LStratosphere {
         uint256 _tokenId = _stratosphere.tokenIdOf(_address);
         if (_tokenId > 0) {
             isStratosphereMember = true;
-            tier = _stratosphere.tierOf(_tokenId);
+            tier = 0;
         }
     }
 }
