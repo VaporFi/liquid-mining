@@ -76,7 +76,7 @@ contract BoostFacet {
         UserData storage _userData,
         uint256 _boostPercent,
         uint256 _seasonId
-    ) internal view returns (uint256) {
+    ) internal returns (uint256) {
         if (_boostPercent == 0) {
             return 0;
         }
