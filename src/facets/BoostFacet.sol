@@ -93,7 +93,9 @@ contract BoostFacet {
         if (_pointsObtainedTillNow == 0) {
             return 0;
         }
-        return LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
+        uint256 points = LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
+        _season.totalPoints += points;
+        return points;
     }
 
     /// @notice Apply boost fee
