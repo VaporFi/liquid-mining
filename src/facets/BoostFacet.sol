@@ -31,7 +31,7 @@ contract BoostFacet {
     AppStorage s;
 
     /// @notice Claim daily boost points
-    function claimBoost(uint256 boostLevel) external {
+    function claimBoost(uint256 _boostLevel) external {
         uint256 _seasonId = s.currentSeasonId;
         UserData storage _userData = s.usersData[_seasonId][msg.sender];
         if (_userData.depositAmount == 0) {
@@ -40,21 +40,11 @@ contract BoostFacet {
         if (_userData.lastBoostClaimTimestamp != 0 && block.timestamp - _userData.lastBoostClaimTimestamp < 1 days) {
             revert BoostFacet__BoostAlreadyClaimed();
         }
-        uint256 _boostFee = 0;
-        (bool isStratosphereMember, uint256 tier) = LStratosphere.getDetails(s, msg.sender);
-        if (!isStratosphereMember && boostLevel > 0) {
-            revert BoostFacet__InvalidBoostLevel();
-        }
-        if (isStratosphereMember) {
-            _boostFee = s.boostLevelToFee[boostLevel];
-        }
+        (bool isStratosphereMember, uint256 stratosphereTier) = LStratosphere.getDetails(s, msg.sender);
+        uint256 _boostFee = _calculateBoostFee(isStratosphereMember, _boostLevel);
+
         _userData.lastBoostClaimTimestamp = block.timestamp;
-        uint256 _boostPercent;
-        if (isStratosphereMember) {
-            _boostPercent = s.boostPercentFromTierToLevel[tier][boostLevel];
-        } else {
-            _boostPercent = s.boostForNonStratMembers;
-        }
+        uint256 _boostPercent = _calculateBoostPercent(isStratosphereMember, stratosphereTier, _boostLevel);
         uint256 _boostPointsAmount = _calculatePoints(_userData, _boostPercent, _seasonId);
         _userData.boostPoints += _boostPointsAmount;
         _userData.lastBoostClaimAmount = _boostPointsAmount;
@@ -62,11 +52,11 @@ contract BoostFacet {
             _applyBoostFee(_boostFee);
             IERC20(s.feeToken).transferFrom(msg.sender, address(this), _boostFee);
         }
-        emit ClaimBoost(_seasonId, msg.sender, boostLevel, _boostPointsAmount, _boostFee, tier);
+        emit ClaimBoost(_seasonId, msg.sender, _boostLevel, _boostPointsAmount, _boostFee, stratosphereTier);
     }
 
     /// @notice Calculate boost points
-    /// @param _userData User data
+    /// @param _userData User season data
     /// @param _boostPercent % to boost points
     /// @param _seasonId current seasonId
     /// @return Boost points
@@ -76,7 +66,7 @@ contract BoostFacet {
         UserData storage _userData,
         uint256 _boostPercent,
         uint256 _seasonId
-    ) internal view returns (uint256) {
+    ) internal returns (uint256) {
         if (_boostPercent == 0) {
             return 0;
         }
@@ -88,12 +78,15 @@ contract BoostFacet {
             return 0;
         }
 
-        uint256 _pointsObtainedTillNow = (_userData.depositPoints) - (_userData.depositAmount * _daysUntilSeasonEnd);
+        uint256 _pointsObtainedTillNow = (_userData.depositPoints + _userData.boostPoints) -
+            (_userData.depositAmount * _daysUntilSeasonEnd);
 
         if (_pointsObtainedTillNow == 0) {
             return 0;
         }
-        return LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
+        uint256 points = LPercentages.percentage(_pointsObtainedTillNow, _boostPercent);
+        _season.totalPoints += points;
+        return points;
     }
 
     /// @notice Apply boost fee
@@ -112,6 +105,29 @@ contract BoostFacet {
             unchecked {
                 i++;
             }
+        }
+    }
+
+    function _calculateBoostPercent(
+        bool _isStratosphereMember,
+        uint256 _tier,
+        uint256 _boostLevel
+    ) internal view returns (uint256 _boostPercent) {
+        if (_isStratosphereMember) {
+            _boostPercent = s.boostPercentFromTierToLevel[_tier][_boostLevel];
+        } else {
+            _boostPercent = s.boostForNonStratMembers;
+        }
+    }
+
+    function _calculateBoostFee(
+        bool _isStratosphereMember,
+        uint256 _boostLevel
+    ) internal view returns (uint256 _boostFee) {
+        if (_isStratosphereMember) {
+            _boostFee = s.boostLevelToFee[_boostLevel];
+        } else if (!_isStratosphereMember && _boostLevel > 0) {
+            revert BoostFacet__InvalidBoostLevel();
         }
     }
 }
