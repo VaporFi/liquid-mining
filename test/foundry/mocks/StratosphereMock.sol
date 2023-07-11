@@ -31,21 +31,21 @@ contract StratosphereMock is IStratosphere, Test {
         }
     }
 
-    function tierOf(uint256 tokenId) external pure returns (uint8) {
+    function tierOf(uint256 tokenId) external pure returns (uint8 _tier) {
         if (tokenId == 1) {
-            return 0;
+            _tier = 0;
         } else if (tokenId == 2) {
-            return 1;
+            _tier = 1;
         } else if (tokenId == 3) {
-            return 2;
+            _tier = 2;
         } else if (tokenId == 4) {
-            return 3;
+            _tier = 3;
         } else if (tokenId == 5) {
-            return 4;
+            _tier = 4;
         } else if (tokenId == 6) {
-            return 5;
+            _tier = 5;
         } else {
-            return uint8(tokenId - 1);
+            _tier = uint8(tokenId - 1);
         }
     }
 }
