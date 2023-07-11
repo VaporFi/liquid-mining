@@ -88,7 +88,8 @@ contract BoostFacet {
             return 0;
         }
 
-        uint256 _pointsObtainedTillNow = (_userData.depositPoints) - (_userData.depositAmount * _daysUntilSeasonEnd);
+        uint256 _pointsObtainedTillNow = (_userData.depositPoints + _userData.boostPoints) -
+            (_userData.depositAmount * _daysUntilSeasonEnd);
 
         if (_pointsObtainedTillNow == 0) {
             return 0;
