@@ -4,8 +4,10 @@ import wait from '../utils/wait'
 import data from './data/pointsMismatchAddress.json'
 import { AddressLike, BigNumberish } from 'ethers'
 import { writeFileSync } from 'fs'
+import functionArgs from './data/txnArgs.json'
+
 task(
-  'season:changeBoostPoints',
+  'season:getDataTochangeBoostPoints',
   'Changes boost point to provided value'
 ).setAction(async ({}, { ethers, network }) => {
   await getAddressesWithWrongPoints()
@@ -23,9 +25,8 @@ task(
   )
     throw new Error('Amounts and address mismatch')
 
-  const diamondAddress =
-    LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
-      .address
+  const diamondAddress = LiquidMiningDiamond['avalanche'].address
+
   const DiamondManagerFacet = await ethers.getContractAt(
     'DiamondManagerFacet',
     diamondAddress
@@ -68,14 +69,33 @@ task(
   const txnArgs: [AddressLike[], BigNumberish[]] = [
     Object.keys(addressWithCorrectBoostPoints),
     //@ts-ignore
-    Object.values(addressWithCorrectBoostPoints),
+    Object.values(addressWithCorrectBoostPoints)?.map((value) =>
+      value?.toString()
+    ),
   ]
-  //txn part
+  writeFileSync('./tasks/data/txnArgs.json', JSON.stringify(txnArgs))
+})
+
+task(
+  'season:changeBoostPoints',
+  'Run the changeBoostPoints Function'
+).setAction(async ({}, { ethers, network }) => {
+  const [addresses, amounts] = functionArgs
+  const diamondAddress =
+    LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
+      .address
+
+  const DiamondManagerFacet = await ethers.getContractAt(
+    'DiamondManagerFacet',
+    diamondAddress
+  )
+  console.log(addresses, amounts)
+
   // const response = await DiamondManagerFacet.changeBoostPoints(
-  //   txnArgs[0],
-  //   txnArgs[1]
+  //   addresses,
+  //   amounts
   // )
-  // console.log(response?.hash)
+  // console.log(response?.wait(3))
 })
 
 const getAddressesWithWrongPoints = async (): Promise<

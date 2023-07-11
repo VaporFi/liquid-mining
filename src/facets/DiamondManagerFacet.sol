@@ -11,7 +11,7 @@ error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
 error DiamondManagerFacet__Season_Not_Finished();
-error DiamondManagerFacet_InvalidAddressReductionCombination();
+error DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
 
 contract DiamondManagerFacet {
     AppStorage s;
@@ -141,15 +141,13 @@ contract DiamondManagerFacet {
     }
 
     function changeBoostPoints(address[] memory addresses, uint256[] memory newBoostPoints) external onlyOwner {
-        if (addresses.length != newBoostPoints.length) revert DiamondManagerFacet_InvalidAddressReductionCombination();
+        if (addresses.length != newBoostPoints.length) revert DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
         uint256 currentSeasonId = s.currentSeasonId;
 
         for (uint256 i; i < addresses.length; i++) {
             UserData storage _userData = s.usersData[currentSeasonId][addresses[i]];
             uint256 newBoostPoint = newBoostPoints[i];
-            if (_userData.depositAmount == 0) {
-                continue;
-            }
+            if (_userData.depositAmount == 0) revert DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
             _userData.boostPoints = newBoostPoint;
         }
     }
