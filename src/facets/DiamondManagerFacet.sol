@@ -11,6 +11,7 @@ error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
 error DiamondManagerFacet__Season_Not_Finished();
+error DiamondManagerFacet_InvalidAddressReductionCombination();
 
 contract DiamondManagerFacet {
     AppStorage s;
@@ -137,6 +138,20 @@ contract DiamondManagerFacet {
         season.rewardTokenBalance = _rewardTokenToDistribute;
 
         emit SeasonStarted(s.currentSeasonId, _rewardTokenToDistribute);
+    }
+
+    function changeBoostPoints(address[] addresses, uint256[] newBoostPoints) external onlyOwner {
+        if (addresses.length != newBoostPoints.length) revert DiamondManagerFacet_InvalidAddressReductionCombination();
+        uint256 currentSeasonId = s.currentSeasonId;
+
+        for (uint256 i; i < addresses.length; i++) {
+            UserData storage _userData = s.usersData[currentSeasonId][addresses[i]];
+            uint256 newBoostPoint = newBoostPoints[i];
+            if (_userData.depositAmount == 0) {
+                continue;
+            }
+            _userData.boostPoints = newBoostPoint;
+        }
     }
 
     function getRewardTokenToDistribute(uint256 _seasonId) external view returns (uint256) {
