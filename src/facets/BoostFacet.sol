@@ -45,11 +45,7 @@ contract BoostFacet {
 
         _userData.lastBoostClaimTimestamp = block.timestamp;
         uint256 _boostPercent = _calculateBoostPercent(isStratosphereMember, stratosphereTier, _boostLevel);
-        uint256 _boostPointsAmount = _calculatePoints(
-            (_userData.depositPoints + _userData.boostPoints),
-            _boostPercent,
-            _seasonId
-        );
+        uint256 _boostPointsAmount = _calculatePoints(_userData, _boostPercent, _seasonId);
         _userData.boostPoints += _boostPointsAmount;
         _userData.lastBoostClaimAmount = _boostPointsAmount;
         if (_boostFee > 0) {
@@ -60,14 +56,14 @@ contract BoostFacet {
     }
 
     /// @notice Calculate boost points
-    /// @param _userTotalPoints User total points
+    /// @param _userData User season data
     /// @param _boostPercent % to boost points
     /// @param _seasonId current seasonId
     /// @return Boost points
     /// @dev Utilizes 'LPercentages'.
     /// @dev _daysSinceSeasonStart starts from 0 equal to the first day of the season.
     function _calculatePoints(
-        uint256 _userTotalPoints,
+        UserData storage _userData,
         uint256 _boostPercent,
         uint256 _seasonId
     ) internal returns (uint256) {
@@ -82,10 +78,8 @@ contract BoostFacet {
             return 0;
         }
 
-        uint256 _remainingPoints = _userTotalPoints * _daysUntilSeasonEnd;
-        uint256 _pointsObtainedTillNow = _remainingPoints > _userTotalPoints
-            ? _remainingPoints - _userTotalPoints
-            : _userTotalPoints - _remainingPoints;
+        uint256 _pointsObtainedTillNow = (_userData.depositPoints + _userData.boostPoints) -
+            (_userData.depositAmount * _daysUntilSeasonEnd);
 
         if (_pointsObtainedTillNow == 0) {
             return 0;

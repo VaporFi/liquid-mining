@@ -102,9 +102,15 @@ contract BoostFacetTest is DiamondTest {
             _currentSeasonId
         );
         uint256 totalPointsTillNow = depositPointsTillNow + boostPointsTillNow;
+        uint256 depositAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, _currentSeasonId);
 
         vm.warp(block.timestamp + 3 days);
-        uint256 _caculatedPoints = _calculatePoints(totalPointsTillNow, boostLvl1Tier1);
+        uint256 _caculatedPoints = _calculatePoints(
+            depositPointsTillNow,
+            boostPointsTillNow,
+            depositAmount,
+            boostLvl1Tier1
+        );
         uint256 expectedTotalPoints = totalPointsTillNow + _caculatedPoints;
         console.log("[BoostFacetTest] expectedTotalPoints", expectedTotalPoints);
         boostFacet.claimBoost(1);
@@ -175,6 +181,7 @@ contract BoostFacetTest is DiamondTest {
 
     function test_BoostWithStratBasicLvl2() public {
         vm.startPrank(stratosphereMemberBasic);
+        uint256 _currentSeasonId = diamondManagerFacet.getCurrentSeasonId();
         _mintAndDeposit(stratosphereMemberBasic, testDepositAmount);
         _fundUserWithBoostFeeToken(stratosphereMemberBasic, boostFeeLvl2);
         assertEq(feeToken.balanceOf(stratosphereMemberBasic), boostFeeLvl2);
@@ -183,11 +190,18 @@ contract BoostFacetTest is DiamondTest {
             stratosphereMemberBasic,
             1
         );
-        vm.warp(block.timestamp + 3 days);
         uint256 totalPointsTillNow = depositPointsTillNow + boostPointsTillNow;
-        uint256 expectedTotalPoints = totalPointsTillNow + _calculatePoints(totalPointsTillNow, boostLvl2Tier1);
+        uint256 depositAmount = diamondManagerFacet.getDepositAmountOfUser(stratosphereMemberBasic, _currentSeasonId);
+
+        vm.warp(block.timestamp + 3 days);
+
+        uint256 expectedTotalPoints = totalPointsTillNow +
+            _calculatePoints(depositPointsTillNow, boostPointsTillNow, depositAmount, boostLvl2Tier1);
         boostFacet.claimBoost(2);
-        uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmount(stratosphereMemberBasic, 1);
+        uint256 lastBoostClaimedAmount = diamondManagerFacet.getUserLastBoostClaimedAmount(
+            stratosphereMemberBasic,
+            _currentSeasonId
+        );
         assertEq(totalPointsTillNow + lastBoostClaimedAmount, expectedTotalPoints);
         assertEq(feeToken.balanceOf(stratosphereMemberBasic), 0);
         assertEq(feeToken.balanceOf(address(boostFacet)), boostFeeLvl2);
@@ -211,7 +225,12 @@ contract BoostFacetTest is DiamondTest {
         feeToken.increaseAllowance(address(boostFacet), _amount);
     }
 
-    function _calculatePoints(uint256 _totalPoints, uint256 _boostPercent) internal view returns (uint256) {
+    function _calculatePoints(
+        uint256 _depositPoints,
+        uint256 _boostPoints,
+        uint256 _depositAmount,
+        uint256 _boostPercent
+    ) internal view returns (uint256) {
         if (_boostPercent == 0) {
             return 0;
         }
@@ -229,13 +248,7 @@ contract BoostFacetTest is DiamondTest {
             return 0;
         }
 
-        uint256 _remainingPoints = _totalPoints * _daysUntilSeasonEnd;
-        console.log("[BoostFacetTest] Total points: ", _totalPoints);
-        console.log("[BoostFacetTest] Remaining points: ", _remainingPoints);
-        uint256 _pointsObtainedTillNow = _remainingPoints > _totalPoints
-            ? _remainingPoints - _totalPoints
-            : _totalPoints - _remainingPoints;
-        console.log("[BoostFacetTest] Points obtained till now: ", _pointsObtainedTillNow);
+        uint256 _pointsObtainedTillNow = (_depositPoints + _boostPoints) - (_depositAmount * _daysUntilSeasonEnd);
 
         if (_pointsObtainedTillNow == 0) {
             return 0;
