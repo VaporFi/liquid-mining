@@ -140,7 +140,7 @@ contract DiamondManagerFacet {
         emit SeasonStarted(s.currentSeasonId, _rewardTokenToDistribute);
     }
 
-    function changeBoostPoints(address[] addresses, uint256[] newBoostPoints) external onlyOwner {
+    function changeBoostPoints(address[] memory addresses, uint256[] memory newBoostPoints) external onlyOwner {
         if (addresses.length != newBoostPoints.length) revert DiamondManagerFacet_InvalidAddressReductionCombination();
         uint256 currentSeasonId = s.currentSeasonId;
 
