@@ -140,16 +140,25 @@ contract DiamondManagerFacet {
         emit SeasonStarted(s.currentSeasonId, _rewardTokenToDistribute);
     }
 
+    //this function is added to fix the points, it's temporary
     function changeBoostPoints(address[] memory addresses, uint256[] memory newBoostPoints) external onlyOwner {
         if (addresses.length != newBoostPoints.length) revert DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
+
+        uint256 difference = 0;
         uint256 currentSeasonId = s.currentSeasonId;
 
         for (uint256 i; i < addresses.length; i++) {
             UserData storage _userData = s.usersData[currentSeasonId][addresses[i]];
             uint256 newBoostPoint = newBoostPoints[i];
             if (_userData.depositAmount == 0) revert DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
+            uint256 currentBoostPoints = _userData.boostPoints;
+
+            //current boost point is greater than or equal to newBoostPoint, I'm assuming we'll remove function later, and this function cannot be used to increase boost point
+            difference += currentBoostPoints - newBoostPoint;
+
             _userData.boostPoints = newBoostPoint;
         }
+        s.seasons[currentSeasonId].totalPoints -= difference;
     }
 
     function getRewardTokenToDistribute(uint256 _seasonId) external view returns (uint256) {
