@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/diamond/LDiamond.sol";
-import "../libraries/AppStorage.sol";
-import "../libraries/LPausable.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
+
+import { AppStorage } from "../libraries/AppStorage.sol";
+import { LPausable, LPausable__AlreadyPaused, LPausable__AlreadyUnpaused } from "../libraries/LPausable.sol";
 
 /// @title PausationFacet
 /// @notice Facet in charge of the pausation of certain features

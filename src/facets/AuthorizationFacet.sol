@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.18;
 
-import "clouds/diamond/LDiamond.sol";
+import { LDiamond } from "clouds/diamond/LDiamond.sol";
 
-import "../libraries/AppStorage.sol";
-import "../libraries/LAuthorizable.sol";
+import { AppStorage } from "../libraries/AppStorage.sol";
+import { LAuthorizable } from "../libraries/LAuthorizable.sol";
 
 /// @title AuthorizationFacet
 /// @notice Facet in charge of displaying and setting the authorization variables

@@ -1,7 +1,9 @@
 # Compiler files
-cache/
 out/
+cache/
+artifacts/
 forge_cache/
+typechain-types/
 
 # Ignores development broadcast logs
 !/broadcast
@@ -10,6 +12,7 @@ forge_cache/
 
 # Dotenv file
 .env
+deployedaddresses
 
 # Yarn
 node_modules/

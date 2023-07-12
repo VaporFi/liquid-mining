@@ -1,28 +1,69 @@
 {
-  "name": "liquid-mining",
+  "name": "@vaporfi/liquid-mining",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:VaporFi/liquid-mining.git",
-  "author": "Jose Mejias <mejiasdev@icloud.com>",
   "license": "MIT",
-  "devDependencies": {
-    "lint-staged": "^13.1.2",
-    "prettier": "^2.8.2",
-    "prettier-plugin-solidity": "^1.1.1"
-  },
-  "dependencies": {
-    "solhint": "3.3.7"
-  },
+  "main": "index.js",
   "scripts": {
     "build": "make build",
+    "build:hardhat": "hardhat compile",
+    "deploy:fuji": "hardhat run --network fuji scripts/deploy/index.ts",
+    "format": "prettier --write \"**/*.{ts,sol}\"",
     "lint": "solhint src/**/*.sol",
-    "format": "prettier --write src/**/*.sol",
-    "format-test": "prettier --write test/**/*.sol"
+    "sort": "sort-package-json",
+    "test": "make test",
+    "test:hardhat": "hardhat test",
+    "upgradeFacet": "ts-node --files scripts/upgradeFacet.ts",
+    "changePoints": "hardhat season:getDataTochangeBoostPoints && hardhat season:changeBoostPoints --network avalanche"
   },
   "lint-staged": {
     "*.sol": [
       "prettier --write",
       "solhint"
+    ],
+    "*.ts": [
+      "prettier --write"
+    ],
+    "package.json": [
+      "sort-package-json"
     ]
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "2.0.1",
+    "@nomicfoundation/hardhat-ethers": "3.0.3",
+    "@nomicfoundation/hardhat-foundry": "1.0.2",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
+    "@nomicfoundation/hardhat-toolbox": "3.0.0",
+    "@nomicfoundation/hardhat-verify": "^1.0.3",
+    "@nomiclabs/hardhat-solhint": "3.0.1",
+    "@typechain/ethers-v6": "^0.4.0",
+    "@typechain/hardhat": "8.0.0",
+    "@types/chai": "4.3.5",
+    "@types/deep-equal": "1.0.1",
+    "@types/mocha": "10.0.1",
+    "@types/node": "^20.3.3",
+    "@types/yargs": "^17.0.24",
+    "bottleneck": "^2.19.5",
+    "chai": "4.3.7",
+    "deep-equal": "2.2.1",
+    "dotenv": "16.3.1",
+    "ethers": "6.6.2",
+    "hardhat": "2.16.1",
+    "hardhat-abi-exporter": "2.10.1",
+    "hardhat-deploy": "0.11.34",
+    "hardhat-deploy-ethers": "0.4.1",
+    "hardhat-gas-reporter": "1.0.9",
+    "husky": "^8.0.3",
+    "lint-staged": "13.2.3",
+    "mocha": "10.2.0",
+    "prettier": "2.8.8",
+    "prettier-plugin-solidity": "1.1.3",
+    "solhint": "3.4.1",
+    "solhint-plugin-prettier": "0.0.5",
+    "solidity-coverage": "0.8.3",
+    "sort-package-json": "^2.4.1",
+    "ts-node": "10.9.1",
+    "typechain": "^8.2.0",
+    "typescript": "5.1.6",
+    "yargs": "^17.7.2"
   }
 }

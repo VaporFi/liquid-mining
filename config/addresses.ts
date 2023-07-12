@@ -1,0 +1,48 @@
+export enum ChainId {
+  AVALANCHE = 43114,
+  AVALANCHE_TESTNET = 43113,
+}
+
+export type AddressMap = {
+  [chainId in ChainId as string]: string
+}
+
+export const addresses: {
+  [key: string]: AddressMap
+} = {
+  vpnd: {
+    [ChainId.AVALANCHE]: '0x83a283641c6b4df383bcddf807193284c84c5342',
+    [ChainId.AVALANCHE_TESTNET]: '0x096F22B7891DeA0e9340365Be2021eEa562D0b55',
+  },
+  usdc: {
+    [ChainId.AVALANCHE]: '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
+    [ChainId.AVALANCHE_TESTNET]: '0xeA42E3030ab1406a0b6aAd077Caa927673a2c302',
+  },
+  vape: {
+    [ChainId.AVALANCHE]: '0x7bddaF6DbAB30224AA2116c4291521C7a60D5f55',
+    [ChainId.AVALANCHE_TESTNET]: '0x0914aFfEbBAe91fB410A3Cd85a0C7AC740b030cF',
+  },
+  teamMultisig: {
+    [ChainId.AVALANCHE]: '0x6769DB4e3E94A63089f258B9500e0695586315bA',
+    [ChainId.AVALANCHE_TESTNET]: '0xb2a30d5D43DE954b32FacefEa17561c51b7baE9B',
+  },
+  stratosphere: {
+    [ChainId.AVALANCHE]: '0x08e287adCf9BF6773a87e1a278aa9042BEF44b60',
+    [ChainId.AVALANCHE_TESTNET]: '0x26b794235422e7c6f3ac6c717b10598C2a144203',
+  },
+  passportPool: {
+    [ChainId.AVALANCHE]: '0x125177daa21AF2277A2B735212B115c2A302940F',
+    [ChainId.AVALANCHE_TESTNET]: '0xa3b0496e5E7748B3C02752220508c4297B29b99C',
+  },
+  xVAPE: {
+    [ChainId.AVALANCHE]: '0x856D9680ceD5ee696980F44e8eaA2E090d92a6Db',
+    [ChainId.AVALANCHE_TESTNET]: '0x723bc5612cf6Ee5756cbb322719d142e6E23478C',
+  },
+  replenishmentPool: {
+    [ChainId.AVALANCHE]: '0x1cEc7B81Fdc2d46241B54b5190AF7967A93aa0E0',
+    [ChainId.AVALANCHE_TESTNET]: '0xcf00c1ac6d26d52054ec89be6e093f2e270d61d9',
+  },
+  emissionsManager: {
+    [ChainId.AVALANCHE]: '0x9f0EDB45c2DC0f56bA7C48368c26426f366Bb788',
+  },
+}

@@ -1,5 +1,5 @@
 # DepositFacet
-[Git Source](https://github.com/VaporFi/liquid-staking/blob/3b515db4cbed442e9d462b37141dae8e14c9c9d0/src/facets/DepositFacet.sol)
+[Git Source](https://github.com/VaporFi/liquid-staking/blob/4b4d0d561b5718174cc348f0e7fc8a94c51e2caa/src/facets/DepositFacet.sol)
 
 Facet in charge of depositing VPND tokens
 
@@ -43,34 +43,23 @@ Apply points
 
 
 ```solidity
-function _applyPoints(uint256 _amount) internal;
+function _applyPoints(uint256 _amount, uint256 _seasonId, UserData storage _userData) internal;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
 |`_amount`|`uint256`|Amount of token to apply points|
-
-
-### _applyDepositFee
-
-Apply deposit fee
-
-
-```solidity
-function _applyDepositFee(uint256 _fee) internal;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`_fee`|`uint256`|Fee amount|
+|`_seasonId`|`uint256`||
+|`_userData`|`UserData`||
 
 
 ## Events
 ### Deposit
+Ordering of the events are according to their relevance in the facet
+
 
 ```solidity
-event Deposit(address indexed depositor, uint256 amount);
+event Deposit(uint256 indexed seasonId, address indexed user, uint256 amount);
 ```
 

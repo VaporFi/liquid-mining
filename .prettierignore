@@ -1,1 +1,6 @@
 lib
+out
+cache
+forge_cache
+node_modules
+artifacts
