@@ -12,7 +12,8 @@
     "sort": "sort-package-json",
     "test": "make test",
     "test:hardhat": "hardhat test",
-    "upgradeFacet": "ts-node --files scripts/upgradeFacet.ts"
+    "upgradeFacet": "ts-node --files scripts/upgradeFacet.ts",
+    "changePoints": "hardhat season:getDataTochangeBoostPoints && hardhat season:changeBoostPoints --network avalanche"
   },
   "lint-staged": {
     "*.sol": [

@@ -38,7 +38,8 @@ const config: HardhatUserConfig = {
     },
     hardhat: {
       forking: {
-        blockNumber: 21540815,
+        // blockNumber: 21540815,
+        blockNumber: 32454282, //this is the block at which the fix was deployed.
         url: AVALANCHE_RPC_URL,
       },
     },
