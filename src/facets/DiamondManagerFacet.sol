@@ -320,6 +320,6 @@ contract DiamondManagerFacet {
 
         depositAmount = _userData.depositAmount;
         poolShareBips = (_userTotalPoints * 10000) / _season.totalPoints;
-        estimatedRewards = (_season.rewardTokenBalance * poolShareBips) / 10000;
+        estimatedRewards = (_season.rewardTokensToDistribute * poolShareBips) / 10000;
     }
 }
