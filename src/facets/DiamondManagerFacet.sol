@@ -309,4 +309,17 @@ contract DiamondManagerFacet {
     function getRewardTokensToDistribute(uint256 seasonId) external view returns (uint256) {
         return s.seasons[seasonId].rewardTokensToDistribute;
     }
+
+    function getCurrentSeasonUserDetails(
+        address _account
+    ) external view returns (uint256 depositAmount, uint256 poolShareBips, uint256 estimatedRewards) {
+        uint256 _currentSeasonId = s.currentSeasonId;
+        UserData memory _userData = s.usersData[_currentSeasonId][_account];
+        Season memory _season = s.seasons[_currentSeasonId];
+        uint256 _userTotalPoints = _userData.depositPoints + _userData.boostPoints;
+
+        depositAmount = _userData.depositAmount;
+        poolShareBips = (_userTotalPoints * 10000) / _season.totalPoints;
+        estimatedRewards = (_season.rewardTokensToDistribute * poolShareBips) / 10000;
+    }
 }
