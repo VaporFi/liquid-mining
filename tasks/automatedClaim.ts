@@ -3,6 +3,7 @@ import LiquidMiningDiamond from '../deployments/LiquidMiningDiamond.json'
 import chunk from '../utils/chunk'
 import type { DepositEvent } from '../typechain-types/src/facets/DepositFacet'
 import Bottleneck from 'bottleneck'
+import * as path from 'path'
 
 const BLOCK_RANGE = 500
 
@@ -17,12 +18,10 @@ const limiter = new Bottleneck({
 })
 
 task('automatedClaim', 'Claim all rewards for a season')
-  .addParam('seasonId', 'The season ID')
-  .addOptionalParam(
-    'loadFromDisk',
-    'Whether to load the deposits from disk under data folder'
-  )
-  .addOptionalParam('dryRun', 'Whether to run the task without claiming')
+  .addOptionalParam('seasonId', 'The season ID')
+  .addOptionalParam('loadFromDisk')
+  .addOptionalParam('loadFromSubgraph')
+  .addOptionalParam('dryRun')
   .setAction(
     async (
       { seasonId, dryRun, loadFromDisk, loadFromSubgraph },
@@ -43,7 +42,7 @@ task('automatedClaim', 'Claim all rewards for a season')
 
       const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
 
-      if (seasonId.toString() !== currentSeasonId.toString()) {
+      if (seasonId && seasonId.toString() !== currentSeasonId.toString()) {
         console.error(
           `❌ Season ID ${seasonId} is not the current season ID ${currentSeasonId}`
         )
@@ -57,7 +56,7 @@ task('automatedClaim', 'Claim all rewards for a season')
         ? 'disk'
         : 'rpc'
       const depositors = await run(`loadDepositors:${depositorsSource}`, {
-        seasonId,
+        currentSeasonId,
       })
 
       try {
@@ -80,19 +79,11 @@ task('automatedClaim', 'Claim all rewards for a season')
         throw error
       }
 
-      /*
-       * TODO: implement starting a new season right after claiming
-       * 1. Calculate new season rewards amount (VAPE)
-       * 2. Calculate new season start and end timestamps
-       * 3. Call Diamond to start new season
-       * 4. Call diamond to mint VAPE through emissions manager(function name is claimTokensForSeason)
-       */
-
       console.log('✅ Done')
     }
   )
 
-subtask('loadDepositors:subgraph', async ({ seasonId }) => {
+subtask('loadDepositors:subgraph', async ({ seasonId }, { network }) => {
   const url = 'https://api.thegraph.com/subgraphs/name/vaporfi/liquid-mining'
 
   const query = `{
@@ -107,6 +98,17 @@ subtask('loadDepositors:subgraph', async ({ seasonId }) => {
   }).then(async (res) => await res.json())
 
   const wallets = response?.data?.season?.minerWallets
+
+  // Save to disk
+  // const saveToPath = `./data/season-depositors-${network.name}-${seasonId}.json`
+  const saveToPath = path.join(
+    __dirname,
+    `./data/season-depositors-${network.name}-${seasonId}.json`
+  )
+  require('fs').writeFileSync(saveToPath, JSON.stringify(wallets), {
+    flag: 'w',
+  })
+
   return wallets
 })
 

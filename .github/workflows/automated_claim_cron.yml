@@ -2,7 +2,7 @@ name: Automate Claim - Scheduled
 
 on:
   schedule:
-    - cron: '0 0 1-7 * 1' # Every Monday at 00:00 UTC
+    - cron: '0 0 1 * *' # Run on the first day of every month at 00:00 UTC
 
 jobs:
   automated-claim:
@@ -27,4 +27,7 @@ jobs:
         run: yarn hardhat compile
 
       - name: Execute Automated Claim task
-        run: yarn hardhat automatedClaim --network avalanche
+        run: yarn hardhat automatedClaim --network avalanche --load-from-subgraph true
+
+      - name: Start a new season
+        run: yarn hardhat run scripts/startSeason.ts --network avalanche
