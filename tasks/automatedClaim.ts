@@ -24,7 +24,10 @@ task('automatedClaim', 'Claim all rewards for a season')
   )
   .addOptionalParam('dryRun', 'Whether to run the task without claiming')
   .setAction(
-    async ({ seasonId, dryRun, loadFromDisk }, { ethers, network, run }) => {
+    async (
+      { seasonId, dryRun, loadFromDisk, loadFromSubgraph },
+      { ethers, network, run }
+    ) => {
       // Load Diamond and ClaimFacet
       const diamondAddress =
         LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
@@ -48,7 +51,11 @@ task('automatedClaim', 'Claim all rewards for a season')
       }
 
       // Load all Deposit events
-      const depositorsSource = loadFromDisk ? 'disk' : 'rpc'
+      const depositorsSource = loadFromSubgraph
+        ? 'subgraph'
+        : loadFromDisk
+        ? 'disk'
+        : 'rpc'
       const depositors = await run(`loadDepositors:${depositorsSource}`, {
         seasonId,
       })
@@ -84,6 +91,24 @@ task('automatedClaim', 'Claim all rewards for a season')
       console.log('✅ Done')
     }
   )
+
+subtask('loadDepositors:subgraph', async ({ seasonId }) => {
+  const url = 'https://api.thegraph.com/subgraphs/name/vaporfi/liquid-mining'
+
+  const query = `{
+            season(id:${seasonId}){
+              minerWallets
+            }
+        }`
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({ query }),
+  }).then(async (res) => await res.json())
+
+  const wallets = response?.data?.season?.minerWallets
+  return wallets
+})
 
 subtask('loadDepositors:disk', 'Load deposits from disk')
   .addParam('seasonId', 'The season ID')
