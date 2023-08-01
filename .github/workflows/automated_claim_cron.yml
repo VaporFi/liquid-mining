@@ -3,6 +3,12 @@ name: Automate Claim - Scheduled
 on:
   schedule:
     - cron: '0 0 1 * *' # Run on the first day of every month at 00:00 UTC
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Network to run the automated claim task on'
+        required: true
+        default: 'avalanche'
 
 jobs:
   automated-claim:
