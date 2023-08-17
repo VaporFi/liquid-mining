@@ -14,6 +14,7 @@ error DepositFacet__ReentrancyGuard__ReentrantCall();
 error DepositFacet__SeasonEnded();
 error DepositFacet__FundsInPrevSeason();
 error DepositFacet__InvalidMiningPass();
+error DepositFacet__Less_Than_One_Day();
 
 /// @title DepositFacet
 /// @notice Facet in charge of depositing VPND tokens
@@ -72,6 +73,9 @@ contract DepositFacet {
             revert DepositFacet__SeasonEnded();
         }
         uint256 _daysUntilSeasonEnd = (_season.endTimestamp - block.timestamp) / 1 days;
+        if (_daysUntilSeasonEnd == 0) {
+            revert DepositFacet__Less_Than_One_Day();
+        }
         _userData.depositAmount += _amount;
         _userData.depositPoints += _amount * _daysUntilSeasonEnd;
         _season.totalDepositAmount += _amount;
