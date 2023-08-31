@@ -1,11 +1,10 @@
-// import fs from 'fs'
+import 'dotenv/config'
 import { getEnvValSafe } from './utils'
 import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-foundry'
 import '@nomicfoundation/hardhat-network-helpers'
 import '@nomiclabs/hardhat-solhint'
 import '@nomicfoundation/hardhat-toolbox'
-import 'dotenv/config'
 
 import './tasks/verify'
 import './tasks/automatedClaim'

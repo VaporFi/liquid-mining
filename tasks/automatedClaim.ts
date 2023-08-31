@@ -17,7 +17,37 @@ const limiter = new Bottleneck({
   maxConcurrent: 1,
 })
 
-task('automatedClaim', 'Claim all rewards for a season')
+task('automated-claim:single', 'Claim rewards for a single wallet')
+  .addParam('wallet', 'The wallet to claim for')
+  .addParam('seasonId', 'The season ID')
+  .setAction(async ({ wallet, seasonId }, { ethers, network }) => {
+    const diamondAddress =
+      LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
+        .address
+    const ClaimFacet = await ethers.getContractAt('ClaimFacet', diamondAddress)
+    const DiamondManagerFacet = await ethers.getContractAt(
+      'DiamondManagerFacet',
+      diamondAddress
+    )
+
+    try {
+      const userData = await DiamondManagerFacet.getUserDataForSeason(
+        wallet,
+        seasonId
+      )
+      if (userData.depositAmount > 0 && !userData.hasWithdrawnOrRestaked) {
+        console.log(`Claiming for ${wallet}`)
+        await (await ClaimFacet.automatedClaim(seasonId, wallet)).wait(3)
+      } else {
+        console.log(`Skipping ${wallet} because they have no deposits`)
+      }
+    } catch (error) {
+      console.error('❌ AutomatedClaim failed:', error)
+      throw error
+    }
+  })
+
+task('automated-claim:all', 'Claim all rewards for a season')
   .addOptionalParam('seasonId', 'The season ID')
   .addOptionalParam('loadFromDisk')
   .addOptionalParam('loadFromSubgraph')
@@ -27,6 +57,8 @@ task('automatedClaim', 'Claim all rewards for a season')
       { seasonId, dryRun, loadFromDisk, loadFromSubgraph },
       { ethers, network, run }
     ) => {
+      const [deployer] = await ethers.getSigners()
+      console.log('AutomatedClaim task', deployer.address, network.name)
       // Load Diamond and ClaimFacet
       const diamondAddress =
         LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
@@ -39,14 +71,42 @@ task('automatedClaim', 'Claim all rewards for a season')
         'DiamondManagerFacet',
         diamondAddress
       )
+      const AuthorizationFacet = await ethers.getContractAt(
+        'AuthorizationFacet',
+        diamondAddress
+      )
+
+      const isAuthorized = await AuthorizationFacet.authorized(deployer.address)
+
+      if (!isAuthorized) {
+        console.error('❌ Deployer is not authorized')
+        return
+      }
 
       const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
 
-      if (seasonId && seasonId.toString() !== currentSeasonId.toString()) {
-        console.error(
-          `❌ Season ID ${seasonId} is not the current season ID ${currentSeasonId}`
-        )
-        return
+      if (seasonId === currentSeasonId.toString()) {
+        const seasonEndTimestamp =
+          await DiamondManagerFacet.getSeasonEndTimestamp(
+            currentSeasonId.toString()
+          )
+        const currentTimestamp = Math.floor(Date.now() / 1000)
+
+        if (currentTimestamp < +seasonEndTimestamp.toString()) {
+          console.error(
+            `❌ Season ${currentSeasonId} has not ended yet, cannot claim`,
+            {
+              currentTimestamp,
+              seasonEndTimestamp: +seasonEndTimestamp.toString(),
+            }
+          )
+          return
+        } else {
+          console.log(`✅ Season ${currentSeasonId} has ended, can claim`, {
+            currentTimestamp,
+            seasonEndTimestamp: +seasonEndTimestamp.toString(),
+          })
+        }
       }
 
       // Load all Deposit events
@@ -56,18 +116,52 @@ task('automatedClaim', 'Claim all rewards for a season')
         ? 'disk'
         : 'rpc'
       const depositors = await run(`loadDepositors:${depositorsSource}`, {
-        currentSeasonId,
+        seasonId: seasonId.toString(),
       })
 
       try {
         // Slice the array into chunks of 100
         const chunkedDepositors = chunk(depositors, 100)
+
         // Claim for each chunk
         for (const chunk of chunkedDepositors) {
-          console.log(`Claiming for ${chunk.length} depositors`, chunk)
+          const validatedWallets = await Promise.all(
+            chunk.map(async (wallet: string) => {
+              const userData = await DiamondManagerFacet.getUserDataForSeason(
+                wallet,
+                currentSeasonId.toString()
+              )
+              await new Promise((resolve) => setTimeout(resolve, 100))
+              if (
+                userData.depositAmount > 0 &&
+                !userData.hasWithdrawnOrRestaked
+              ) {
+                return wallet
+              }
+
+              console.log(`Skipping ${wallet} because they have no deposits`)
+              return
+            })
+          )
+          console.log(`Claiming for ${validatedWallets.length} depositors`)
+          const filteredWallets = validatedWallets.filter(
+            (item) => item !== undefined
+          )
+
+          if (filteredWallets.length === 0) {
+            console.log('No wallets to claim for, skipping...')
+            continue
+          }
+
           if (!dryRun) {
             await (
-              await ClaimFacet.automatedClaimBatch(seasonId, chunk)
+              await ClaimFacet.automatedClaimBatch(
+                currentSeasonId.toString(),
+                filteredWallets,
+                {
+                  gasLimit: 13_000_000,
+                }
+              )
             ).wait(3)
           } else {
             console.log('Dry run, skipping claim')
@@ -98,6 +192,13 @@ subtask('loadDepositors:subgraph', async ({ seasonId }, { network }) => {
   }).then(async (res) => await res.json())
 
   const wallets = response?.data?.season?.minerWallets
+  const uniqueWallets = [...new Set(wallets)]
+
+  if (!uniqueWallets) {
+    throw new Error('No wallets found')
+  } else {
+    console.log(`Found ${uniqueWallets.length} wallets`)
+  }
 
   // Save to disk
   // const saveToPath = `./data/season-depositors-${network.name}-${seasonId}.json`
@@ -105,7 +206,7 @@ subtask('loadDepositors:subgraph', async ({ seasonId }, { network }) => {
     __dirname,
     `./data/season-depositors-${network.name}-${seasonId}.json`
   )
-  require('fs').writeFileSync(saveToPath, JSON.stringify(wallets), {
+  require('fs').writeFileSync(saveToPath, JSON.stringify(uniqueWallets), {
     flag: 'w',
   })
 

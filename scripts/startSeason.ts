@@ -5,13 +5,17 @@ import LiquidMiningDiamond from '../deployments/LiquidMiningDiamond.json'
  * Starting at 15,000 VAPE per season, on Season 1,
  * we will decreate the emissions by 0.41217% per season.
  */
-const calculateSeasonRewards = (seasonId: number) => {
+const calculateReward = (seasonId: number) => {
+  // Initial values
   const initialRewards = 15000
-  const emissionsDecrement = 0.0041217
-  const seasonRewards = Math.floor(
-    initialRewards * (1 - emissionsDecrement) ** seasonId
-  )
-  return seasonRewards
+  const reductionPercentage = 0.41217 / 100
+
+  let reward = initialRewards
+  for (let season = 2; season <= seasonId; season++) {
+    reward = reward - reward * reductionPercentage
+  }
+
+  return reward
 }
 
 const daysInMonth = () => {
@@ -37,9 +41,19 @@ async function main() {
     diamondAddress
   )
   const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
+  const rewards = calculateReward(Number(currentSeasonId.toString()) + 1)
+  const parsedRewards = ethers.parseEther(rewards.toString())
+  console.log(
+    '🚀 ~ file: startSeason.ts:46 ~ main ~ parsedRewards:',
+    parsedRewards.toString()
+  )
+  const duration = daysInMonth()
+  console.log('🚀 ~ file: startSeason.ts:51 ~ main ~ duration:', duration)
+
+  console.log('Attempting to start new season')
   const startSeasonTx = await DiamondManagerFacet.startNewSeasonWithDuration(
-    calculateSeasonRewards(Number(currentSeasonId.toString()) + 1),
-    daysInMonth() * 24 * 60 * 60
+    parsedRewards.toString(),
+    duration
   )
   await startSeasonTx.wait(1)
 
