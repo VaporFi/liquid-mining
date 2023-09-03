@@ -18,20 +18,6 @@ const calculateReward = (seasonId: number) => {
   return reward
 }
 
-const daysInMonth = () => {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = now.getMonth()
-
-  // Create a date for the first day of the next month
-  const nextMonth = new Date(year, month + 1, 1)
-
-  // Subtract one day to get the last day of the current month
-  nextMonth.setDate(nextMonth.getDate() - 1)
-
-  return nextMonth.getDate()
-}
-
 async function main() {
   const diamondAddress =
     LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
@@ -43,12 +29,12 @@ async function main() {
   const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
   const rewards = calculateReward(Number(currentSeasonId.toString()) + 1)
   const parsedRewards = ethers.parseEther(rewards.toString())
-  const duration = daysInMonth()
   console.log('Attempting to start new season')
-  const startSeasonTx = await DiamondManagerFacet.startNewSeasonWithDuration(
-    parsedRewards.toString(),
-    duration
-  )
+  const startSeasonTx =
+    await DiamondManagerFacet.startNewSeasonWithEndTimestamp(
+      parsedRewards.toString(),
+      1696118400 // 2023-10-01 00:00:00 UTC
+    )
   await startSeasonTx.wait(1)
 
   console.log('✅ New season started')

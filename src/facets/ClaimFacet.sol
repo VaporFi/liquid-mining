@@ -96,9 +96,9 @@ contract ClaimFacet {
         uint256 _unlockAmount = userData.unlockAmount;
 
         // If user has not participated in the season, skip
-        // if (_depositPoints == 0) {
-        //     revert ClaimFacet__NotEnoughPoints();
-        // }
+        if (_depositPoints == 0) {
+            revert ClaimFacet__NotEnoughPoints();
+        }
         // If user has already claimed, skip
         if (userData.amountClaimed > 0) {
             revert ClaimFacet__AlreadyClaimed();

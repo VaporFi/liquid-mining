@@ -37,7 +37,11 @@ task('automated-claim:single', 'Claim rewards for a single wallet')
       )
       if (userData.depositAmount > 0 && !userData.hasWithdrawnOrRestaked) {
         console.log(`Claiming for ${wallet}`)
-        await (await ClaimFacet.automatedClaim(seasonId, wallet)).wait(3)
+        const tx = await ClaimFacet.automatedClaim(seasonId, wallet)
+        await tx.wait(3)
+        console.log(
+          `✅ Claimed for ${wallet}: https://snowtrace.io/tx/${tx.hash}`
+        )
       } else {
         console.log(`Skipping ${wallet} because they have no deposits`)
       }
@@ -83,6 +87,16 @@ task('automated-claim:all', 'Claim all rewards for a season')
         return
       }
 
+      // Load all Deposit events
+      const depositorsSource = loadFromSubgraph
+        ? 'subgraph'
+        : loadFromDisk
+        ? 'disk'
+        : 'rpc'
+      const depositors = await run(`loadDepositors:${depositorsSource}`, {
+        seasonId: seasonId.toString(),
+      })
+
       const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
 
       if (seasonId === currentSeasonId.toString()) {
@@ -108,16 +122,6 @@ task('automated-claim:all', 'Claim all rewards for a season')
           })
         }
       }
-
-      // Load all Deposit events
-      const depositorsSource = loadFromSubgraph
-        ? 'subgraph'
-        : loadFromDisk
-        ? 'disk'
-        : 'rpc'
-      const depositors = await run(`loadDepositors:${depositorsSource}`, {
-        seasonId: seasonId.toString(),
-      })
 
       try {
         // Slice the array into chunks of 100
@@ -154,15 +158,16 @@ task('automated-claim:all', 'Claim all rewards for a season')
           }
 
           if (!dryRun) {
-            await (
-              await ClaimFacet.automatedClaimBatch(
-                currentSeasonId.toString(),
-                filteredWallets,
-                {
-                  gasLimit: 13_000_000,
-                }
-              )
-            ).wait(3)
+            const tx = await ClaimFacet.automatedClaimBatch(
+              currentSeasonId.toString(),
+              filteredWallets,
+              {
+                gasLimit: 13_000_000,
+              }
+            )
+            await tx.wait(5)
+            console.log(`https://snowtrace.io/tx/${tx.hash}`)
+            await new Promise((resolve) => setTimeout(resolve, 1000))
           } else {
             console.log('Dry run, skipping claim')
           }

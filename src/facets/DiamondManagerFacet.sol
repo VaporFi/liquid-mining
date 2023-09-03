@@ -140,6 +140,25 @@ contract DiamondManagerFacet {
         emit SeasonStarted(s.currentSeasonId, _rewardTokenToDistribute);
     }
 
+    function startNewSeasonWithEndTimestamp(
+        uint256 _rewardTokenToDistribute,
+        uint256 _endTimestamp
+    ) external onlyOwner {
+        uint256 _currentSeason = s.currentSeasonId;
+        if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp >= block.timestamp) {
+            revert DiamondManagerFacet__Season_Not_Finished();
+        }
+        s.currentSeasonId = _currentSeason + 1;
+        Season storage season = s.seasons[s.currentSeasonId];
+        season.id = s.currentSeasonId;
+        season.startTimestamp = block.timestamp;
+        season.endTimestamp = _endTimestamp;
+        season.rewardTokensToDistribute = _rewardTokenToDistribute;
+        season.rewardTokenBalance = _rewardTokenToDistribute;
+
+        emit SeasonStarted(s.currentSeasonId, _rewardTokenToDistribute);
+    }
+
     //this function is added to fix the points, it's temporary
     function changeBoostPoints(address[] memory addresses, uint256[] memory newBoostPoints) external onlyOwner {
         if (addresses.length != newBoostPoints.length) revert DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
