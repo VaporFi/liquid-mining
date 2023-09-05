@@ -87,18 +87,9 @@ task('automated-claim:all', 'Claim all rewards for a season')
         return
       }
 
-      // Load all Deposit events
-      const depositorsSource = loadFromSubgraph
-        ? 'subgraph'
-        : loadFromDisk
-        ? 'disk'
-        : 'rpc'
-      const depositors = await run(`loadDepositors:${depositorsSource}`, {
-        seasonId: seasonId.toString(),
-      })
-
       const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
 
+      let seasonToClaim: string
       if (seasonId === currentSeasonId.toString()) {
         const seasonEndTimestamp =
           await DiamondManagerFacet.getSeasonEndTimestamp(
@@ -120,8 +111,21 @@ task('automated-claim:all', 'Claim all rewards for a season')
             currentTimestamp,
             seasonEndTimestamp: +seasonEndTimestamp.toString(),
           })
+          seasonToClaim = currentSeasonId.toString()
         }
+      } else {
+        seasonToClaim = seasonId.toString()
       }
+
+      // Load all Deposit events
+      const depositorsSource = loadFromSubgraph
+        ? 'subgraph'
+        : loadFromDisk
+        ? 'disk'
+        : 'rpc'
+      const depositors = await run(`loadDepositors:${depositorsSource}`, {
+        seasonId: seasonToClaim,
+      })
 
       try {
         // Slice the array into chunks of 100
@@ -133,7 +137,7 @@ task('automated-claim:all', 'Claim all rewards for a season')
             chunk.map(async (wallet: string) => {
               const userData = await DiamondManagerFacet.getUserDataForSeason(
                 wallet,
-                currentSeasonId.toString()
+                seasonToClaim
               )
               await new Promise((resolve) => setTimeout(resolve, 100))
               if (
@@ -159,7 +163,7 @@ task('automated-claim:all', 'Claim all rewards for a season')
 
           if (!dryRun) {
             const tx = await ClaimFacet.automatedClaimBatch(
-              currentSeasonId.toString(),
+              seasonToClaim,
               filteredWallets,
               {
                 gasLimit: 13_000_000,
