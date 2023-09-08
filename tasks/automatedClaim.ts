@@ -43,7 +43,10 @@ task('automated-claim:single', 'Claim rewards for a single wallet')
           `✅ Claimed for ${wallet}: https://snowtrace.io/tx/${tx.hash}`
         )
       } else {
-        console.log(`Skipping ${wallet} because they have no deposits`)
+        console.log(`Skipping ${wallet} because they have no deposits`, {
+          deposit: userData.depositAmount,
+          withdrawn: userData.hasWithdrawnOrRestaked,
+        })
       }
     } catch (error) {
       console.error('❌ AutomatedClaim failed:', error)

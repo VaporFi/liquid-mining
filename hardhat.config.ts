@@ -19,9 +19,6 @@ const COINMARKETCAP_API_KEY = getEnvValSafe('COINMARKETCAP_API_KEY')
 const SNOWTRACE_API_KEY = getEnvValSafe('SNOWTRACE_API_KEY', false)
 
 const config: HardhatUserConfig = {
-  etherscan: {
-    apiKey: SNOWTRACE_API_KEY,
-  },
   networks: {
     avalanche: {
       accounts: [DEPLOYER_PRIVATE_KEY],
