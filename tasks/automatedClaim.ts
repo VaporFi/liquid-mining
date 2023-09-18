@@ -35,7 +35,7 @@ task('automated-claim:single', 'Claim rewards for a single wallet')
         wallet,
         seasonId
       )
-      if (userData.depositAmount > 0 && !userData.hasWithdrawnOrRestaked) {
+      if (userData.depositPoints > 0 && !userData.hasWithdrawnOrRestaked) {
         console.log(`Claiming for ${wallet}`)
         const tx = await ClaimFacet.automatedClaim(seasonId, wallet)
         await tx.wait(3)
@@ -44,7 +44,7 @@ task('automated-claim:single', 'Claim rewards for a single wallet')
         )
       } else {
         console.log(`Skipping ${wallet} because they have no deposits`, {
-          deposit: userData.depositAmount,
+          deposit: userData.depositPoints,
           withdrawn: userData.hasWithdrawnOrRestaked,
         })
       }
@@ -144,7 +144,7 @@ task('automated-claim:all', 'Claim all rewards for a season')
               )
               await new Promise((resolve) => setTimeout(resolve, 100))
               if (
-                userData.depositAmount > 0 &&
+                userData.depositPoints > 0 &&
                 !userData.hasWithdrawnOrRestaked
               ) {
                 return wallet
