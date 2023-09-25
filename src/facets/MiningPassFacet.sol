@@ -37,7 +37,7 @@ contract MiningPassFacet {
         }
         
         // check current season is not ended
-        if (s.seasons[_currentSeasonId].endTimestamp <= block.timestamp) {
+        if (_currentSeason.endTimestamp <= block.timestamp) {
             revert MiningPassFacet__SeasonEnded();
         }
 
@@ -69,10 +69,10 @@ contract MiningPassFacet {
         if (_tier == 0 || _tier <= _userData.miningPassTier || feeForPassedTier == 0) {
             revert MiningPassFacet__InvalidTier();
         }
-        // check if user have enough USDC to purchase
+        // check the difference between current paid fee vs fee to pay
          _fee = feeForPassedTier - s.miningPassTierToFee[_userData.miningPassTier];
         // check current season is not ended
-        if (s.seasons[_currentSeasonId].endTimestamp <= block.timestamp) {
+        if (_currentSeason.endTimestamp <= block.timestamp) {
             revert MiningPassFacet__SeasonEnded();
         }
 
