@@ -4,7 +4,7 @@ pragma solidity 0.8.18;
 import { LDiamond } from "clouds/diamond/LDiamond.sol";
 import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import { AppStorage, UserData } from "../libraries/AppStorage.sol";
+import { AppStorage, UserData, Season } from "../libraries/AppStorage.sol";
 import { LPausable } from "../libraries/LPausable.sol";
 import { LPercentages } from "../libraries/LPercentages.sol";
 
@@ -30,28 +30,59 @@ contract MiningPassFacet {
         IERC20 _feeToken = IERC20(s.feeToken);
         uint256 _currentSeasonId = s.currentSeasonId;
         UserData storage _userData = s.usersData[_currentSeasonId][msg.sender];
+        Season storage _currentSeason = s.seasons[_currentSeasonId];
         // check _tier is not 0
         if (_tier == 0 || _tier <= _userData.miningPassTier || feeForPassedTier == 0) {
             revert MiningPassFacet__InvalidTier();
         }
-        // check if user have enough USDC to purchase
-        uint256 _fee = feeForPassedTier - s.miningPassTierToFee[_userData.miningPassTier];
-        if (_feeToken.balanceOf(msg.sender) < _fee) {
-            revert MiningPassFacet__InsufficientBalance();
-        }
+        
         // check current season is not ended
-        if (s.seasons[_currentSeasonId].endTimestamp <= block.timestamp) {
+        if (_currentSeason.endTimestamp <= block.timestamp) {
             revert MiningPassFacet__SeasonEnded();
         }
 
-        // update user's mining pass tier
-        _userData.miningPassTier = _tier;
+        uint256 _fee = getMiningPassFee(msg.sender, _tier);
+
+        // check if user have enough USDC to purchase
+        if (_feeToken.balanceOf(msg.sender) < _fee) {
+            revert MiningPassFacet__InsufficientBalance();
+        }
+
         // transfer USDC from user to contract
         _applyMiningPassFee(_fee);
         _feeToken.transferFrom(msg.sender, address(this), _fee);
 
+        // update user's mining pass tier
+        _userData.miningPassTier = _tier;
+
         emit MiningPassPurchase(_currentSeasonId, msg.sender, _tier, _fee);
     }
+
+    /// notice Fee for mining pass
+    /// @param _user User to query fee for
+    /// @param _tier Tier of mining pass to purchase
+    function getMiningPassFee(address _user, uint256 _tier) public view returns(uint256 _fee) {
+        uint256 feeForPassedTier = s.miningPassTierToFee[_tier];
+        uint256 _currentSeasonId = s.currentSeasonId;
+        UserData storage _userData = s.usersData[_currentSeasonId][_user];
+        Season storage _currentSeason = s.seasons[_currentSeasonId];
+        // check _tier is not 0
+        if (_tier == 0 || _tier <= _userData.miningPassTier || feeForPassedTier == 0) {
+            revert MiningPassFacet__InvalidTier();
+        }
+        // check the difference between current paid fee vs fee to pay
+         _fee = feeForPassedTier - s.miningPassTierToFee[_userData.miningPassTier];
+        // check current season is not ended
+        if (_currentSeason.endTimestamp <= block.timestamp) {
+            revert MiningPassFacet__SeasonEnded();
+        }
+
+        if (block.timestamp - _currentSeason.startTimestamp >= 14 days) {
+            _fee = _fee / 2;
+        } else if (block.timestamp - _currentSeason.startTimestamp >= 7 days) {
+            _fee = _fee - _fee / 4;
+        }
+    }   
 
     /// @notice Get user's mining pass tier and deposit limit
     /// @param _user User address
