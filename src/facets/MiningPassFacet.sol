@@ -48,11 +48,12 @@ contract MiningPassFacet {
             revert MiningPassFacet__InsufficientBalance();
         }
 
-        // update user's mining pass tier
-        _userData.miningPassTier = _tier;
         // transfer USDC from user to contract
         _applyMiningPassFee(_fee);
         _feeToken.transferFrom(msg.sender, address(this), _fee);
+
+        // update user's mining pass tier
+        _userData.miningPassTier = _tier;
 
         emit MiningPassPurchase(_currentSeasonId, msg.sender, _tier, _fee);
     }
