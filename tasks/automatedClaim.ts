@@ -86,7 +86,7 @@ task('automated-claim:all', 'Claim all rewards for a season')
       const isAuthorized = await AuthorizationFacet.authorized(deployer.address)
 
       if (!isAuthorized) {
-        console.error('❌ Deployer is not authorized')
+        console.error('❌ Account is not authorized')
         return
       }
 
