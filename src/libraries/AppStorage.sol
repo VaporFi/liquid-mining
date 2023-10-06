@@ -86,4 +86,6 @@ struct AppStorage {
     address stratosphereAddress;
     uint256 reentrancyGuardStatus;
     address emissionsManager;
+    /// GELATO ///
+    address gelatoExecutor;
 }
