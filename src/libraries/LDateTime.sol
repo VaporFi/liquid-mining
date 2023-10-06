@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 
+/// @author @pipermerriam - https://github.com/pipermerriam/ethereum-datetime
+
 library LDateTime {
     /*
      *  Date and Time utilities for ethereum contracts
