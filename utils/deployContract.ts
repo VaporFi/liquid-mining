@@ -18,7 +18,7 @@ const defaultDeployOptions: DeployOptions = {
 
 export async function deployContract(
   contractName: string,
-  options: any = defaultDeployOptions
+  options: DeployOptions = defaultDeployOptions
 ) {
   const artifact = await hre.artifacts.readArtifact(contractName)
 

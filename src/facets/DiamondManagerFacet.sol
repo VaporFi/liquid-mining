@@ -50,6 +50,13 @@ contract DiamondManagerFacet {
         _;
     }
 
+    modifier onlyGelatoExecutor() {
+        if (msg.sender != s.gelatoExecutor) {
+            revert DiamondManagerFacet__Not_Owner();
+        }
+        _;
+    }
+
     function setDepositToken(address token) external validAddress(token) onlyOwner {
         s.depositToken = token;
         emit DepositTokenSet(token);
@@ -143,7 +150,7 @@ contract DiamondManagerFacet {
     function startNewSeasonWithEndTimestamp(
         uint256 _rewardTokenToDistribute,
         uint256 _endTimestamp
-    ) external onlyOwner {
+    ) external onlyGelatoExecutor {
         uint256 _currentSeason = s.currentSeasonId;
         if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp >= block.timestamp) {
             revert DiamondManagerFacet__Season_Not_Finished();
@@ -180,11 +187,7 @@ contract DiamondManagerFacet {
         s.seasons[currentSeasonId].totalPoints -= difference;
     }
 
-    function getRewardTokenToDistribute(uint256 _seasonId) external view returns (uint256) {
-        return s.seasons[_seasonId].rewardTokensToDistribute;
-    }
-
-    function claimTokensForSeason() external onlyOwner {
+    function claimTokensForSeason() external onlyGelatoExecutor {
         IEmissionsManager(s.emissionsManager).mintLiquidMining();
         emit VapeClaimedForSeason(s.currentSeasonId);
     }
@@ -195,6 +198,43 @@ contract DiamondManagerFacet {
         }
         s.emissionsManager = _emissionManager;
         emit EmissionsManagerSet(_emissionManager);
+    }
+
+    function setUnlockTimestampDiscountForStratosphereMember(
+        uint256 tier,
+        uint256 discountBasisPoints
+    ) external onlyOwner {
+        s.unlockTimestampDiscountForStratosphereMembers[tier] = discountBasisPoints;
+        emit UnlockTimestampDiscountForStratosphereMemberSet(tier, discountBasisPoints);
+    }
+
+    function setUnlockFee(uint256 fee) external onlyOwner {
+        if (fee > TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.unlockFee = fee;
+        emit UnlockFeeSet(fee);
+    }
+
+    function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
+        if (boostFee > TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+        s.boostLevelToFee[boostLevel] = boostFee;
+    }
+
+    function setBoostPercentTierLevel(uint256 tier, uint256 level, uint256 percent) external onlyOwner {
+        s.boostPercentFromTierToLevel[tier][level] = percent;
+    }
+
+    function setGelatoExecutor(address executor) external onlyOwner {
+        s.gelatoExecutor = executor;
+    }
+
+    // Getters
+
+    function getRewardTokenToDistribute(uint256 _seasonId) external view returns (uint256) {
+        return s.seasons[_seasonId].rewardTokensToDistribute;
     }
 
     function getUserDepositAmount(address user, uint256 seasonId) external view returns (uint256, uint256) {
@@ -243,33 +283,6 @@ contract DiamondManagerFacet {
 
     function getTotalPointsOfSeason(uint256 seasonId) external view returns (uint256) {
         return s.seasons[seasonId].totalPoints;
-    }
-
-    function setUnlockTimestampDiscountForStratosphereMember(
-        uint256 tier,
-        uint256 discountBasisPoints
-    ) external onlyOwner {
-        s.unlockTimestampDiscountForStratosphereMembers[tier] = discountBasisPoints;
-        emit UnlockTimestampDiscountForStratosphereMemberSet(tier, discountBasisPoints);
-    }
-
-    function setUnlockFee(uint256 fee) external onlyOwner {
-        if (fee > TOTAL_SHARES) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.unlockFee = fee;
-        emit UnlockFeeSet(fee);
-    }
-
-    function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
-        if (boostFee > TOTAL_SHARES) {
-            revert DiamondManagerFacet__Invalid_Input();
-        }
-        s.boostLevelToFee[boostLevel] = boostFee;
-    }
-
-    function setBoostPercentTierLevel(uint256 tier, uint256 level, uint256 percent) external onlyOwner {
-        s.boostPercentFromTierToLevel[tier][level] = percent;
     }
 
     function getUserPoints(address user, uint256 seasonId) external view returns (uint256, uint256) {
