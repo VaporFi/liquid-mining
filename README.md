@@ -35,3 +35,8 @@ For each Deposit and Unlock action, we update the total points accumulated in a 
 
 - [] Get `seasonMintAllowance` from EmissionsManager
 - [] Execute `startSeason` in LiquidStaking, using `seasonMintAllowance` as the argument
+
+### Commands
+
+❯ yarn hardhat automated-claim:all --network avalanche --load-from-subgraph true --season-id 4
+❯ yarn hardhat run --network avalanche scripts/startSeason.ts
