@@ -38,5 +38,5 @@ For each Deposit and Unlock action, we update the total points accumulated in a 
 
 ### Commands
 
-❯ yarn hardhat automated-claim:all --network avalanche --load-from-subgraph true --season-id 4
+❯ yarn hardhat automated-claim:all --network avalanche --load-from-subgraph true
 ❯ yarn hardhat run --network avalanche scripts/startSeason.ts

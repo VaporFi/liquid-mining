@@ -22,14 +22,16 @@ export const calculateReward = (seasonId: number) => {
   return reward
 }
 
-export const getNextMonthTimestamp = () => {
+export function getNextMonthTimestamp(): number {
   const now = new Date()
-  now.setUTCHours(0, 0, 0, 0)
   const nextMonth = new Date(
-    now.getUTCMonth() === 11 ? now.getUTCFullYear() + 1 : now.getUTCFullYear(),
-    now.getUTCMonth() === 11 ? 0 : now.getUTCMonth() + 1,
-    1
+    Date.UTC(
+      now.getUTCMonth() === 11
+        ? now.getUTCFullYear() + 1
+        : now.getUTCFullYear(),
+      now.getUTCMonth() === 11 ? 0 : now.getUTCMonth() + 1,
+      1
+    )
   )
-  const timestamp = Math.floor(nextMonth.getTime() / 1000)
-  return timestamp
+  return Math.floor(nextMonth.getTime() / 1000)
 }

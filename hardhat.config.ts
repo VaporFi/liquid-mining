@@ -9,6 +9,7 @@ import '@nomicfoundation/hardhat-toolbox'
 import './tasks/verify'
 import './tasks/automatedClaim'
 import './tasks/season'
+import { formatUnits, parseUnits } from 'ethers'
 
 const AVALANCHE_RPC_URL = getEnvValSafe('AVALANCHE_RPC_URL')
 const FUJI_RPC_URL = getEnvValSafe('FUJI_RPC_URL')
@@ -24,6 +25,8 @@ const config: HardhatUserConfig = {
       accounts: [DEPLOYER_PRIVATE_KEY],
       chainId: 43114,
       url: AVALANCHE_RPC_URL,
+      gasPrice: +parseUnits('28', 'gwei').toString(),
+      gasMultiplier: 1.5,
     },
     fuji: {
       accounts: [DEPLOYER_PRIVATE_KEY],

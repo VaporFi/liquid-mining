@@ -8,6 +8,8 @@ interface ILiquidMiningDiamond {
 
     function getCurrentSeasonId() external view returns (uint256);
 
+    function getSeasonIsClaimed(uint256 seasonId) external view returns (bool);
+
     function startNewSeasonWithEndTimestamp(uint256 _rewardTokenToDistribute, uint256 _endTimestamp) external;
 
     function claimTokensForSeason() external;
@@ -65,11 +67,12 @@ contract GelatoResolver {
     function checker() external view returns (bool canExec, bytes memory execPayload) {
         uint256 currentSeasonId = liquidMiningDiamond.getCurrentSeasonId();
         uint256 currentSeasonEndTimestamp = liquidMiningDiamond.getSeasonEndTimestamp(currentSeasonId);
+        bool currentSeasonIsClaimed = liquidMiningDiamond.getSeasonIsClaimed(currentSeasonId);
 
-        uint256 nextSeasonReward = calculateReward(currentSeasonId + 1);
-        uint256 nextMonthFirstDayTimestamp = getNextMonthFirstDayTimestamp();
+        if (currentSeasonIsClaimed && block.timestamp > currentSeasonEndTimestamp) {
+            uint256 nextSeasonReward = calculateReward(currentSeasonId + 1);
+            uint256 nextMonthFirstDayTimestamp = getNextMonthFirstDayTimestamp();
 
-        if (block.timestamp > currentSeasonEndTimestamp) {
             execPayload = abi.encodeCall(
                 ILiquidMiningDiamond.startNewSeasonWithEndTimestamp,
                 (nextSeasonReward, nextMonthFirstDayTimestamp)

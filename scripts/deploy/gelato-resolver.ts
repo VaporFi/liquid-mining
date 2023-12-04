@@ -6,10 +6,18 @@ async function main() {
   const liquidMining = LiquidMining[network.name as keyof typeof LiquidMining]
 
   try {
-    await deployContract('GelatoResolver', {
+    const GelatoResolver = await deployContract('GelatoResolver', {
       args: [liquidMining.address],
       log: true,
     })
+
+    const DiamondManagerFacet = await ethers.getContractAt(
+      'DiamondManagerFacet',
+      liquidMining.address
+    )
+    await DiamondManagerFacet.setGelatoExecutor(
+      await GelatoResolver.getAddress()
+    )
   } catch (error) {
     console.log(error)
   }

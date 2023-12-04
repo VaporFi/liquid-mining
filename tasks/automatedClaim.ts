@@ -92,6 +92,10 @@ task('automated-claim:all', 'Claim all rewards for a season')
 
       const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
 
+      if (seasonId === undefined) {
+        seasonId = currentSeasonId.toString()
+      }
+
       let seasonToClaim: string
       if (seasonId === currentSeasonId.toString()) {
         const seasonEndTimestamp =
@@ -180,6 +184,8 @@ task('automated-claim:all', 'Claim all rewards for a season')
           }
           console.log(`✅ Claimed for ${chunk.length} depositors`)
         }
+
+        DiamondManagerFacet.setSeasonClaimed()
       } catch (error) {
         console.error('❌ AutomatedClaim failed:', error)
         throw error

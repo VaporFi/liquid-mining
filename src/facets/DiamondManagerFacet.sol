@@ -12,6 +12,8 @@ error DiamondManagerFacet__Invalid_Address();
 error DiamondManagerFacet__Invalid_Input();
 error DiamondManagerFacet__Season_Not_Finished();
 error DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
+error DiamondManagerFacet__NotGelatoExecutor();
+error DiamondManagerFacet__NotAuthorized();
 
 contract DiamondManagerFacet {
     AppStorage s;
@@ -52,7 +54,14 @@ contract DiamondManagerFacet {
 
     modifier onlyGelatoExecutor() {
         if (msg.sender != s.gelatoExecutor) {
-            revert DiamondManagerFacet__Not_Owner();
+            revert DiamondManagerFacet__NotGelatoExecutor();
+        }
+        _;
+    }
+
+    modifier onlyAuthorized() {
+        if (!s.authorized[msg.sender]) {
+            revert DiamondManagerFacet__NotAuthorized();
         }
         _;
     }
@@ -231,6 +240,10 @@ contract DiamondManagerFacet {
         s.gelatoExecutor = executor;
     }
 
+    function setSeasonClaimed() external onlyAuthorized {
+        s.isSeasonClaimed[s.currentSeasonId] = true;
+    }
+
     // Getters
 
     function getRewardTokenToDistribute(uint256 _seasonId) external view returns (uint256) {
@@ -353,5 +366,9 @@ contract DiamondManagerFacet {
         depositAmount = _userData.depositAmount;
         poolShareBips = (_userTotalPoints * 10000) / _season.totalPoints;
         estimatedRewards = (_season.rewardTokensToDistribute * poolShareBips) / 10000;
+    }
+
+    function getSeasonIsClaimed(uint256 seasonId) external view returns (bool) {
+        return s.isSeasonClaimed[seasonId];
     }
 }
