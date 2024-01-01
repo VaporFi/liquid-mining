@@ -10,15 +10,16 @@ async function main() {
     'DiamondManagerFacet',
     diamondAddress
   )
+
   const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
   const rewards = calculateReward(Number(currentSeasonId.toString()) + 1)
   const parsedRewards = ethers.parseEther(rewards.toString())
+  const nextSeasonEndTimestamp = getNextMonthTimestamp()
   console.log('Attempting to start new season')
   const startSeasonTx =
     await DiamondManagerFacet.startNewSeasonWithEndTimestamp(
       parsedRewards.toString(),
-      // 1696118400 // 2023-10-01 00:00:00 UTC
-      getNextMonthTimestamp()
+      nextSeasonEndTimestamp
     )
   await logTx(startSeasonTx)
 
@@ -26,8 +27,8 @@ async function main() {
 
   const mintVAPETx = await DiamondManagerFacet.claimTokensForSeason()
   await logTx(mintVAPETx)
-
   console.log('✅ Vape minted')
+
   console.log('✅ All done')
 }
 

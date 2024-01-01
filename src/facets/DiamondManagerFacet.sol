@@ -159,7 +159,7 @@ contract DiamondManagerFacet {
     function startNewSeasonWithEndTimestamp(
         uint256 _rewardTokenToDistribute,
         uint256 _endTimestamp
-    ) external onlyGelatoExecutor {
+    ) external onlyOwner {
         uint256 _currentSeason = s.currentSeasonId;
         if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp >= block.timestamp) {
             revert DiamondManagerFacet__Season_Not_Finished();
@@ -196,7 +196,7 @@ contract DiamondManagerFacet {
         s.seasons[currentSeasonId].totalPoints -= difference;
     }
 
-    function claimTokensForSeason() external onlyGelatoExecutor {
+    function claimTokensForSeason() external onlyOwner {
         IEmissionsManager(s.emissionsManager).mintLiquidMining();
         emit VapeClaimedForSeason(s.currentSeasonId);
     }
