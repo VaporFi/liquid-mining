@@ -23,7 +23,7 @@ async function main() {
   )
   await logTx(level2Tx)
   const level3Tx = await DiamondManagerFacet.setBoostFee(
-    2,
+    3,
     parseUnits('0.2', 6).toString()
   )
   await logTx(level3Tx)
