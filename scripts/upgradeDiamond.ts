@@ -10,27 +10,20 @@ async function main() {
   const diamondAddress =
     LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
       .address
-  // Deploy DiamondInit
-  const diamondInit = await deployContract('DiamondInit')
 
   // Deploy Facets
   const FacetNames = getFacets(['DiamondCutFacet', 'DiamondLoupeFacet'])
 
-  const Facets = await Promise.all(
-    FacetNames.map((name) => deployContract(name))
-  )
+  // const Facets = await Promise.all(
+  //   FacetNames.map((name) => deployContract(name))
+  // )
+  const Facets = []
+  for (const name of FacetNames) {
+    Facets.push(await deployContract(name))
+  }
 
   // Do diamond cut
-  const args = defaultArgs
-  const functionCall = diamondInit.interface.encodeFunctionData('init', [
-    Object.values(args),
-  ])
-  await addOrReplaceFacets(
-    Facets,
-    diamondAddress,
-    await diamondInit.getAddress(),
-    functionCall
-  )
+  await addOrReplaceFacets(Facets, diamondAddress)
   console.log('✅ Diamond upgraded')
 }
 

@@ -86,4 +86,9 @@ struct AppStorage {
     address stratosphereAddress;
     uint256 reentrancyGuardStatus;
     address emissionsManager;
+    //////////////////
+    /// AUTOMATION ///
+    //////////////////
+    address gelatoExecutor;
+    mapping(uint256 => bool) isSeasonClaimed;
 }

@@ -1,9 +1,10 @@
-import { ContractTransaction } from 'ethers'
+import { ContractTransactionResponse } from 'ethers'
 
-async function logTx(res: ContractTransaction) {
+export async function logTx(
+  res: ContractTransactionResponse,
+  confirmations?: number
+) {
   console.log(`Transaction pending: ${res.hash}`)
-  await res.wait()
+  await res.wait(confirmations ?? 1)
   console.log('Done! 🎉')
 }
-
-export default logTx
