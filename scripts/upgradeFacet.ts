@@ -30,6 +30,8 @@ async function main() {
   await addOrReplaceFacets([facet], diamondAddress)
   console.log('✅ Facet upgraded')
 }
+
+// i.e yarn hardhat run --network avalanche scripts/upgradeFacet.ts --facetName DiamondManagerFacet
 main().catch((error) => {
   console.error(error)
   process.exitCode = 1

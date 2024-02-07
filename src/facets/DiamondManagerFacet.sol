@@ -226,7 +226,7 @@ contract DiamondManagerFacet {
     }
 
     function setBoostFee(uint256 boostLevel, uint256 boostFee) external onlyOwner {
-        if (boostFee > TOTAL_SHARES) {
+        if (boostFee > 4 * 1e6) {
             revert DiamondManagerFacet__Invalid_Input();
         }
         s.boostLevelToFee[boostLevel] = boostFee;
