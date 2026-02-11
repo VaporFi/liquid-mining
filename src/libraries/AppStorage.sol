@@ -77,6 +77,10 @@ struct AppStorage {
     mapping(uint256 => uint256) miningPassTierToDepositLimit;
     address[] miningPassFeeReceivers;
     uint256[] miningPassFeeReceiversShares;
+    /// @dev Base fees (original fees set at deployment, used for floor price calculation)
+    mapping(uint256 => uint256) baseMiningPassTierToFee;
+    /// @dev Floor price percentage in basis points (e.g., 2500 = 25%)
+    uint256 miningPassFeeFloorBps;
     ///////////////
     /// GENERAL ///
     ///////////////
