@@ -41,6 +41,7 @@ contract DiamondManagerFacet {
     event SeasonEnded(uint256 indexed seasonId, uint256 rewardTokenDistributed);
     event MiningPassFeeReceiversSet(address[] receivers, uint256[] proportion);
     event MiningPassFeesUpdated(uint256[] fees);
+    event BaseMiningPassFeesUpdated(uint256[] fees);
     event MiningPassFeeFloorUpdated(uint256 floorBps);
 
     modifier onlyOwner() {
@@ -182,6 +183,25 @@ contract DiamondManagerFacet {
         uint256[] memory fees = new uint256[](1);
         fees[0] = fee;
         emit MiningPassFeesUpdated(fees);
+    }
+
+    /// @notice Update base mining pass fees for all tiers
+    /// @dev Base fees are used as the reference for floor price calculation
+    /// @param fees Array of 11 base fees for tiers 0-10 (in USDC with 6 decimals)
+    function setBaseMiningPassFees(uint256[] calldata fees) external onlyOwner {
+        if (fees.length != 11) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+
+        for (uint256 i; i < 11;) {
+            s.baseMiningPassTierToFee[i] = fees[i];
+
+            unchecked {
+                i++;
+            }
+        }
+
+        emit BaseMiningPassFeesUpdated(fees);
     }
 
     /// @notice Update the floor price percentage for mining pass fees

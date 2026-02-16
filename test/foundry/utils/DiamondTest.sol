@@ -178,7 +178,7 @@ contract DiamondTest is Test {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](38);
+        functionSelectors = new bytes4[](39);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setStratosphereAddress.selector;
@@ -218,6 +218,7 @@ contract DiamondTest is Test {
         functionSelectors[35] = diamondManager.getMiningPassFeeFloorBps.selector;
         functionSelectors[36] = diamondManager.getAllMiningPassFees.selector;
         functionSelectors[37] = diamondManager.getMiningPassTierDepositLimit.selector;
+        functionSelectors[38] = diamondManager.setBaseMiningPassFees.selector;
 
         cut.push(
             IDiamondCut.FacetCut({

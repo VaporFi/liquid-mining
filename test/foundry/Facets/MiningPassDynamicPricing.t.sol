@@ -382,6 +382,59 @@ contract MiningPassDynamicPricingTest is DiamondTest {
     }
 
     // ═══════════════════════════════════════════════════════════════════
+    //                      SET BASE FEES TESTS
+    // ═══════════════════════════════════════════════════════════════════
+
+    function test_SetBaseMiningPassFees() public {
+        vm.startPrank(owner);
+
+        uint256[] memory newBaseFees = new uint256[](11);
+        newBaseFees[0] = 0;
+        newBaseFees[1] = 1 * 1e6;
+        newBaseFees[2] = 2 * 1e6;
+        newBaseFees[3] = 4 * 1e6;
+        newBaseFees[4] = 8 * 1e6;
+        newBaseFees[5] = 16 * 1e6;
+        newBaseFees[6] = 30 * 1e6;
+        newBaseFees[7] = 60 * 1e6;
+        newBaseFees[8] = 100 * 1e6;
+        newBaseFees[9] = 150 * 1e6;
+        newBaseFees[10] = 200 * 1e6;
+
+        diamondManagerFacet.setBaseMiningPassFees(newBaseFees);
+
+        // Verify base fees updated
+        for (uint256 i; i < 11; i++) {
+            assertEq(diamondManagerFacet.getBaseMiningPassTierFee(i), newBaseFees[i]);
+        }
+
+        // Floor fee should reflect new base
+        assertEq(diamondManagerFacet.getMiningPassTierFloorFee(10), 50 * 1e6); // 25% of $200
+
+        vm.stopPrank();
+    }
+
+    function test_SetBaseMiningPassFees_RevertIf_InvalidLength() public {
+        vm.startPrank(owner);
+
+        uint256[] memory shortFees = new uint256[](5);
+        vm.expectRevert(DiamondManagerFacet__Invalid_Input.selector);
+        diamondManagerFacet.setBaseMiningPassFees(shortFees);
+
+        vm.stopPrank();
+    }
+
+    function test_SetBaseMiningPassFees_RevertIf_NotOwner() public {
+        vm.startPrank(user);
+
+        uint256[] memory newFees = new uint256[](11);
+        vm.expectRevert(DiamondManagerFacet__Not_Owner.selector);
+        diamondManagerFacet.setBaseMiningPassFees(newFees);
+
+        vm.stopPrank();
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
     //                          HELPERS
     // ═══════════════════════════════════════════════════════════════════
 
