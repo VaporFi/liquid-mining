@@ -7,14 +7,27 @@ import {IDiamondCut} from "clouds/interfaces/IDiamondCut.sol";
 import {IDiamondLoupe} from "clouds/interfaces/IDiamondLoupe.sol";
 import {DiamondManagerFacet} from "src/facets/DiamondManagerFacet.sol";
 import {MiningPassFacet} from "src/facets/MiningPassFacet.sol";
+import {BoostFacet} from "src/facets/BoostFacet.sol";
+import {DepositFacet} from "src/facets/DepositFacet.sol";
+import {ClaimFacet} from "src/facets/ClaimFacet.sol";
+import {UnlockFacet} from "src/facets/UnlockFacet.sol";
+import {WithdrawFacet} from "src/facets/WithdrawFacet.sol";
+import {FeeCollectorFacet} from "src/facets/FeeCollectorFacet.sol";
+import {AuthorizationFacet} from "src/facets/AuthorizationFacet.sol";
+import {PausationFacet} from "src/facets/PausationFacet.sol";
+import {FujiMigrationInit} from "src/upgradeInitializers/FujiMigrationInit.sol";
 
 /// @title FujiForkMiningPassTest
-/// @notice Fork test against the real Fuji diamond to verify storage layout fix.
-///         The diamond was deployed at commit 14f06c0 which placed GENERAL fields
-///         (depositToken, rewardToken, feeToken, ...) at slots 25-30. A prior
-///         upgrade shifted those fields causing feeToken (slot 25 in broken HEAD)
-///         to read depositToken data (VPND). The fixed AppStorage restores the
-///         original slot layout with deprecated gap fields.
+/// @notice Fork test against the real Fuji diamond to verify the storage
+///         migration from the 14f06c0 layout to the production layout.
+///
+///         Fuji was deployed at commit 14f06c0 which placed GENERAL fields
+///         (depositToken, rewardToken, feeToken) at slots 25-27. Production
+///         has them at slots 21-23.
+///
+///         The migration initializer reads scalars from old slots 25-30,
+///         writes them to production slots 21-26, then re-initializes all
+///         mapping/array config data that moved between slot numbers.
 contract FujiForkMiningPassTest is Test {
     // ──── Real Fuji addresses ────
     address constant DIAMOND = 0xEd98549D4dE52811b3b417A717E3d74AC90F9Ffe;
@@ -37,63 +50,83 @@ contract FujiForkMiningPassTest is Test {
         loupe = IDiamondLoupe(DIAMOND);
         user = makeAddr("testUser");
 
-        // Read the owner from the OwnershipFacet
         (bool ok, bytes memory data) = DIAMOND.staticcall(abi.encodeWithSignature("owner()"));
         require(ok, "owner() call failed");
         owner = abi.decode(data, (address));
     }
 
     // ═══════════════════════════════════════════════════════════════════
-    //                   STORAGE LAYOUT VERIFICATION
+    //                   PRE-MIGRATION STORAGE CHECK
     // ═══════════════════════════════════════════════════════════════════
 
-    /// @notice Verify raw storage slots 25-28 hold the original 14f06c0 token addresses
-    function test_Fork_VerifyStorageLayout() public {
-        address slot25 = address(uint160(uint256(vm.load(DIAMOND, bytes32(uint256(25))))));
-        address slot26 = address(uint160(uint256(vm.load(DIAMOND, bytes32(uint256(26))))));
-        address slot27 = address(uint160(uint256(vm.load(DIAMOND, bytes32(uint256(27))))));
-        address slot28 = address(uint160(uint256(vm.load(DIAMOND, bytes32(uint256(28))))));
+    /// @notice Confirm that on-chain Fuji storage has GENERAL fields at
+    ///         the OLD 14f06c0 slots (25-28), not production slots (21-24).
+    function test_Fork_PreMigration_OldSlotLayout() public {
+        // Old Fuji 14f06c0 layout: GENERAL at slots 25-28
+        address slot25 = _readAddress(25);
+        address slot26 = _readAddress(26);
+        address slot27 = _readAddress(27);
+        address slot28 = _readAddress(28);
 
-        console.log("Raw storage:");
-        console.log("  slot 25 (depositToken):", slot25);
-        console.log("  slot 26 (rewardToken):", slot26);
-        console.log("  slot 27 (feeToken):", slot27);
-        console.log("  slot 28 (stratosphere):", slot28);
+        console.log("Pre-migration (old Fuji slots 25-28):");
+        console.log("  slot 25:", slot25);
+        console.log("  slot 26:", slot26);
+        console.log("  slot 27:", slot27);
+        console.log("  slot 28:", slot28);
 
-        assertEq(slot25, VPND, "slot 25 should be VPND (depositToken)");
-        assertEq(slot26, VAPE, "slot 26 should be VAPE (rewardToken)");
-        assertEq(slot27, USDC, "slot 27 should be USDC (feeToken)");
-        assertEq(slot28, STRATOSPHERE, "slot 28 should be stratosphere");
+        assertEq(slot25, VPND, "old slot 25 should be VPND (depositToken)");
+        assertEq(slot26, VAPE, "old slot 26 should be VAPE (rewardToken)");
+        assertEq(slot27, USDC, "old slot 27 should be USDC (feeToken)");
+        assertEq(slot28, STRATOSPHERE, "old slot 28 should be stratosphere");
+
+        // Production slots 21-24 should NOT have these values yet
+        address slot21 = _readAddress(21);
+        address slot23 = _readAddress(23);
+        assertTrue(slot21 != VPND, "prod slot 21 should NOT have VPND yet");
+        assertTrue(slot23 != USDC, "prod slot 23 should NOT have USDC yet");
     }
 
-    /// @notice After upgrading facets on the fork, feeToken should be USDC
-    function test_Fork_AfterUpgrade_FeeTokenIsUSDC() public {
-        _upgradeFacets();
-        _reinitializeMiningPassData();
+    // ═══════════════════════════════════════════════════════════════════
+    //                    POST-MIGRATION STORAGE CHECK
+    // ═══════════════════════════════════════════════════════════════════
 
-        // feeToken at slot 27 = USDC (from original 14f06c0 init)
-        assertEq(diamond.getStratosphereAddress(), STRATOSPHERE, "stratosphere should be correct");
+    /// @notice After the full migration, GENERAL fields should be at
+    ///         production slots (21-26) and facet reads should work.
+    function test_Fork_AfterMigration_FeeTokenIsUSDC() public {
+        _upgradeAndMigrate();
 
+        // Verify raw storage at production slots
+        assertEq(_readAddress(21), VPND, "prod slot 21 = depositToken = VPND");
+        assertEq(_readAddress(22), VAPE, "prod slot 22 = rewardToken = VAPE");
+        assertEq(_readAddress(23), USDC, "prod slot 23 = feeToken = USDC");
+        assertEq(_readAddress(24), STRATOSPHERE, "prod slot 24 = stratosphere");
+
+        // Old Fuji slot 27 should be cleared (was USDC/feeToken before migration)
+        assertEq(_readAddress(27), address(0), "old slot 27 should be cleared");
+        // Slot 28 is now miningPassFeeFloorBps (= 2500), NOT an old address slot
+        assertEq(uint256(vm.load(DIAMOND, bytes32(uint256(28)))), 2500, "slot 28 = miningPassFeeFloorBps = 2500");
+
+        // Verify via facet getters
+        assertEq(diamond.getStratosphereAddress(), STRATOSPHERE, "stratosphere getter works");
+
+        // Verify mining pass fees were re-initialized
         uint256 tier1Fee = diamond.getMiningPassTierFee(1);
         console.log("Tier 1 fee:", tier1Fee);
-        assertTrue(tier1Fee > 0, "tier 1 fee should be non-zero after reinit");
+        assertEq(tier1Fee, 0.5 * 1e6, "tier 1 fee should be 0.5 USDC");
 
         uint256 floorBps = diamond.getMiningPassFeeFloorBps();
         assertEq(floorBps, 2500, "floor should be 2500 bps");
     }
 
-    /// @notice Full end-to-end: upgrade, reinit, purchase mining pass — USDC spent, not VPND
-    function test_Fork_AfterUpgrade_PurchaseUsesUSDC() public {
-        _upgradeFacets();
-        _reinitializeMiningPassData();
-        _setupMiningPassFeeReceivers();
+    /// @notice Full e2e: migrate -> purchase mining pass -> only USDC is spent
+    function test_Fork_AfterMigration_PurchaseUsesUSDC() public {
+        _upgradeAndMigrate();
         _ensureActiveSeason();
 
         uint256 fee = diamond.getMiningPassTierFee(1);
         require(fee > 0, "fee is 0");
         console.log("Tier 1 fee:", fee);
 
-        // Give user USDC and VPND
         deal(USDC, user, fee * 10);
         deal(VPND, user, fee * 10);
 
@@ -120,65 +153,68 @@ contract FujiForkMiningPassTest is Test {
     //                         HELPERS
     // ═══════════════════════════════════════════════════════════════════
 
-    /// @dev Deploy new facets (compiled with fixed AppStorage) and replace them
-    ///      in the diamond. Uses the loupe to dynamically get all registered
-    ///      selectors for each facet so we don't miss any.
-    function _upgradeFacets() internal {
-        DiamondManagerFacet newDMF = new DiamondManagerFacet();
-        MiningPassFacet newMPF = new MiningPassFacet();
-
-        // Use the loupe to find existing facet addresses via known selectors
-        address oldDmfAddr = loupe.facetAddress(DiamondManagerFacet.setDepositToken.selector);
-        address oldMpfAddr = loupe.facetAddress(MiningPassFacet.purchase.selector);
-
-        // Get ALL registered selectors for those facets
-        bytes4[] memory dmfSelectors = loupe.facetFunctionSelectors(oldDmfAddr);
-        bytes4[] memory mpfSelectors = loupe.facetFunctionSelectors(oldMpfAddr);
-
-        console.log("DMF selectors to replace:", dmfSelectors.length);
-        console.log("MPF selectors to replace:", mpfSelectors.length);
-
-        IDiamondCut.FacetCut[] memory cuts = new IDiamondCut.FacetCut[](2);
-        cuts[0] = IDiamondCut.FacetCut({
-            facetAddress: address(newDMF), action: IDiamondCut.FacetCutAction.Replace, functionSelectors: dmfSelectors
-        });
-        cuts[1] = IDiamondCut.FacetCut({
-            facetAddress: address(newMPF), action: IDiamondCut.FacetCutAction.Replace, functionSelectors: mpfSelectors
-        });
-
-        vm.prank(owner);
-        IDiamondCut(DIAMOND).diamondCut(cuts, address(0), "");
+    function _readAddress(uint256 slot) internal view returns (address) {
+        return address(uint160(uint256(vm.load(DIAMOND, bytes32(slot)))));
     }
 
-    function _reinitializeMiningPassData() internal {
-        uint256[] memory fees = new uint256[](11);
-        fees[0] = 0;
-        fees[1] = 0.5 * 1e6; // tier 1: 0.5 USDC
-        fees[2] = 1 * 1e6;
-        fees[3] = 2 * 1e6;
-        fees[4] = 4 * 1e6;
-        fees[5] = 8 * 1e6;
-        fees[6] = 15 * 1e6;
-        fees[7] = 30 * 1e6;
-        fees[8] = 50 * 1e6;
-        fees[9] = 75 * 1e6;
-        fees[10] = 100 * 1e6;
+    /// @dev Upgrade ALL facets + run the FujiMigrationInit initializer in a
+    ///      single diamondCut call — exactly how the real upgrade will work.
+    function _upgradeAndMigrate() internal {
+        // Deploy the migration initializer
+        FujiMigrationInit migrationInit = new FujiMigrationInit();
 
-        vm.startPrank(owner);
-        diamond.setBaseMiningPassFees(fees);
-        diamond.setMiningPassFees(fees);
-        diamond.setMiningPassFeeFloor(2500);
-        vm.stopPrank();
-    }
+        // Build cuts array: deploy new facets, look up old facet via loupe, replace
+        IDiamondCut.FacetCut[] memory cuts = _buildAllFacetCuts();
 
-    function _setupMiningPassFeeReceivers() internal {
-        address[] memory receivers = new address[](1);
-        receivers[0] = makeAddr("feeReceiver");
-        uint256[] memory shares = new uint256[](1);
-        shares[0] = 10000; // 100%
+        // Encode the migration initializer call
+        FujiMigrationInit.Args memory migArgs = _buildMigrationArgs();
 
         vm.prank(owner);
-        diamond.setMiningPassFeeReceivers(receivers, shares);
+        IDiamondCut(DIAMOND)
+            .diamondCut(cuts, address(migrationInit), abi.encodeWithSelector(FujiMigrationInit.init.selector, migArgs));
+    }
+
+    function _buildAllFacetCuts() internal returns (IDiamondCut.FacetCut[] memory cuts) {
+        cuts = new IDiamondCut.FacetCut[](10);
+        cuts[0] = _deployAndReplace(address(new DiamondManagerFacet()), DiamondManagerFacet.setDepositToken.selector);
+        cuts[1] = _deployAndReplace(address(new MiningPassFacet()), MiningPassFacet.purchase.selector);
+        cuts[2] = _deployAndReplace(address(new BoostFacet()), BoostFacet.claimBoost.selector);
+        cuts[3] = _deployAndReplace(address(new DepositFacet()), DepositFacet.deposit.selector);
+        cuts[4] = _deployAndReplace(address(new ClaimFacet()), ClaimFacet.automatedClaim.selector);
+        cuts[5] = _deployAndReplace(address(new UnlockFacet()), UnlockFacet.unlock.selector);
+        cuts[6] = _deployAndReplace(address(new WithdrawFacet()), WithdrawFacet.withdrawUnlocked.selector);
+        cuts[7] = _deployAndReplace(address(new FeeCollectorFacet()), FeeCollectorFacet.collectBoostFees.selector);
+        cuts[8] = _deployAndReplace(address(new AuthorizationFacet()), AuthorizationFacet.authorize.selector);
+        cuts[9] = _deployAndReplace(address(new PausationFacet()), PausationFacet.pause.selector);
+    }
+
+    function _deployAndReplace(address newFacet, bytes4 knownSelector)
+        internal
+        view
+        returns (IDiamondCut.FacetCut memory)
+    {
+        address oldFacet = loupe.facetAddress(knownSelector);
+        bytes4[] memory selectors = loupe.facetFunctionSelectors(oldFacet);
+        return IDiamondCut.FacetCut({
+            facetAddress: newFacet, action: IDiamondCut.FacetCutAction.Replace, functionSelectors: selectors
+        });
+    }
+
+    function _buildMigrationArgs() internal returns (FujiMigrationInit.Args memory migArgs) {
+        migArgs.unlockFeeReceivers = new address[](1);
+        migArgs.unlockFeeReceivers[0] = makeAddr("unlockFeeReceiver");
+        migArgs.unlockFeeReceiversShares = new uint256[](1);
+        migArgs.unlockFeeReceiversShares[0] = 10000;
+
+        migArgs.boostFeeReceivers = new address[](1);
+        migArgs.boostFeeReceivers[0] = makeAddr("boostFeeReceiver");
+        migArgs.boostFeeReceiversShares = new uint256[](1);
+        migArgs.boostFeeReceiversShares[0] = 10000;
+
+        migArgs.miningPassFeeReceivers = new address[](1);
+        migArgs.miningPassFeeReceivers[0] = makeAddr("miningPassFeeReceiver");
+        migArgs.miningPassFeeReceiversShares = new uint256[](1);
+        migArgs.miningPassFeeReceiversShares[0] = 10000;
     }
 
     function _ensureActiveSeason() internal {
@@ -189,10 +225,12 @@ contract FujiForkMiningPassTest is Test {
             return;
         }
 
-        // Read season end timestamp from storage (Season struct in mapping at slot 4)
-        bytes32 baseSlot = keccak256(abi.encode(seasonId, uint256(4)));
-        uint256 endTs = uint256(vm.load(DIAMOND, bytes32(uint256(baseSlot) + 2)));
-        if (endTs <= block.timestamp) {
+        try diamond.getSeasonEndTimestamp(seasonId) returns (uint256 endTs) {
+            if (endTs <= block.timestamp) {
+                vm.prank(owner);
+                diamond.startNewSeasonWithEndTimestamp(1000 * 1e18, block.timestamp + 30 days);
+            }
+        } catch {
             vm.prank(owner);
             diamond.startNewSeasonWithEndTimestamp(1000 * 1e18, block.timestamp + 30 days);
         }
