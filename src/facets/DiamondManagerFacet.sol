@@ -41,6 +41,7 @@ contract DiamondManagerFacet {
     event SeasonEnded(uint256 indexed seasonId, uint256 rewardTokenDistributed);
     event MiningPassFeeReceiversSet(address[] receivers, uint256[] proportion);
     event MiningPassFeesUpdated(uint256[] fees);
+    event MiningPassTierFeeUpdated(uint256 indexed tier, uint256 fee);
     event BaseMiningPassFeesUpdated(uint256[] fees);
     event MiningPassFeeFloorUpdated(uint256 floorBps);
 
@@ -180,9 +181,7 @@ contract DiamondManagerFacet {
 
         s.miningPassTierToFee[tier] = fee;
 
-        uint256[] memory fees = new uint256[](1);
-        fees[0] = fee;
-        emit MiningPassFeesUpdated(fees);
+        emit MiningPassTierFeeUpdated(tier, fee);
     }
 
     /// @notice Update base mining pass fees for all tiers
@@ -210,6 +209,18 @@ contract DiamondManagerFacet {
         if (floorBps > TOTAL_SHARES) {
             revert DiamondManagerFacet__Invalid_Input();
         }
+
+        // Validate that no existing tier fee falls below the new floor
+        for (uint256 i = 1; i < 11;) {
+            uint256 floorFee = (s.baseMiningPassTierToFee[i] * floorBps) / TOTAL_SHARES;
+            if (s.miningPassTierToFee[i] < floorFee) {
+                revert DiamondManagerFacet__FeeBelowFloor();
+            }
+            unchecked {
+                i++;
+            }
+        }
+
         s.miningPassFeeFloorBps = floorBps;
         emit MiningPassFeeFloorUpdated(floorBps);
     }

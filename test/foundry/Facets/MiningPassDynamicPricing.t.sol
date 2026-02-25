@@ -12,6 +12,8 @@ error DiamondManagerFacet__FeeBelowFloor();
 error DiamondManagerFacet__InvalidTier();
 
 contract MiningPassDynamicPricingTest is DiamondTest {
+    event MiningPassTierFeeUpdated(uint256 indexed tier, uint256 fee);
+
     LiquidMiningDiamond internal diamond;
     DiamondManagerFacet internal diamondManagerFacet;
     MiningPassFacet internal miningPassFacet;
@@ -183,6 +185,9 @@ contract MiningPassDynamicPricingTest is DiamondTest {
 
         // Update tier 5 to 50% of original
         uint256 newFee = originalFees[5] / 2; // $4 instead of $8
+
+        vm.expectEmit(true, false, false, true, address(diamond));
+        emit MiningPassTierFeeUpdated(5, newFee);
         diamondManagerFacet.setMiningPassTierFee(5, newFee);
 
         assertEq(diamondManagerFacet.getMiningPassTierFee(5), newFee);
@@ -221,12 +226,32 @@ contract MiningPassDynamicPricingTest is DiamondTest {
     function test_SetMiningPassFeeFloor() public {
         vm.startPrank(owner);
 
-        // Change floor to 50%
+        // Current fees equal base fees (100%), so raising floor to 50% is safe
         diamondManagerFacet.setMiningPassFeeFloor(5000);
         assertEq(diamondManagerFacet.getMiningPassFeeFloorBps(), 5000);
 
         // Verify floor fee calculation changed
         assertEq(diamondManagerFacet.getMiningPassTierFloorFee(10), 50 * 1e6); // 50% of $100
+
+        vm.stopPrank();
+    }
+
+    function test_SetMiningPassFeeFloor_RevertIf_ExistingFeeBelowNewFloor() public {
+        vm.startPrank(owner);
+
+        // Lower fees to 30% of base
+        uint256[] memory lowFees = new uint256[](11);
+        for (uint256 i; i < 11; i++) {
+            lowFees[i] = (originalFees[i] * 3000) / 10000; // 30%
+        }
+        diamondManagerFacet.setMiningPassFees(lowFees);
+
+        // Try to raise floor to 50% — existing fees (30%) < new floor (50%)
+        vm.expectRevert(DiamondManagerFacet__FeeBelowFloor.selector);
+        diamondManagerFacet.setMiningPassFeeFloor(5000);
+
+        // Floor should remain unchanged
+        assertEq(diamondManagerFacet.getMiningPassFeeFloorBps(), 2500);
 
         vm.stopPrank();
     }
