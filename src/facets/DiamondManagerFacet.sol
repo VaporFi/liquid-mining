@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 
-import { LDiamond } from "clouds/diamond/LDiamond.sol";
-import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {LDiamond} from "clouds/diamond/LDiamond.sol";
+import {IERC20} from "openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import { AppStorage, UserData, Season } from "../libraries/AppStorage.sol";
-import { IEmissionsManager } from "../interfaces/IEmissionsManager.sol";
+import {AppStorage, UserData, Season} from "../libraries/AppStorage.sol";
+import {IEmissionsManager} from "../interfaces/IEmissionsManager.sol";
 
 error DiamondManagerFacet__Not_Owner();
 error DiamondManagerFacet__Invalid_Address();
@@ -14,6 +14,8 @@ error DiamondManagerFacet__Season_Not_Finished();
 error DiamondManagerFacet_InvalidArgs_ChangeBoostPoints();
 error DiamondManagerFacet__NotGelatoExecutor();
 error DiamondManagerFacet__NotAuthorized();
+error DiamondManagerFacet__FeeBelowFloor();
+error DiamondManagerFacet__InvalidTier();
 
 contract DiamondManagerFacet {
     AppStorage s;
@@ -38,6 +40,10 @@ contract DiamondManagerFacet {
     event SeasonStarted(uint256 indexed seasonId, uint256 rewardTokenToDistribute);
     event SeasonEnded(uint256 indexed seasonId, uint256 rewardTokenDistributed);
     event MiningPassFeeReceiversSet(address[] receivers, uint256[] proportion);
+    event MiningPassFeesUpdated(uint256[] fees);
+    event MiningPassTierFeeUpdated(uint256 indexed tier, uint256 fee);
+    event BaseMiningPassFeesUpdated(uint256[] fees);
+    event MiningPassFeeFloorUpdated(uint256 floorBps);
 
     modifier onlyOwner() {
         if (msg.sender != LDiamond.contractOwner()) {
@@ -128,6 +134,97 @@ contract DiamondManagerFacet {
         emit MiningPassFeeReceiversSet(receivers, proportion);
     }
 
+    /// @notice Update mining pass fees for all tiers (dynamic pricing)
+    /// @dev Fees must be >= floor price (25% of base fee by default)
+    /// @param fees Array of 11 fees for tiers 0-10 (in USDC with 6 decimals)
+    function setMiningPassFees(uint256[] calldata fees) external onlyOwner {
+        if (fees.length != 11) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+
+        uint256 floorBps = s.miningPassFeeFloorBps;
+
+        for (uint256 i; i < 11;) {
+            uint256 baseFee = s.baseMiningPassTierToFee[i];
+            uint256 floorFee = (baseFee * floorBps) / TOTAL_SHARES;
+
+            // Fee must be >= floor price (but tier 0 is always free)
+            if (i > 0 && fees[i] < floorFee) {
+                revert DiamondManagerFacet__FeeBelowFloor();
+            }
+
+            s.miningPassTierToFee[i] = fees[i];
+
+            unchecked {
+                i++;
+            }
+        }
+
+        emit MiningPassFeesUpdated(fees);
+    }
+
+    /// @notice Update a single mining pass tier fee
+    /// @param tier The tier to update (0-10)
+    /// @param fee The new fee in USDC (6 decimals)
+    function setMiningPassTierFee(uint256 tier, uint256 fee) external onlyOwner {
+        if (tier > 10) {
+            revert DiamondManagerFacet__InvalidTier();
+        }
+
+        uint256 baseFee = s.baseMiningPassTierToFee[tier];
+        uint256 floorFee = (baseFee * s.miningPassFeeFloorBps) / TOTAL_SHARES;
+
+        // Fee must be >= floor price (but tier 0 is always free)
+        if (tier > 0 && fee < floorFee) {
+            revert DiamondManagerFacet__FeeBelowFloor();
+        }
+
+        s.miningPassTierToFee[tier] = fee;
+
+        emit MiningPassTierFeeUpdated(tier, fee);
+    }
+
+    /// @notice Update base mining pass fees for all tiers
+    /// @dev Base fees are used as the reference for floor price calculation
+    /// @param fees Array of 11 base fees for tiers 0-10 (in USDC with 6 decimals)
+    function setBaseMiningPassFees(uint256[] calldata fees) external onlyOwner {
+        if (fees.length != 11) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+
+        for (uint256 i; i < 11;) {
+            s.baseMiningPassTierToFee[i] = fees[i];
+
+            unchecked {
+                i++;
+            }
+        }
+
+        emit BaseMiningPassFeesUpdated(fees);
+    }
+
+    /// @notice Update the floor price percentage for mining pass fees
+    /// @param floorBps Floor price in basis points (e.g., 2500 = 25%)
+    function setMiningPassFeeFloor(uint256 floorBps) external onlyOwner {
+        if (floorBps > TOTAL_SHARES) {
+            revert DiamondManagerFacet__Invalid_Input();
+        }
+
+        // Validate that no existing tier fee falls below the new floor
+        for (uint256 i = 1; i < 11;) {
+            uint256 floorFee = (s.baseMiningPassTierToFee[i] * floorBps) / TOTAL_SHARES;
+            if (s.miningPassTierToFee[i] < floorFee) {
+                revert DiamondManagerFacet__FeeBelowFloor();
+            }
+            unchecked {
+                i++;
+            }
+        }
+
+        s.miningPassFeeFloorBps = floorBps;
+        emit MiningPassFeeFloorUpdated(floorBps);
+    }
+
     function setRewardToken(address token) external validAddress(token) onlyOwner {
         s.rewardToken = token;
     }
@@ -166,10 +263,10 @@ contract DiamondManagerFacet {
         emit SeasonStarted(s.currentSeasonId, _rewardTokenToDistribute);
     }
 
-    function startNewSeasonWithEndTimestamp(
-        uint256 _rewardTokenToDistribute,
-        uint256 _endTimestamp
-    ) external onlyAuthorized {
+    function startNewSeasonWithEndTimestamp(uint256 _rewardTokenToDistribute, uint256 _endTimestamp)
+        external
+        onlyAuthorized
+    {
         uint256 _currentSeason = s.currentSeasonId;
         if (_currentSeason != 0 && s.seasons[_currentSeason].endTimestamp >= block.timestamp) {
             revert DiamondManagerFacet__Season_Not_Finished();
@@ -219,10 +316,10 @@ contract DiamondManagerFacet {
         emit EmissionsManagerSet(_emissionManager);
     }
 
-    function setUnlockTimestampDiscountForStratosphereMember(
-        uint256 tier,
-        uint256 discountBasisPoints
-    ) external onlyOwner {
+    function setUnlockTimestampDiscountForStratosphereMember(uint256 tier, uint256 discountBasisPoints)
+        external
+        onlyOwner
+    {
         s.unlockTimestampDiscountForStratosphereMembers[tier] = discountBasisPoints;
         emit UnlockTimestampDiscountForStratosphereMemberSet(tier, discountBasisPoints);
     }
@@ -365,9 +462,11 @@ contract DiamondManagerFacet {
         return s.seasons[seasonId].rewardTokensToDistribute;
     }
 
-    function getCurrentSeasonUserDetails(
-        address _account
-    ) external view returns (uint256 depositAmount, uint256 poolShareBips, uint256 estimatedRewards) {
+    function getCurrentSeasonUserDetails(address _account)
+        external
+        view
+        returns (uint256 depositAmount, uint256 poolShareBips, uint256 estimatedRewards)
+    {
         uint256 _currentSeasonId = s.currentSeasonId;
         UserData memory _userData = s.usersData[_currentSeasonId][_account];
         Season memory _season = s.seasons[_currentSeasonId];
@@ -380,5 +479,53 @@ contract DiamondManagerFacet {
 
     function getSeasonIsClaimed(uint256 seasonId) external view returns (bool) {
         return s.isSeasonClaimed[seasonId];
+    }
+
+    /// @notice Get the current mining pass fee for a tier
+    /// @param tier The tier to query (0-10)
+    /// @return fee The current fee in USDC (6 decimals)
+    function getMiningPassTierFee(uint256 tier) external view returns (uint256) {
+        return s.miningPassTierToFee[tier];
+    }
+
+    /// @notice Get the base (original) mining pass fee for a tier
+    /// @param tier The tier to query (0-10)
+    /// @return fee The base fee in USDC (6 decimals)
+    function getBaseMiningPassTierFee(uint256 tier) external view returns (uint256) {
+        return s.baseMiningPassTierToFee[tier];
+    }
+
+    /// @notice Get the floor price for a tier
+    /// @param tier The tier to query (0-10)
+    /// @return floorFee The minimum allowed fee in USDC (6 decimals)
+    function getMiningPassTierFloorFee(uint256 tier) external view returns (uint256) {
+        uint256 baseFee = s.baseMiningPassTierToFee[tier];
+        return (baseFee * s.miningPassFeeFloorBps) / TOTAL_SHARES;
+    }
+
+    /// @notice Get the floor price percentage
+    /// @return floorBps Floor price in basis points (e.g., 2500 = 25%)
+    function getMiningPassFeeFloorBps() external view returns (uint256) {
+        return s.miningPassFeeFloorBps;
+    }
+
+    /// @notice Get all current mining pass fees
+    /// @return fees Array of 11 fees for tiers 0-10
+    function getAllMiningPassFees() external view returns (uint256[] memory) {
+        uint256[] memory fees = new uint256[](11);
+        for (uint256 i; i < 11;) {
+            fees[i] = s.miningPassTierToFee[i];
+            unchecked {
+                i++;
+            }
+        }
+        return fees;
+    }
+
+    /// @notice Get deposit limit for a mining pass tier
+    /// @param tier The tier to query (0-10)
+    /// @return limit The deposit limit in VPND (18 decimals)
+    function getMiningPassTierDepositLimit(uint256 tier) external view returns (uint256) {
+        return s.miningPassTierToDepositLimit[tier];
     }
 }

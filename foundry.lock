@@ -1,0 +1,20 @@
+{
+  "lib/clouds": {
+    "branch": {
+      "name": "main",
+      "rev": "50e831db068af977cd9c4169ecf1a6119934a034"
+    }
+  },
+  "lib/forge-std": {
+    "branch": {
+      "name": "master",
+      "rev": "520f86e57e0682bdac282748a33a138a47f1d552"
+    }
+  },
+  "lib/openzeppelin-contracts": {
+    "rev": "3f610ebc25480bf6145e519c96e2f809996db8ed"
+  },
+  "lib/solmate": {
+    "rev": "1b3adf677e7e383cc684b5d5bd441da86bf4bf1c"
+  }
+}

@@ -8,12 +8,12 @@ pragma solidity 0.8.18;
 * Implementation of a diamond.
 /******************************************************************************/
 
-import { LDiamond } from "clouds/diamond/LDiamond.sol";
-import { IDiamondLoupe } from "clouds/interfaces/IDiamondLoupe.sol";
-import { IDiamondCut } from "clouds/interfaces/IDiamondCut.sol";
-import { IERC173 } from "clouds/interfaces/IERC173.sol";
-import { IERC165 } from "clouds/interfaces/IERC165.sol";
-import { AppStorage } from "../libraries/AppStorage.sol";
+import {LDiamond} from "clouds/diamond/LDiamond.sol";
+import {IDiamondLoupe} from "clouds/interfaces/IDiamondLoupe.sol";
+import {IDiamondCut} from "clouds/interfaces/IDiamondCut.sol";
+import {IERC173} from "clouds/interfaces/IERC173.sol";
+import {IERC165} from "clouds/interfaces/IERC165.sol";
+import {AppStorage} from "../libraries/AppStorage.sol";
 
 // It is expected that this contract is customized if you want to deploy your diamond
 // with data from a deployment script. Use the init function to initialize state variables
@@ -119,6 +119,19 @@ contract DiamondInit {
 
         // MiningPassFacet
         /// @dev fee is paid in USDC
+        /// @dev Base fees (original fees, used for floor price calculation)
+        s.baseMiningPassTierToFee[0] = 0;
+        s.baseMiningPassTierToFee[1] = 0.5 * 1e6;
+        s.baseMiningPassTierToFee[2] = 1 * 1e6;
+        s.baseMiningPassTierToFee[3] = 2 * 1e6;
+        s.baseMiningPassTierToFee[4] = 4 * 1e6;
+        s.baseMiningPassTierToFee[5] = 8 * 1e6;
+        s.baseMiningPassTierToFee[6] = 15 * 1e6;
+        s.baseMiningPassTierToFee[7] = 30 * 1e6;
+        s.baseMiningPassTierToFee[8] = 50 * 1e6;
+        s.baseMiningPassTierToFee[9] = 75 * 1e6;
+        s.baseMiningPassTierToFee[10] = 100 * 1e6;
+        /// @dev Current fees (can be updated for dynamic pricing)
         s.miningPassTierToFee[0] = 0;
         s.miningPassTierToFee[1] = 0.5 * 1e6;
         s.miningPassTierToFee[2] = 1 * 1e6;
@@ -130,6 +143,8 @@ contract DiamondInit {
         s.miningPassTierToFee[8] = 50 * 1e6;
         s.miningPassTierToFee[9] = 75 * 1e6;
         s.miningPassTierToFee[10] = 100 * 1e6;
+        /// @dev Floor price is 25% of base fee (2500 basis points)
+        s.miningPassFeeFloorBps = 2500;
         /// @dev deposit limit is in VPND
         s.miningPassTierToDepositLimit[0] = 5_000 * 1e18;
         s.miningPassTierToDepositLimit[1] = 10_000 * 1e18;

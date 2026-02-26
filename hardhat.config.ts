@@ -9,7 +9,10 @@ import '@nomicfoundation/hardhat-toolbox'
 import './tasks/verify'
 import './tasks/automatedClaim'
 import './tasks/season'
+import './tasks/startSeason'
+import './tasks/diamondInfo'
 import './tasks/admin'
+import './tasks/updateMiningPassFees'
 
 import { formatUnits, parseUnits } from 'ethers'
 
