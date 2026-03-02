@@ -74,8 +74,8 @@ task(
             const depositLimit = await manager.getMiningPassTierDepositLimit(t)
 
             console.log(`\n── Tier ${t} ──`)
-            console.log(`  Base Fee:      $${fmtUSDC(currentFee)}`)
-            console.log(`  Current Fee:   $${fmtUSDC(baseFee)}`)
+            console.log(`  Base Fee:      $${fmtUSDC(baseFee)}`)
+            console.log(`  Current Fee:   $${fmtUSDC(currentFee)}`)
             console.log(`  Floor Fee:     $${fmtUSDC(floorFee)}`)
             console.log(
                 `  Deposit Limit: ${depositLimit === BigInt(2) ** BigInt(256) - BigInt(1) ? '∞' : `${(Number(depositLimit) / 1e18).toLocaleString()} VPND`}`
@@ -126,9 +126,18 @@ task(
         )
 
         // ── 1. Fetch VAPE price ──────────────────────────────────────────
-        const currentVAPEPrice = vapePrice
-            ? parseFloat(vapePrice)
-            : await fetchVAPEPrice()
+        let currentVAPEPrice: number
+        if (vapePrice) {
+            const parsed = parseFloat(vapePrice)
+            if (!Number.isFinite(parsed) || parsed <= 0) {
+                throw new Error(
+                    `Invalid --vape-price "${vapePrice}": must be a finite number > 0`
+                )
+            }
+            currentVAPEPrice = parsed
+        } else {
+            currentVAPEPrice = await fetchVAPEPrice()
+        }
 
         console.log(`\n💰 VAPE Price: $${currentVAPEPrice.toFixed(4)}`)
         console.log(
@@ -149,11 +158,18 @@ task(
             currentFees.push(fee)
         }
 
-        // ── 4. Calculate dynamic fees ────────────────────────────────────
+        // ── 4. Read on-chain floor & calculate dynamic fees ─────────────
+        const onChainFloorBps = Number(await manager.getMiningPassFeeFloorBps())
+        const effectiveFloorBps =
+            onChainFloorBps > 0 ? onChainFloorBps : FLOOR_BPS
+        console.log(
+            `🛡️  Floor: ${effectiveFloorBps} bps (${(effectiveFloorBps / 100).toFixed(1)}%)${onChainFloorBps === 0 ? ' [fallback — on-chain not set]' : ''}`
+        )
+
         const dynamicFees = calculateDynamicFees(
             baseFees,
             currentVAPEPrice,
-            FLOOR_BPS
+            effectiveFloorBps
         )
 
         console.log('\n📋 Mining Pass Fee Update:')
