@@ -105,6 +105,63 @@ contract ProdForkUpgradeTest is Test {
     }
 
     // ═══════════════════════════════════════════════════════════════════
+    //              POST-UPGRADE: getMiningPassTierFee RETURNS EXISTING FEES
+    // ═══════════════════════════════════════════════════════════════════
+
+    /// @notice Immediately after upgrade (before any admin init),
+    ///         getMiningPassTierFee must return the same fees that were
+    ///         already set via DiamondInit. The UI can call this safely.
+    function test_ProdFork_PostUpgrade_GetMiningPassTierFeeReturnsExisting() public {
+        // Snapshot existing fees BEFORE upgrade via raw storage (slot 17 mapping)
+        uint256[11] memory feesBefore;
+        for (uint256 i; i < 11; i++) {
+            // mapping slot = keccak256(abi.encode(key, baseSlot))
+            bytes32 slot = keccak256(abi.encode(i, uint256(17)));
+            feesBefore[i] = uint256(vm.load(DIAMOND, slot));
+        }
+
+        // Perform upgrade
+        _upgradeDiamondManagerFacet();
+
+        // Verify getMiningPassTierFee returns identical values
+        for (uint256 i; i < 11; i++) {
+            uint256 feeAfter = diamond.getMiningPassTierFee(i);
+            assertEq(feeAfter, feesBefore[i], string.concat("tier ", vm.toString(i), " fee changed"));
+        }
+
+        // Log for visibility
+        console.log("Post-upgrade getMiningPassTierFee sanity:");
+        for (uint256 i; i < 11; i++) {
+            console.log("  Tier", i, ":", diamond.getMiningPassTierFee(i));
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //              POST-UPGRADE: miningPassFeeFloorBps VALUE
+    // ═══════════════════════════════════════════════════════════════════
+
+    /// @notice Log and verify the miningPassFeeFloorBps value after upgrade.
+    ///         On a fresh prod upgrade (no init), slot 28 should be 0.
+    function test_ProdFork_PostUpgrade_MiningPassFeeFloorBps() public {
+        // Read raw slot 28 before upgrade
+        uint256 rawBefore = uint256(vm.load(DIAMOND, bytes32(uint256(28))));
+        console.log("miningPassFeeFloorBps (raw slot 28) BEFORE upgrade:", rawBefore);
+
+        _upgradeDiamondManagerFacet();
+
+        // Read via getter after upgrade
+        uint256 floorBps = diamond.getMiningPassFeeFloorBps();
+        console.log("miningPassFeeFloorBps (getter)      AFTER  upgrade:", floorBps);
+
+        // Read raw slot 28 after upgrade (should be unchanged)
+        uint256 rawAfter = uint256(vm.load(DIAMOND, bytes32(uint256(28))));
+        console.log("miningPassFeeFloorBps (raw slot 28) AFTER  upgrade:", rawAfter);
+
+        assertEq(rawAfter, rawBefore, "slot 28 should not change during upgrade");
+        assertEq(floorBps, rawAfter, "getter should match raw slot");
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
     //              POST-UPGRADE: GENERAL SLOT INTEGRITY
     // ═══════════════════════════════════════════════════════════════════
 
