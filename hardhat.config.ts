@@ -1,15 +1,20 @@
-// import fs from 'fs'
+import 'dotenv/config'
 import { getEnvValSafe } from './utils'
 import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-foundry'
 import '@nomicfoundation/hardhat-network-helpers'
 import '@nomiclabs/hardhat-solhint'
 import '@nomicfoundation/hardhat-toolbox'
-import 'dotenv/config'
 
 import './tasks/verify'
 import './tasks/automatedClaim'
 import './tasks/season'
+import './tasks/startSeason'
+import './tasks/diamondInfo'
+import './tasks/admin'
+import './tasks/miningPassFees'
+
+import { formatUnits, parseUnits } from 'ethers'
 
 const AVALANCHE_RPC_URL = getEnvValSafe('AVALANCHE_RPC_URL')
 const FUJI_RPC_URL = getEnvValSafe('FUJI_RPC_URL')
@@ -20,14 +25,12 @@ const COINMARKETCAP_API_KEY = getEnvValSafe('COINMARKETCAP_API_KEY')
 const SNOWTRACE_API_KEY = getEnvValSafe('SNOWTRACE_API_KEY', false)
 
 const config: HardhatUserConfig = {
-  etherscan: {
-    apiKey: SNOWTRACE_API_KEY,
-  },
   networks: {
     avalanche: {
       accounts: [DEPLOYER_PRIVATE_KEY],
       chainId: 43114,
       url: AVALANCHE_RPC_URL,
+      gasPrice: +parseUnits('28', 'gwei').toString(),
     },
     fuji: {
       accounts: [DEPLOYER_PRIVATE_KEY],
@@ -52,6 +55,32 @@ const config: HardhatUserConfig = {
         runs: 1000000,
       },
     },
+  },
+  etherscan: {
+    apiKey: {
+      snowtrace: 'snowtrace',
+      snowtraceFuji: 'snowtraceFuji',
+    },
+    customChains: [
+      {
+        network: 'snowtrace',
+        chainId: 43114,
+        urls: {
+          apiURL:
+            'https://api.routescan.io/v2/network/mainnet/evm/43114/etherscan',
+          browserURL: 'https://snowtrace.dev/',
+        },
+      },
+      {
+        network: 'snowtraceFuji',
+        chainId: 43113,
+        urls: {
+          apiURL:
+            'https://api.routescan.io/v2/network/testnet/evm/43113/etherscan',
+          browserURL: 'https://testnet.snowtrace.io/',
+        },
+      },
+    ],
   },
 }
 

@@ -35,10 +35,10 @@ export const addresses: {
     [ChainId.AVALANCHE_TESTNET]: '0xa3b0496e5E7748B3C02752220508c4297B29b99C',
   },
   xVAPE: {
-    [ChainId.AVALANCHE]: '0x856D9680ceD5ee696980F44e8eaA2E090d92a6Db',
+    [ChainId.AVALANCHE]: '0x0fA2CCC39Cc3B225A7649eD84ec76Ee5217d07c4', // StableVapeReplenishmentPool
     [ChainId.AVALANCHE_TESTNET]: '0x723bc5612cf6Ee5756cbb322719d142e6E23478C',
   },
-  replenishmentPool: {
+  vpndReplenishmentPool: {
     [ChainId.AVALANCHE]: '0x1cEc7B81Fdc2d46241B54b5190AF7967A93aa0E0',
     [ChainId.AVALANCHE_TESTNET]: '0xcf00c1ac6d26d52054ec89be6e093f2e270d61d9',
   },

@@ -1,16 +1,17 @@
 import { Interface } from '@ethersproject/abi'
-import { readdirSync, readFileSync, writeFileSync } from 'fs'
+import { writeFileSync } from 'fs'
+import getFacets from './getFacets'
+import { artifacts } from 'hardhat'
 
-export function generateFullABI() {
-  const folders = readdirSync('./abis/')
-  let fullAbi: Interface[] = []
-  for (const folder of folders) {
-    const fileName = `${folder}`.split('.')[0] + '.json'
-    const fileData = readFileSync(`./abis/${folder}/${fileName}`, 'utf8')
-    const abi = JSON.parse(fileData).abi
-    abi?.map((i: Interface) => (fullAbi?.includes(i) ? null : fullAbi?.push(i)))
+export async function generateFullABI() {
+  const combinedABI: Interface[] = []
+  const facets = getFacets()
+  for (const facet of facets) {
+    const artifact = await artifacts.readArtifact(facet)
+    writeFileSync(`./abis/${facet}.json`, JSON.stringify(artifact.abi, null, 4))
+    combinedABI.push(...artifact.abi)
   }
-  writeFileSync('./abi/fullDiamond.json', JSON.stringify(fullAbi, null, 4))
+  writeFileSync('./abi/fullDiamond.json', JSON.stringify(combinedABI, null, 4))
 }
 
 generateFullABI()

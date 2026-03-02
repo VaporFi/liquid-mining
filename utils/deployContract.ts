@@ -18,8 +18,9 @@ const defaultDeployOptions: DeployOptions = {
 
 export async function deployContract(
   contractName: string,
-  options: any = defaultDeployOptions
+  options: DeployOptions = defaultDeployOptions
 ) {
+  console.log('🚀 ~ file: deployContract.ts:23 ~ contractName:', contractName)
   const artifact = await hre.artifacts.readArtifact(contractName)
 
   if (hre.network.name !== 'hardhat' && options.skipIfAlreadyDeployed) {

@@ -1,0 +1,78 @@
+[
+    {
+        "inputs": [],
+        "name": "BoostFacet__BoostAlreadyClaimed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BoostFacet__InvalidBoostLevel",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BoostFacet__InvalidFeeReceivers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BoostFacet__UserNotParticipated",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "boostLevel",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_boostPoints",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "boostFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            }
+        ],
+        "name": "ClaimBoost",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_boostLevel",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimBoost",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

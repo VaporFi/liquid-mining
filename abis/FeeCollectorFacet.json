@@ -1,0 +1,21 @@
+[
+    {
+        "inputs": [],
+        "name": "FeeCollectorFacet__Only_Owner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "collectBoostFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collectUnlockFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

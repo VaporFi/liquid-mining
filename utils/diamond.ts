@@ -7,6 +7,8 @@ import {
 } from 'ethers'
 import { ethers } from 'hardhat'
 import { IDiamondLoupe } from '../typechain-types'
+import Safe from '@safe-global/protocol-kit'
+import { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
 
 export type FacetCut = {
   facetAddress: string
@@ -32,7 +34,8 @@ export async function addOrReplaceFacets(
   facets: BaseContract[],
   diamondAddress: string,
   initContract: string = ZeroAddress,
-  initData = '0x'
+  initData = '0x',
+  safe: Safe | undefined
 ): Promise<void> {
   const loupe = <IDiamondLoupe>(
     await ethers.getContractAt('IDiamondLoupe', diamondAddress)
@@ -81,7 +84,7 @@ export async function addOrReplaceFacets(
   }
 
   console.log('Adding/Replacing facet(s)...', diamondAddress, cut)
-  await doCut(diamondAddress, cut, initContract, initData)
+  await doCut(diamondAddress, cut, initContract, initData, safe)
 
   console.log('Done.')
 }
@@ -159,17 +162,30 @@ async function doCut(
   diamondAddress: string,
   cut: any[],
   initContract: string,
-  initData: string
+  initData: string,
+  safe?: Safe
 ): Promise<void> {
   const cutter = await ethers.getContractAt('DiamondCutFacet', diamondAddress)
   console.log('Cutting diamond...')
 
-  console.log(
-    '🚀 ~ file: diamond.ts:168 ~ cut, initContract, initData:',
-    cut,
-    initContract,
-    initData
-  )
+  if (safe) {
+    const safeTransactionData: MetaTransactionData = {
+      data: cutter.interface.encodeFunctionData('diamondCut', [
+        cut,
+        initContract,
+        initData,
+      ]),
+      to: diamondAddress,
+      value: '0',
+    }
+    console.log(
+      '🚀 ~ safeTransactionData - manually add to Gnosis Safe:',
+      safeTransactionData
+    )
+
+    return
+  }
+
   const tx = await cutter.diamondCut(cut, initContract, initData)
   const receipt = await tx.wait()
   if (!receipt?.status) {

@@ -1,0 +1,114 @@
+[
+    {
+        "inputs": [],
+        "name": "MiningPassFacet__InsufficientBalance",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MiningPassFacet__InvalidFeeReceivers",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MiningPassFacet__InvalidTier",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MiningPassFacet__SeasonEnded",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "MiningPassPurchase",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tier",
+                "type": "uint256"
+            }
+        ],
+        "name": "getMiningPassFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_fee",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "miningPassOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_depositLimit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tier",
+                "type": "uint256"
+            }
+        ],
+        "name": "purchase",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

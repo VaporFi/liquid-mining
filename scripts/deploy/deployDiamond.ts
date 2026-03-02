@@ -19,7 +19,7 @@ export const defaultArgs: DiamondInit.ArgsStruct = {
   stratosphere: addresses.stratosphere[CHAIN_ID],
   xVAPE: addresses.xVAPE[CHAIN_ID],
   passport: addresses.passportPool[CHAIN_ID],
-  replenishmentPool: addresses.replenishmentPool[CHAIN_ID],
+  replenishmentPool: addresses.vpndReplenishmentPool[CHAIN_ID],
   labsMultisig: addresses.teamMultisig[CHAIN_ID],
   burnWallet: BURN_WALLET,
 }

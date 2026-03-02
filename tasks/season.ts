@@ -1,10 +1,9 @@
 import { task } from 'hardhat/config'
 import LiquidMiningDiamond from '../deployments/LiquidMiningDiamond.json'
 
-task('season:start', 'Start a new season')
-  .addParam('rewards', 'The rewards for the season to distribute')
-  .addOptionalParam('duration', 'The duration of the season in days')
-  .setAction(async ({ rewards, duration }, { ethers, network }) => {
+task('season:set-season-end', 'Force set the end of the current season')
+  .addParam('end', 'The timestamp of the end of the season')
+  .setAction(async ({ end }, { ethers, network }) => {
     const diamondAddress =
       LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
         .address
@@ -13,16 +12,32 @@ task('season:start', 'Start a new season')
       diamondAddress
     )
 
-    if (duration) {
-      await (
-        await DiamondManagerFacet.startNewSeasonWithDuration(
-          ethers.parseEther(rewards),
-          duration
-        )
-      ).wait(3)
-    } else {
-      await (await DiamondManagerFacet.startNewSeason(rewards)).wait(3)
-    }
+    const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
+    const setSeasonEndTx = await DiamondManagerFacet.setSeasonEndTimestamp(
+      currentSeasonId,
+      end
+    )
 
-    console.log('✅ Started new season')
+    await setSeasonEndTx.wait(3)
+
+    console.log('✅ Set season end timestamp')
   })
+
+task('season:get-season-end', 'Get the end of the current season').setAction(
+  async ({ end }, { ethers, network }) => {
+    const diamondAddress =
+      LiquidMiningDiamond[network.name as keyof typeof LiquidMiningDiamond]
+        .address
+    const DiamondManagerFacet = await ethers.getContractAt(
+      'DiamondManagerFacet',
+      diamondAddress
+    )
+
+    const currentSeasonId = await DiamondManagerFacet.getCurrentSeasonId()
+    const seasonEndTimestamp = await DiamondManagerFacet.getSeasonEndTimestamp(
+      currentSeasonId.toString()
+    )
+
+    console.log('Season end timestamp:', seasonEndTimestamp.toString())
+  }
+)

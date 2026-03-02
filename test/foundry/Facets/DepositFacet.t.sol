@@ -3,11 +3,13 @@ pragma solidity 0.8.18;
 
 import "lib/forge-std/src/Test.sol";
 import { DiamondTest, LiquidMiningDiamond } from "../utils/DiamondTest.sol";
-import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidMiningPass } from "src/facets/DepositFacet.sol";
+import { DepositFacet, DepositFacet__NotEnoughTokenBalance, DepositFacet__SeasonEnded, DepositFacet__InvalidMiningPass, DepositFacet__Less_Than_One_Day } from "src/facets/DepositFacet.sol";
 import { DiamondManagerFacet } from "src/facets/DiamondManagerFacet.sol";
 import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
 import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
 import { MiningPassFacet } from "src/facets/MiningPassFacet.sol";
+
+//JUST FOR ILLUSTRATION PURPOSE
 
 contract DepositFacetTest is DiamondTest {
     // StdCheats cheats = StdCheats(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
@@ -68,6 +70,19 @@ contract DepositFacetTest is DiamondTest {
         assertEq(diamondManagerFacet.getDepositPointsOfUser(stratosphereMemberBasic, 1), 29 * 1000);
         assertEq(diamondManagerFacet.getTotalDepositAmountOfSeason(1), 1000);
         assertEq(diamondManagerFacet.getTotalPointsOfSeason(1), 29 * 1000);
+    }
+
+    function test_DepositFailsOnLastDay() public {
+        address stratosphereMemberBasic = makeAddr("stratosphereMemberBasic");
+
+        vm.startPrank(stratosphereMemberBasic);
+        depositToken.increaseAllowance(address(depositFacet), 1_000_000);
+        depositToken.mint(stratosphereMemberBasic, 1000);
+
+        vm.warp(block.timestamp + 29 days + 100);
+
+        vm.expectRevert(DepositFacet__Less_Than_One_Day.selector);
+        depositFacet.deposit(1000);
     }
 
     function test_DepositBeingGoldStratosphereMember() public {

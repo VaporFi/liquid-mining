@@ -1,0 +1,44 @@
+[
+    {
+        "inputs": [],
+        "name": "LDiamond__OnlyOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LPausable__AlreadyPaused",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LPausable__AlreadyUnpaused",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

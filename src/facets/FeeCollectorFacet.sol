@@ -3,7 +3,7 @@ pragma solidity 0.8.18;
 
 import { LDiamond } from "clouds/diamond/LDiamond.sol";
 import { IERC20 } from "openzeppelin/contracts/token/ERC20/IERC20.sol";
-
+import { LAuthorizable } from "../libraries/LAuthorizable.sol";
 import { AppStorage } from "../libraries/AppStorage.sol";
 
 /// @title FeeCollectorFacet
@@ -21,7 +21,8 @@ contract FeeCollectorFacet {
     /// @notice Transfer the collected boost fees to the fee receivers
     /// @dev As long as the boostFeeReceivers and miningPassFeeReceivers
     /// @dev are the same, this function can be used to collect both
-    function collectBoostFees() external onlyOwner {
+    function collectBoostFees() external {
+        LAuthorizable.enforceIsAuthorized(s, msg.sender);
         address[] memory _receivers = s.boostFeeReceivers;
         uint256 _length = _receivers.length;
         address _feeToken = s.feeToken;
@@ -35,7 +36,8 @@ contract FeeCollectorFacet {
     }
 
     /// @notice Transfer the collected unlock fees to the fee receivers
-    function collectUnlockFees() external onlyOwner {
+    function collectUnlockFees() external {
+        LAuthorizable.enforceIsAuthorized(s, msg.sender);
         address[] memory _receivers = s.unlockFeeReceivers;
         uint256 _length = _receivers.length;
         address _depositToken = s.depositToken;

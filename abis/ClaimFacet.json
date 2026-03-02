@@ -1,0 +1,89 @@
+[
+    {
+        "inputs": [],
+        "name": "ClaimFacet__AlreadyClaimed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ClaimFacet__InProgressSeason",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ClaimFacet__NotEnoughPoints",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LAuthorizable__OnlyAuthorized",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "seasonId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "rewardsAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "depositAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Claim",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_seasonId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "automatedClaim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_seasonId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_users",
+                "type": "address[]"
+            }
+        ],
+        "name": "automatedClaimBatch",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

@@ -19,8 +19,8 @@ import "src/facets/WithdrawFacet.sol";
 import "src/facets/FeeCollectorFacet.sol";
 import "src/facets/MiningPassFacet.sol";
 import "src/upgradeInitializers/DiamondInit.sol";
-import { ERC20Mock } from "test/foundry/mocks/ERC20Mock.sol";
-import { StratosphereMock } from "test/foundry/mocks/StratosphereMock.sol";
+import {ERC20Mock} from "test/foundry/mocks/ERC20Mock.sol";
+import {StratosphereMock} from "test/foundry/mocks/StratosphereMock.sol";
 
 contract DiamondTest is Test {
     IDiamondCut.FacetCut[] internal cut;
@@ -178,7 +178,7 @@ contract DiamondTest is Test {
     function setDiamondManagerFacet() private {
         DiamondManagerFacet diamondManager = new DiamondManagerFacet();
         bytes4[] memory functionSelectors;
-        functionSelectors = new bytes4[](29);
+        functionSelectors = new bytes4[](39);
         functionSelectors[0] = diamondManager.setDepositToken.selector;
         functionSelectors[1] = diamondManager.setCurrentSeasonId.selector;
         functionSelectors[2] = diamondManager.setStratosphereAddress.selector;
@@ -208,6 +208,17 @@ contract DiamondTest is Test {
         functionSelectors[26] = diamondManager.setBoostFeeReceivers.selector;
         functionSelectors[27] = diamondManager.setUnlockFeeReceivers.selector;
         functionSelectors[28] = diamondManager.getUserLastBoostClaimedAmount.selector;
+        // Mining pass dynamic pricing
+        functionSelectors[29] = diamondManager.setMiningPassFees.selector;
+        functionSelectors[30] = diamondManager.setMiningPassTierFee.selector;
+        functionSelectors[31] = diamondManager.setMiningPassFeeFloor.selector;
+        functionSelectors[32] = diamondManager.getMiningPassTierFee.selector;
+        functionSelectors[33] = diamondManager.getBaseMiningPassTierFee.selector;
+        functionSelectors[34] = diamondManager.getMiningPassTierFloorFee.selector;
+        functionSelectors[35] = diamondManager.getMiningPassFeeFloorBps.selector;
+        functionSelectors[36] = diamondManager.getAllMiningPassFees.selector;
+        functionSelectors[37] = diamondManager.getMiningPassTierDepositLimit.selector;
+        functionSelectors[38] = diamondManager.setBaseMiningPassFees.selector;
 
         cut.push(
             IDiamondCut.FacetCut({
